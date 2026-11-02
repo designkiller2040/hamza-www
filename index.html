@@ -3,38 +3,75 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hamza www</title>
-  <meta name="description" content="Hamza www">
+  <title>Hamza Shah</title>
+  <meta name="description" content="Hamza Shah, artist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="logo" href="/">Hamza www</a>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-text">
+      <h1>Triptych to the mountains<br>of Afghanistan</h1>
+      <p>Scroll down to see artworks</p>
+    </div>
+  </section>
+
+  <nav class="site-nav">
+    <a href="#home">Home</a>
+    <a href="#artworks">Artworks</a>
+    <a href="#exhibitions">Exhibitions</a>
+    <a href="#about">About</a>
+  </nav>
 
   <main>
-    <section class="hero">
-      <h1>Hamza www</h1>
-      <p>Something new is coming soon.</p>
+    <section class="intro">
+      <blockquote>
+        &ldquo;Abimal is this subjective, plural visual truth that invites visitors to trust their own eyes: what you see is your truth.&rdquo;
+      </blockquote>
+      <!-- TODO: add portrait image, e.g. images/portrait.jpg -->
+      <div class="placeholder portrait">Portrait</div>
     </section>
 
-    <section id="about" class="section">
+    <section id="artworks" class="artworks">
+      <h2 class="visually-hidden">Artworks</h2>
+      <div class="grid">
+        <!-- TODO: replace each placeholder with an <img> and real details -->
+        <figure>
+          <div class="placeholder">Artwork image</div>
+          <figcaption>Title, year<br>medium<br>size</figcaption>
+        </figure>
+        <figure>
+          <div class="placeholder">Artwork image</div>
+          <figcaption>Title, year<br>medium<br>size</figcaption>
+        </figure>
+        <figure>
+          <div class="placeholder">Artwork image</div>
+          <figcaption>Title, year<br>medium<br>size</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="exhibitions" class="exhibitions">
+      <h2>Exhibitions</h2>
+      <figure>
+        <img src="images/abimal-berlin-2026.jpg" alt="Installation view of Abimal, Berlin 2026" loading="lazy">
+        <figcaption>Abimal, Berlin, 2026</figcaption>
+      </figure>
+      <!-- TODO: add the exhibition list (year, venue, title) -->
+    </section>
+
+    <section id="about" class="about">
       <h2>About</h2>
-      <p>Placeholder text. Tell me what this site is about and I'll replace it.</p>
-    </section>
-
-    <section id="contact" class="section">
-      <h2>Contact</h2>
-      <p>Placeholder contact details.</p>
+      <p class="todo">Bio text goes here.</p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Hamza www</p>
+    <!-- TODO: contact details / links -->
+    <p>&copy; 2026 Hamza Shah</p>
   </footer>
 </body>
 </html>

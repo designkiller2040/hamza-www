@@ -22,3 +22,6 @@ npm-debug.log*
 # Editors
 .vscode/
 .idea/
+
+# Full-size originals (kept local only)
+images/originals/
