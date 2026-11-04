@@ -132,19 +132,6 @@ h2 {
   text-transform: uppercase;
 }
 
-.intro {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--gap);
-  align-items: start;
-}
-
-blockquote {
-  margin: 0;
-  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-  line-height: 1.3;
-}
-
 .placeholder {
   display: grid;
   place-items: center;
@@ -152,6 +139,82 @@ blockquote {
   background: var(--placeholder);
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+/* About: 400px column in the middle, vertical "ABOUT" label on the left
+   edge, vertical photo caption on the right edge */
+.about {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 400px) 1fr;
+  column-gap: var(--gap);
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.about-label,
+.about-caption {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.about-label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: start;
+}
+
+.about-photo {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 518 / 587;
+  object-fit: cover;
+}
+
+.about-caption {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  align-self: end;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.about-text {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 2.5rem;
+}
+
+.about blockquote {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.about .bio {
+  margin-top: 2.25rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.15;
+  text-align: justify;
+  hyphens: none;
+}
+
+.about .bio p {
+  margin: 0 0 1.1em;
 }
 
 /* Artworks: positions follow the original 1024px-wide Readymag layout,
@@ -196,22 +259,6 @@ figcaption {
   color: var(--text);
 }
 
-.bio {
-  margin-top: 2rem;
-  font-size: 0.95rem;
-}
-
-.bio p {
-  margin: 0 0 1em;
-}
-
-.intro figcaption {
-  min-height: 0;
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
 .exhibition-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -237,7 +284,6 @@ figcaption {
   text-align: center;
 }
 
-.intro img,
 .exhibition-list img {
   width: 100%;
   height: auto;
@@ -303,9 +349,31 @@ figcaption {
     font-size: 0.8rem;
   }
 
-  .intro {
-    grid-template-columns: 1fr;
+  /* Phone: label, photo, caption and text stack in one column */
+  .about {
+    grid-template-columns: minmax(0, 400px);
+    justify-content: center;
+    padding-top: 4rem;
   }
+
+  .about > * {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .about-label,
+  .about-caption {
+    margin-bottom: 1rem;
+    writing-mode: horizontal-tb;
+    transform: none;
+    justify-self: start;
+  }
+
+  .about-caption {
+    margin: 0.6rem 0 0;
+  }
+
+  .about-caption br { display: none; }
 }
 
 /* Phone: one column */
