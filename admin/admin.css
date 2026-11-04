@@ -174,3 +174,4 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .signin .error-text { min-height: 18px; }
 .only-phone { display: none; }
 @media (max-width: 720px) { .only-phone { display: inline; } }
+.signin h1 { line-height: 0; margin-bottom: 18px; }
