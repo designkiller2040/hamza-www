@@ -52,34 +52,33 @@ figure {
   white-space: nowrap;
 }
 
-/* Hero */
+/* Hero: sharp photo, same width as the artwork rows below
+   (screen width minus the side margins) */
 .hero {
+  padding: var(--gutter) var(--gutter) 0;
+}
+
+.hero-inner {
   position: relative;
-  height: 100vh;
-  min-height: 420px;
   display: grid;
   place-items: center;
+  aspect-ratio: 2000 / 1050;
   overflow: hidden;
   color: #fff;
   text-align: center;
-}
-
-.hero-bg {
-  position: absolute;
-  inset: -40px;
   background: url("images/hero.jpg") center / cover no-repeat;
-  filter: blur(22px);
 }
 
 .hero-text {
   position: relative;
   padding: 0 var(--gutter);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
 }
 
 .hero h1 {
-  margin: 0 0 6rem;
+  margin: 0 0 3rem;
   font-weight: 400;
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: clamp(1.25rem, 3vw, 2.25rem);
   line-height: 1.25;
 }
 
