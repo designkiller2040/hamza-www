@@ -11,26 +11,37 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <section class="hero" id="home">
-    <div class="hero-bg"></div>
-    <div class="hero-text">
-      <h1>Triptych to the mountains<br>of Afghanistan</h1>
-      <p>Scroll down to see artworks</p>
-    </div>
-  </section>
+  <header class="site-header" id="home">
+    <a class="site-name" href="#home">Hamza Shah Mian</a>
+    <nav class="site-nav">
+      <a href="#home">Home</a>
+      <a href="#artworks">Works</a>
+      <a href="#exhibitions">Exhibitions</a>
+      <a href="#about">About</a>
+      <a href="#media">Media</a>
+    </nav>
+    <!-- TODO: real email address -->
+    <a class="site-email" href="mailto:email@example.com">email@example.com</a>
+  </header>
 
-  <nav class="site-nav">
-    <a href="#home">Home</a>
-    <a href="#artworks">Artworks</a>
-    <a href="#exhibitions">Exhibitions</a>
-    <a href="#about">About</a>
-  </nav>
+  <figure class="hero">
+    <img src="images/hero.jpg" alt="&bdquo;What We Venerate&ldquo;, installation view, 2025" width="2000" height="1050">
+    <figcaption>
+      <span>&bdquo;What We Venerate&ldquo;, 2025</span>
+      <span><em>exhibited</em> at Mahalla Open / Berlin Art Week 2025 &copy;</span>
+    </figcaption>
+  </figure>
 
   <main>
-    <section id="about" class="intro">
-      <div class="intro-text">
+    <section id="about" class="about">
+      <h2 class="about-label">About</h2>
+      <figure class="about-photo">
+        <img src="images/portrait.jpg" alt="Hamza Shah Mian in his studio in Berlin, 2024" width="1580" height="1627">
+      </figure>
+      <p class="about-caption">Studio in <br>Berlin, 2024</p>
+      <div class="about-text">
         <blockquote>
-          &ldquo;Abimal is this subjective, plural visual truth that invites visitors to trust their own eyes: what you see is your truth.&rdquo;
+          "Abimal is this subjective, plural visual truth that invites visitors to trust their own eyes: what you see is your truth."
         </blockquote>
         <div class="bio">
           <p>Hamza Shah (b. 1999) is a Swiss-Afghan multidisciplinary artist currently based in Berlin, Germany, whose practice spans painting, installation, and sound.</p>
@@ -38,10 +49,6 @@
           <p>For him, creating is a physical act a dialogue between hand, matter, and emotion. Each piece becomes a way to return to what is real, to something primitive, as he describes it, an antidote to the noise of the modern world.</p>
         </div>
       </div>
-      <figure>
-        <img src="images/portrait.jpg" alt="Hamza Shah Mian in his studio, 2024" width="790" height="813">
-        <figcaption>Hamza Shah Mian in his studio, 2024</figcaption>
-      </figure>
     </section>
 
     <section id="artworks" class="artworks">
@@ -207,6 +214,10 @@
           </figcaption>
         </figure>
       </div>
+    </section>
+    <!-- TODO: press, videos and interviews -->
+    <section id="media" class="media">
+      <h2>Media</h2>
     </section>
   </main>
 
