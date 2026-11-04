@@ -4,6 +4,7 @@
   --muted: #888;
   --placeholder: #ece8e3;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* Space between the screen edge and the content.
      80px on desktop, smaller on tablets and phones (see breakpoints at the end). */
   --gutter: 80px;
@@ -52,60 +53,67 @@ figure {
   white-space: nowrap;
 }
 
-/* Hero: sharp photo, same width as the artwork rows below
-   (screen width minus the side margins) */
-.hero {
-  padding: var(--gutter) var(--gutter) 0;
-}
-
-.hero-inner {
-  position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 2000 / 1050;
-  overflow: hidden;
-  color: #fff;
-  text-align: center;
-  background: url("images/hero.jpg") center / cover no-repeat;
-}
-
-.hero-text {
-  position: relative;
-  padding: 0 var(--gutter);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
-}
-
-.hero h1 {
-  margin: 0 0 3rem;
-  font-weight: 400;
-  font-size: clamp(1.25rem, 3vw, 2.25rem);
-  line-height: 1.25;
-}
-
-.hero p {
-  margin: 0;
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-}
-
-/* Navigation */
-.site-nav {
+/* Header: name left, menu centre, email right, on the same side margins */
+.site-header {
   position: sticky;
   top: 0;
   z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: 1rem var(--gap);
+  padding: 2rem var(--gutter);
+  background: var(--bg);
+}
+
+.site-name,
+.site-email {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.site-email {
+  justify-self: end;
+}
+
+.site-nav {
   display: flex;
   justify-content: center;
-  gap: clamp(1.5rem, 8vw, 6rem);
-  padding: 1.5rem var(--gutter);
-  background: var(--bg);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  font-size: 0.95rem;
   text-transform: uppercase;
 }
 
-.site-nav a:hover {
+.site-nav a:hover,
+.site-email:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+/* Hero: sharp photo, same width as the artwork rows below */
+.hero {
+  padding: 2rem var(--gutter) 0;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+}
+
+.hero figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  min-height: 0;
+  margin-top: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.hero figcaption em {
+  font-family: var(--serif);
+  font-size: 1.05em;
 }
 
 /* Sections */
@@ -273,6 +281,26 @@ figcaption {
 }
 
 @media (max-width: 767.98px) {
+  /* Name and email on the first line, menu on the second */
+  .site-header {
+    grid-template-columns: 1fr auto;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .site-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: space-between;
+    font-size: 0.8rem;
+  }
+
+  .site-name,
+  .site-email,
+  .hero figcaption {
+    font-size: 0.8rem;
+  }
+
   .intro {
     grid-template-columns: 1fr;
   }
