@@ -143,16 +143,47 @@ blockquote {
   font-size: 0.9rem;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4rem var(--gutter);
+/* Artworks: positions follow the original 1024px-wide Readymag layout,
+   scaled with the viewport. Images sit on a shared bottom line per row. */
+main section.artworks {
+  max-width: 1024px;
+  padding: 2rem 0 4rem;
+  font-size: clamp(0.5rem, 1.25vw, 0.8rem);
+}
+
+.row {
+  position: relative;
+  width: 100%;
+}
+
+.row figure {
+  position: absolute;
+  bottom: 0;
+}
+
+.row img {
+  width: 100%;
+  height: auto;
+  background: var(--placeholder);
 }
 
 figcaption {
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
+  min-height: 3.4em;
+  margin-top: 1.5em;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.inquire {
+  display: inline-block;
+  margin-top: 0.6em;
   color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.inquire:hover {
+  color: var(--text);
 }
 
 .exhibitions figure {
@@ -173,8 +204,23 @@ figcaption {
 }
 
 @media (max-width: 700px) {
-  .intro,
-  .grid {
+  .intro {
     grid-template-columns: 1fr;
+  }
+
+  /* Phones: one artwork per line instead of the scaled desktop layout */
+  main section.artworks {
+    padding: 2rem var(--gutter) 4rem;
+    font-size: 0.85rem;
+  }
+
+  .row {
+    aspect-ratio: auto !important;
+  }
+
+  .row figure {
+    position: static;
+    width: 100% !important;
+    margin-bottom: 3rem;
   }
 }
