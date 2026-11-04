@@ -1,0 +1,19 @@
+{
+  "title": "cinq",
+  "year": "2026",
+  "materials": "quebracho, indigo,, kaffee, tea on cotton",
+  "size": "180 cm diameter",
+  "image": {
+    "src": "images/artworks/cinq-2026.jpg",
+    "width": 880,
+    "height": 880,
+    "alt": "cinq, 2026"
+  },
+  "layout": {
+    "row": 3,
+    "left": 75.91,
+    "width": 24.04,
+    "ratio": 1.0
+  },
+  "note": ""
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- Template: the build script (build.mjs) fills the {{...}} parts from the files in content/. Edit text in the admin (/admin/) or in content/, not here. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{pageTitle}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header" id="home">
+    <a class="site-name" href="#home">{{name}}</a>
+    <nav class="site-nav">
+      <a href="#home">Home</a>
+      <a href="#artworks">Works</a>
+      <a href="#exhibitions">Exhibitions</a>
+      <a href="#about">About</a>
+      <a href="#media">Media</a>
+    </nav>
+    <a class="site-email" href="mailto:{{email}}">{{email}}</a>
+  </header>
+
+  <figure class="hero">
+    <img src="{{hero.src}}" alt="{{hero.alt}}" width="{{hero.width}}" height="{{hero.height}}">
+    <figcaption>
+      <span>{{{hero.captionLeft}}}</span>
+      <span>{{{hero.captionRight}}}</span>
+    </figcaption>
+  </figure>
+
+  <main>
+    <section id="about" class="about">
+      <h2 class="about-label">About</h2>
+      <figure class="about-photo">
+        <img src="{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
+      </figure>
+      <p class="about-caption">{{{about.caption}}}</p>
+      <div class="about-text">
+        <blockquote>
+          {{about.quote}}
+        </blockquote>
+        <div class="bio">
+{{{about.bio}}}
+        </div>
+      </div>
+    </section>
+
+    <section id="artworks" class="artworks">
+      <h2 class="visually-hidden">Artworks</h2>
+{{{works}}}
+    </section>
+
+    <section id="exhibitions" class="exhibitions">
+      <h2>Exhibitions</h2>
+      <div class="exhibition-list">
+{{{exhibitions}}}
+      </div>
+    </section>
+    <!-- TODO: press, videos and interviews -->
+    <section id="media" class="media">
+      <h2>Media</h2>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <!-- TODO: privacy policy and terms of use pages -->
+    <p>{{footer}}</p>
+  </footer>
+</body>
+</html>

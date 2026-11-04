@@ -1,0 +1,19 @@
+{
+  "title": "your night II",
+  "year": "2024",
+  "materials": "quebraccho, cutch, coffee, tea on cotton",
+  "size": "100x100 cm",
+  "image": {
+    "src": "images/artworks/your-night-ii-2024.jpg",
+    "width": 788,
+    "height": 778,
+    "alt": "your night II, 2024"
+  },
+  "layout": {
+    "row": 7,
+    "left": 0.0,
+    "width": 21.53,
+    "ratio": 1.013
+  },
+  "note": ""
+}

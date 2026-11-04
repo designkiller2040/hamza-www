@@ -1,0 +1,19 @@
+{
+  "title": "ESPIRAL",
+  "year": "2025",
+  "materials": "kaffee, tea, quebracho on cotton canvas",
+  "size": "100 x 150 cm",
+  "image": {
+    "src": "images/artworks/espiral-2025.jpg",
+    "width": 1182,
+    "height": 775,
+    "alt": "ESPIRAL, 2025"
+  },
+  "layout": {
+    "row": 6,
+    "left": 34.66,
+    "width": 32.3,
+    "ratio": 1.523
+  },
+  "note": ""
+}

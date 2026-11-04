@@ -1,0 +1,19 @@
+{
+  "title": "a mother’s love  N°2",
+  "year": "2024",
+  "materials": "coffee and tea on canvas",
+  "size": "140x270 cm",
+  "image": {
+    "src": "images/artworks/a-mothers-love-n-2-2024.jpg",
+    "width": 1504,
+    "height": 779,
+    "alt": "a mother’s love  N°2, 2024"
+  },
+  "layout": {
+    "row": 8,
+    "left": 58.91,
+    "width": 41.09,
+    "ratio": 1.93
+  },
+  "note": ""
+}

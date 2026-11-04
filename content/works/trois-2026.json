@@ -1,0 +1,19 @@
+{
+  "title": "trois",
+  "year": "2026",
+  "materials": "kaffee, tea, quebracho on cotton canvas",
+  "size": "220 x 180 cm",
+  "image": {
+    "src": "images/artworks/trois-2026.jpg",
+    "width": 1337,
+    "height": 1600,
+    "alt": "trois, 2026"
+  },
+  "layout": {
+    "row": 4,
+    "left": -0.04,
+    "width": 20.55,
+    "ratio": 0.836
+  },
+  "note": ""
+}

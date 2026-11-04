@@ -1,0 +1,19 @@
+{
+  "title": "deux",
+  "year": "2026",
+  "materials": "kaffee, tea, quebracho on linen",
+  "size": "220 x 180 cm",
+  "image": {
+    "src": "images/artworks/deux-2026.jpg",
+    "width": 1303,
+    "height": 1600,
+    "alt": "deux, 2026"
+  },
+  "layout": {
+    "row": 2,
+    "left": 79.56,
+    "width": 20.44,
+    "ratio": 0.814
+  },
+  "note": ""
+}

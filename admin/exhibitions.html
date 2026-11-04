@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Exhibitions · Hamza Shah admin</title>
+<link rel="stylesheet" href="tabs.css">
+<link rel="stylesheet" href="admin.css">
+<script src="gh.js"></script>
+<script src="admin.js" defer></script>
+<script src="exhibitions.js" defer></script>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="topbar-left">
+    <a class="brand hide-phone" href="works.html">Hamza Shah</a>
+    <span class="divider hide-phone"></span>
+    <nav class="tabs" aria-label="Content"><a class="tab" href="works.html"><span>Works</span></a><a class="tab" href="exhibitions.html" aria-current="page"><span class="tab-pill"></span><span>Exhibitions</span></a><a class="tab" href="home.html"><span>Home</span></a><a class="tab" href="about.html"><span>About</span></a><a class="tab" href="contact.html"><span>Contact</span></a></nav>
+    <span id="status" class="status" hidden></span>
+  </div>
+  <div class="topbar-right">
+    <label class="search search-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg><input class="field" id="search" type="search" placeholder="Search exhibitions" aria-label="Search exhibitions"></label>
+    <button class="btn dark" id="save-order" type="button" hidden>Save order</button>
+    <a class="btn" href="exhibition.html?new=1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg><span class="hide-phone">New exhibition</span><span class="only-phone">New</span></a>
+  </div>
+</div></header>
+<div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name">Hamza Shah</div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
+<main class="page" id="main">
+  <section>
+    <div class="section-head"><h2>Exhibitions</h2><p>The exhibitions section of the homepage, in this order. Drag to reorder. Click to edit.</p></div>
+    <label class="search search-phone"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg><input class="field" id="search-phone" type="search" placeholder="Search exhibitions" aria-label="Search exhibitions"></label>
+    <div id="list"></div>
+  </section>
+</main>
+<footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
+</body>
+</html>

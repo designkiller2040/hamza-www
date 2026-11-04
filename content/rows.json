@@ -1,0 +1,15 @@
+{
+  "_about": "Row heights of the composed works layout, in 915-wide units. Rows not listed get an automatic height.",
+  "heights": {
+    "1": 320,
+    "2": 321,
+    "3": 320,
+    "4": 321,
+    "5": 345,
+    "6": 280,
+    "7": 287,
+    "8": 280,
+    "9": 244,
+    "10": 397
+  }
+}

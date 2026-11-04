@@ -1,0 +1,15 @@
+{
+  "pageTitle": "Hamza Shah",
+  "description": "Hamza Shah, artist.",
+  "hero": {
+    "image": {
+      "src": "images/hero.jpg",
+      "width": 2000,
+      "height": 1050,
+      "alt": "„What We Venerate“, installation view, 2025"
+    },
+    "captionLeft": "„What We Venerate“, 2025",
+    "captionRight": "*exhibited* at Mahalla Open / Berlin Art Week 2025 ©"
+  },
+  "footer": "© 2026 Hamza Mian Shah. All rights reserved"
+}

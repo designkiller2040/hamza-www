@@ -1,0 +1,19 @@
+{
+  "title": "burning steps",
+  "year": "2026",
+  "materials": "kaffee, tea, quebracho on cotton canvas",
+  "size": "220 x 180 cm",
+  "image": {
+    "src": "images/artworks/burning-steps-2026.jpg",
+    "width": 1313,
+    "height": 1600,
+    "alt": "burning steps, 2026"
+  },
+  "layout": {
+    "row": 4,
+    "left": 39.93,
+    "width": 20.44,
+    "ratio": 0.821
+  },
+  "note": ""
+}

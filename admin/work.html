@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Work · Hamza Shah admin</title>
+<link rel="stylesheet" href="tabs.css">
+<link rel="stylesheet" href="admin.css">
+<script src="gh.js"></script>
+<script src="admin.js" defer></script>
+<script src="work.js" defer></script>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="topbar-left">
+    <a class="back" href="works.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>Works</a>
+    <span class="divider"></span>
+    <h1 class="item-name" id="item-name">&nbsp;</h1>
+    <span id="status" class="status" hidden></span>
+  </div>
+  <div class="topbar-right">
+    <span id="save-state" class="save-state" aria-live="polite"></span>
+    <a class="btn view-page" id="view" href="/" target="_blank" rel="noopener" aria-label="View page"><span class="label">View page</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"></path></svg></a>
+    <button class="btn dark" id="save" type="button" disabled>Save</button>
+  </div>
+</div></header>
+<div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name">Hamza Shah</div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
+<main class="page" id="main">
+    <div class="note-banner" id="note-banner" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"></path><circle cx="12" cy="12" r="9"></circle></svg><span></span></div>
+  <section>
+    <div class="section-head"><h2>Image</h2><p>The painting as shown on the homepage. Its own shape is kept.</p></div>
+    <div class="drop" id="drop"></div>
+    <div class="image-meta" id="drop-meta"></div>
+  </section>
+  <section>
+    <div class="section-head"><h2>Info</h2><p>Shown under the painting on the homepage.</p></div>
+    <div class="info-cols">
+      <div class="fields">
+        <div><label class="lbl" for="title">Title</label><input class="field" id="title" type="text" placeholder="e.g. freedom" autocomplete="off"></div>
+        <div class="two">
+          <div><label class="lbl" for="materials">Materials</label><input class="field" id="materials" type="text" placeholder="e.g. coffee, tea, quebracho on cotton canvas" autocomplete="off"></div>
+          <div><label class="lbl" for="year">Year</label><input class="field" id="year" type="text" placeholder="e.g. 2026" autocomplete="off"></div>
+        </div>
+        <div><label class="lbl" for="size">Size</label><input class="field" id="size" type="text" placeholder="e.g. 220 x 180 cm" autocomplete="off"></div>
+        <div><label class="lbl" for="row">Row on the homepage</label><select class="field" id="row"></select><p class="hint">Moving a work to another row lays out both rows again.</p></div>
+        <div><label class="lbl" for="alt">Image description for screen readers</label><input class="field" id="alt" type="text" placeholder="e.g. Large brown and indigo painting on cotton canvas" autocomplete="off"><p class="hint">Optional. Leave empty to use the title.</p></div>
+        <div id="slug-wrap"><div><label class="lbl" for="slug">Page address</label><input class="field" id="slug" type="text" placeholder="e.g. freedom-2026" autocomplete="off"><p class="hint">Filled in from the title. Locked after the first save.</p></div></div>
+        <div class="lock" id="slug-lock" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span></span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>On the site</h3><p>How the caption reads under the painting.</p></div>
+        <div class="site-preview" id="preview"></div>
+      </div>
+    </div>
+  </section>
+  <section class="bottom">
+    <div class="note-field"><div><label class="lbl" for="note">Private note (shows a yellow reminder in the admin until cleared)</label><input class="field" id="note" type="text" placeholder="e.g. waiting for the final photo" autocomplete="off"></div></div>
+    <button class="btn danger" id="delete" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Delete work</button>
+  </section>
+</main>
+<footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
+</body>
+</html>

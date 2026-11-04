@@ -1,0 +1,19 @@
+{
+  "title": "your night I",
+  "year": "2024",
+  "materials": "quebracho, cutch, coffee, tea on linen",
+  "size": "120x200 cm",
+  "image": {
+    "src": "images/artworks/your-night-i-2024.jpg",
+    "width": 1184,
+    "height": 710,
+    "alt": "your night I, 2024"
+  },
+  "layout": {
+    "row": 7,
+    "left": 34.55,
+    "width": 32.35,
+    "ratio": 1.668
+  },
+  "note": ""
+}

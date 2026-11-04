@@ -1,0 +1,19 @@
+{
+  "title": "16 august",
+  "year": "2025",
+  "materials": "quebracho, indigo, cutch, kaffee, tea",
+  "size": "200x150 cm",
+  "image": {
+    "src": "images/artworks/16-august-2025.jpg",
+    "width": 776,
+    "height": 1032,
+    "alt": "16 august, 2025"
+  },
+  "layout": {
+    "row": 5,
+    "left": 78.66,
+    "width": 21.2,
+    "ratio": 0.752
+  },
+  "note": ""
+}

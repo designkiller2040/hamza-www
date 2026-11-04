@@ -1,0 +1,19 @@
+{
+  "title": "un",
+  "year": "2026",
+  "materials": "quebracho, indigo,, kaffee, tea on cotton",
+  "size": "180 cm diameter",
+  "image": {
+    "src": "images/artworks/un-2026.jpg",
+    "width": 1591,
+    "height": 1600,
+    "alt": "un, 2026"
+  },
+  "layout": {
+    "row": 3,
+    "left": -0.04,
+    "width": 23.83,
+    "ratio": 0.994
+  },
+  "note": ""
+}

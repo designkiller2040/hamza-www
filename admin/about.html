@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>About · Hamza Shah admin</title>
+<link rel="stylesheet" href="tabs.css">
+<link rel="stylesheet" href="admin.css">
+<script src="gh.js"></script>
+<script src="admin.js" defer></script>
+<script src="single.js" defer></script>
+<script src="about.js" defer></script>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="topbar-left">
+    <a class="brand hide-phone" href="works.html">Hamza Shah</a>
+    <span class="divider hide-phone"></span>
+    <nav class="tabs" aria-label="Content"><a class="tab" href="works.html"><span>Works</span></a><a class="tab" href="exhibitions.html"><span>Exhibitions</span></a><a class="tab" href="home.html"><span>Home</span></a><a class="tab" href="about.html" aria-current="page"><span class="tab-pill"></span><span>About</span></a><a class="tab" href="contact.html"><span>Contact</span></a></nav>
+    <span id="status" class="status" hidden></span>
+  </div>
+  <div class="topbar-right">
+    <span id="save-state" class="save-state" aria-live="polite"></span>
+    <a class="btn view-page" id="view" href="/" target="_blank" rel="noopener" aria-label="View page"><span class="label">View page</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"></path></svg></a>
+    <button class="btn dark" id="save" type="button" disabled>Save</button>
+  </div>
+</div></header>
+<div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name">Hamza Shah</div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
+<main class="page" id="main">
+  <section>
+    <div class="section-head"><h2>Portrait</h2><p>The photo in the About section.</p></div>
+    <div class="drop" id="drop"></div>
+    <div class="image-meta" id="drop-meta"></div>
+  </section>
+  <section>
+    <div class="section-head"><h2>Text</h2><p>The About section of the homepage.</p></div>
+    <div class="fields" style="max-width:720px">
+      <div><label class="lbl" for="caption">Photo caption</label><textarea class="field" id="caption" rows="2" placeholder="e.g. Studio in Berlin, 2024"></textarea><p class="hint">Runs up the right side of the photo. A new line starts a new line on the site.</p></div>
+      <div><label class="lbl" for="quote">Quote</label><textarea class="field" id="quote" rows="3" placeholder="e.g. “What you see is your truth.”"></textarea></div>
+      <div><label class="lbl" for="bio">Bio</label><textarea class="field" id="bio" rows="12" placeholder="Hamza Shah (b. 1999) is…"></textarea><p class="hint">Leave an empty line between paragraphs.</p></div>
+      <div><label class="lbl" for="alt">Portrait description for screen readers</label><input class="field" id="alt" type="text" placeholder="e.g. Hamza Shah in his studio in Berlin, 2024" autocomplete="off"></div>
+    </div>
+  </section>
+</main>
+<footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "title": "chambre des rêves",
+  "year": "2024",
+  "materials": "cutch, coffee, tea on cotton",
+  "size": "200x120 cm",
+  "image": {
+    "src": "images/artworks/chambre-des-r-ves-2024.jpg",
+    "width": 776,
+    "height": 1235,
+    "alt": "chambre des rêves, 2024"
+  },
+  "layout": {
+    "row": 10,
+    "left": 78.7,
+    "width": 21.2,
+    "ratio": 0.629
+  },
+  "note": ""
+}

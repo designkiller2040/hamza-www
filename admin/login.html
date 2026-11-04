@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sign in · Hamza Shah admin</title>
+<link rel="stylesheet" href="tabs.css">
+<link rel="stylesheet" href="admin.css">
+<script src="gh.js"></script>
+<script src="login.js" defer></script>
+</head>
+<body>
+<main class="signin">
+  <form id="form" novalidate>
+    <h1>Hamza Shah</h1>
+    <p class="sub" id="sub">Sign in to edit the website.</p>
+    <div id="pw-wrap"><label class="lbl" for="password">Password</label><input class="field" id="password" type="password" autocomplete="current-password"></div>
+    <div id="tk-wrap" hidden><label class="lbl" for="token">GitHub token</label><input class="field" id="token" type="password" autocomplete="off" placeholder="github_pat_…" spellcheck="false"><p class="hint">A fine-grained token for designkiller2040/hamza-www only, with Contents set to Read and write.</p></div>
+    <button class="btn dark" id="go" type="submit">Sign in</button>
+    <p class="error-text" id="err" role="alert"></p>
+    <p class="switch"><a href="#" id="switch">Use a GitHub token instead</a></p>
+  </form>
+</main>
+</body>
+</html>

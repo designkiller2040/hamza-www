@@ -1,0 +1,19 @@
+{
+  "title": "The moon's Red Tide",
+  "year": "",
+  "materials": "",
+  "size": "",
+  "image": {
+    "src": "images/artworks/the-moons-red-tide.jpg",
+    "width": 1600,
+    "height": 1579,
+    "alt": "The moon's Red Tide"
+  },
+  "layout": {
+    "row": 1,
+    "left": 0.0,
+    "width": 23.83,
+    "ratio": 1.013
+  },
+  "note": ""
+}

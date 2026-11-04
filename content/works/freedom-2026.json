@@ -1,0 +1,19 @@
+{
+  "title": "freedom",
+  "year": "2026",
+  "materials": "coffee, tea, quebracho, cutch on cotton canvas",
+  "size": "220 x 180 cm",
+  "image": {
+    "src": "images/artworks/freedom-2026.jpg",
+    "width": 752,
+    "height": 925,
+    "alt": "freedom, 2026"
+  },
+  "layout": {
+    "row": 2,
+    "left": -0.04,
+    "width": 20.55,
+    "ratio": 0.813
+  },
+  "note": ""
+}

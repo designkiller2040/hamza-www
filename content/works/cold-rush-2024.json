@@ -1,0 +1,19 @@
+{
+  "title": "cold rush",
+  "year": "2024",
+  "materials": "coffee, tea on cotton, 45mm stainless steel frame",
+  "size": "100x100 cm",
+  "image": {
+    "src": "images/artworks/cold-rush-2024.jpg",
+    "width": 822,
+    "height": 812,
+    "alt": "cold rush, 2024"
+  },
+  "layout": {
+    "row": 10,
+    "left": 40.9,
+    "width": 22.46,
+    "ratio": 1.012
+  },
+  "note": ""
+}

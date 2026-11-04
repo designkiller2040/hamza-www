@@ -1,0 +1,19 @@
+{
+  "title": "trust",
+  "year": "2025",
+  "materials": "kaffee, tea on belgian linen",
+  "size": "80 x 200 cm",
+  "image": {
+    "src": "images/artworks/trust-2025.jpg",
+    "width": 1504,
+    "height": 583,
+    "alt": "trust, 2025"
+  },
+  "layout": {
+    "row": 5,
+    "left": -0.09,
+    "width": 41.09,
+    "ratio": 2.581
+  },
+  "note": ""
+}

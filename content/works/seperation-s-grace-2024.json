@@ -1,0 +1,19 @@
+{
+  "title": "seperation‘s grace",
+  "year": "2024",
+  "materials": "quebracho, cutch, coffee, tea on linen",
+  "size": "100x100 cm",
+  "image": {
+    "src": "images/artworks/seperation-s-grace-2024.jpg",
+    "width": 1258,
+    "height": 624,
+    "alt": "seperation‘s grace, 2024"
+  },
+  "layout": {
+    "row": 9,
+    "left": 41.23,
+    "width": 34.36,
+    "ratio": 2.015
+  },
+  "note": ""
+}

@@ -1,0 +1,19 @@
+{
+  "title": "at the beginning",
+  "year": "2026",
+  "materials": "kaffee on belgian linen",
+  "size": "100 x 100 cm",
+  "image": {
+    "src": "images/artworks/at-the-beginning-2026.jpg",
+    "width": 1594,
+    "height": 1600,
+    "alt": "at the beginning, 2026"
+  },
+  "layout": {
+    "row": 6,
+    "left": 78.66,
+    "width": 21.2,
+    "ratio": 0.996
+  },
+  "note": ""
+}

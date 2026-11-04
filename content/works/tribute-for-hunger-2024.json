@@ -1,0 +1,19 @@
+{
+  "title": "tribute for hunger",
+  "year": "2024",
+  "materials": "ink, soft pastel, coffee, tea on canvas",
+  "size": "100x140 cm",
+  "image": {
+    "src": "images/artworks/tribute-for-hunger-2024.jpg",
+    "width": 992,
+    "height": 700,
+    "alt": "tribute for hunger, 2024"
+  },
+  "layout": {
+    "row": 10,
+    "left": 0.01,
+    "width": 27.1,
+    "ratio": 1.417
+  },
+  "note": ""
+}
