@@ -6,8 +6,8 @@
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* Space between the screen edge and the content.
-     80px on desktop, smaller on tablets and phones (see breakpoints at the end). */
-  --gutter: 80px;
+     124px on desktop, smaller on tablets and phones (see breakpoints at the end). */
+  --gutter: 124px;
   /* Space between columns */
   --gap: 40px;
 }
@@ -291,15 +291,15 @@ figcaption {
 
 /* ---------------------------------------------------------------
    Responsive breakpoints (same sizes Bootstrap uses)
-   - desktop  1200px and wider : 80px margins, full composed layout
-   - laptop   992px to 1199px  : 48px margins, full composed layout
-   - tablet   576px to 991px   : 48px margins, artworks in 2 columns
-   - phone    below 576px      : 20px margins, everything in 1 column
+   - desktop  1200px and wider : 124px margins, full composed layout
+   - laptop   992px to 1199px  : 72px margins, full composed layout
+   - tablet   576px to 991px   : 72px margins, artworks in 2 columns
+   - phone    below 576px      : 24px margins, everything in 1 column
    --------------------------------------------------------------- */
 
 @media (max-width: 1199.98px) {
   :root {
-    --gutter: 48px;
+    --gutter: 72px;
     --gap: 32px;
   }
 }
@@ -379,7 +379,7 @@ figcaption {
 /* Phone: one column */
 @media (max-width: 575.98px) {
   :root {
-    --gutter: 20px;
+    --gutter: 24px;
     --gap: 20px;
   }
 
