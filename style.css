@@ -4,8 +4,11 @@
   --muted: #888;
   --placeholder: #ece8e3;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --gutter: 50px;
-  --max-width: 1200px;
+  /* Space between the screen edge and the content.
+     80px on desktop, smaller on tablets and phones (see breakpoints at the end). */
+  --gutter: 80px;
+  /* Space between columns */
+  --gap: 40px;
 }
 
 * {
@@ -108,7 +111,6 @@ figure {
 
 /* Sections */
 main section {
-  max-width: var(--max-width);
   margin: 0 auto;
   padding: 4rem var(--gutter);
 }
@@ -124,7 +126,7 @@ h2 {
 .intro {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--gutter);
+  gap: var(--gap);
   align-items: start;
 }
 
@@ -146,7 +148,6 @@ blockquote {
 /* Artworks: positions follow the original 1024px-wide Readymag layout,
    scaled with the viewport. Images sit on a shared bottom line per row. */
 main section.artworks {
-  max-width: 1024px;
   padding: 2rem var(--gutter) 4rem;
   font-size: clamp(0.5rem, 1.25vw, 0.8rem);
 }
@@ -205,7 +206,7 @@ figcaption {
 .exhibition-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem var(--gutter);
+  gap: 2rem var(--gap);
   align-items: start;
 }
 
@@ -220,7 +221,6 @@ figcaption {
 }
 
 .site-footer {
-  max-width: var(--max-width);
   margin: 0 auto;
   padding: 3rem var(--gutter);
   font-size: 0.8rem;
@@ -228,35 +228,66 @@ figcaption {
   text-align: center;
 }
 
-@media (max-width: 700px) {
-  :root {
-    --gutter: 20px;
-  }
-
-  .intro,
-  .exhibition-list {
-    grid-template-columns: 1fr;
-  }
-
-  /* Phones: one artwork per line instead of the scaled desktop layout */
-  main section.artworks {
-    padding: 2rem var(--gutter) 4rem;
-    font-size: 0.85rem;
-  }
-
-  .row {
-    aspect-ratio: auto !important;
-  }
-
-  .row figure {
-    position: static;
-    width: 100% !important;
-    margin-bottom: 3rem;
-  }
-}
-
 .intro img,
 .exhibition-list img {
   width: 100%;
   height: auto;
+}
+
+/* ---------------------------------------------------------------
+   Responsive breakpoints (same sizes Bootstrap uses)
+   - desktop  1200px and wider : 80px margins, full composed layout
+   - laptop   992px to 1199px  : 48px margins, full composed layout
+   - tablet   576px to 991px   : 48px margins, artworks in 2 columns
+   - phone    below 576px      : 20px margins, everything in 1 column
+   --------------------------------------------------------------- */
+
+@media (max-width: 1199.98px) {
+  :root {
+    --gutter: 48px;
+    --gap: 32px;
+  }
+}
+
+/* Tablet: the composed artwork rows turn into a simple 2-column grid */
+@media (max-width: 991.98px) {
+  main section.artworks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem var(--gap);
+    align-items: end;
+    font-size: 0.85rem;
+  }
+
+  .row {
+    display: contents;
+  }
+
+  .row figure {
+    position: static;
+    width: auto !important;
+  }
+
+  .exhibition-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phone: one column */
+@media (max-width: 575.98px) {
+  :root {
+    --gutter: 20px;
+    --gap: 20px;
+  }
+
+  main section.artworks,
+  .exhibition-list {
+    grid-template-columns: 1fr;
+  }
 }
