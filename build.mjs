@@ -78,11 +78,15 @@ const exhibitionsHTML = exhibitions.map((e) => {
     ? `<img src="${esc(e.image.src)}" alt="${esc(e.image.alt || e.title)}" width="${e.image.width}" height="${e.image.height}" loading="lazy">`
     : `<div class="placeholder wide"></div>`;
   const lines = [e.line2, e.line3].filter(Boolean).map(esc).join('<br>');
+  const caption = `<span class="title">${esc(e.title)}</span>${lines ? '<br>\n            ' + lines : ''}`;
+  // "link" (optional) points to the exhibition's own page, e.g. "abimal/".
+  const open = e.link ? `<a class="exhibition-link" href="${esc(e.link)}">` : '';
+  const close = e.link ? '</a>' : '';
   return `        <figure id="exhibition-${esc(e.slug)}">
-          ${img}
+          ${open}${img}
           <figcaption>
-            <span class="title">${esc(e.title)}</span>${lines ? '<br>\n            ' + lines : ''}
-          </figcaption>
+            ${caption}
+          </figcaption>${close}
         </figure>`;
 }).join('\n');
 
@@ -121,17 +125,32 @@ const vars = {
   footer: home.footer,
 };
 
-let html = read('src/index.html').replace(/^<!-- Template:.*-->\n/m, '');
-html = html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
-  const key = raw || plain;
-  if (!(key in vars)) throw new Error(`Unknown template field {{${key}}}`);
-  return raw ? String(vars[key] ?? '') : esc(vars[key]);
-});
+// Shared parts ({{> header}}, {{> footer}}) come from src/partials/.
+// {{root}} is the way back to the site root: "" on the home page,
+// "../" on pages that live in their own folder (like /abimal/).
+function render(file, root) {
+  let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
+  html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
+  const all = { ...vars, root };
+  return html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
+    const key = raw || plain;
+    if (!(key in all)) throw new Error(`Unknown template field {{${key}}} in ${file}`);
+    return raw ? String(all[key] ?? '') : esc(all[key]);
+  });
+}
+
+// Every other src/*.html becomes its own page: src/abimal.html -> /abimal/
+const pages = readdirSync(join(ROOT, 'src')).filter((f) => f.endsWith('.html') && f !== 'index.html');
 
 // ---- Write dist/ ---------------------------------------------------------
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
-writeFileSync(join(OUT, 'index.html'), html);
+writeFileSync(join(OUT, 'index.html'), render('src/index.html', ''));
+for (const f of pages) {
+  const dir = join(OUT, f.replace(/\.html$/, ''));
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'index.html'), render(join('src', f), '../'));
+}
 for (const p of ['style.css', 'images', 'admin']) {
   if (existsSync(join(ROOT, p))) cpSync(join(ROOT, p), join(OUT, p), { recursive: true });
 }
@@ -141,4 +160,4 @@ writeFileSync(join(OUT, 'admin', 'version.json'), JSON.stringify({
   builtAt: new Date().toISOString(),
 }) + '\n');
 
-console.log(`Built dist/: ${works.length} works in ${byRow.size} rows, ${exhibitions.length} exhibitions.`);
+console.log(`Built dist/: ${works.length} works in ${byRow.size} rows, ${exhibitions.length} exhibitions, ${pages.length} extra page(s).`);

@@ -12,17 +12,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header" id="home">
-    <a class="site-name" href="#home">{{name}}</a>
-    <nav class="site-nav">
-      <a href="#home">Home</a>
-      <a href="#artworks">Works</a>
-      <a href="#exhibitions">Exhibitions</a>
-      <a href="#about">About</a>
-      <a href="#media">Media</a>
-    </nav>
-    <a class="site-email" href="mailto:{{email}}">{{email}}</a>
-  </header>
+{{> header}}
 
   <!-- Hero: the photos crossfade one into the next as you scroll, with their captions -->
   <div class="hero-scroll" style="--slides:{{hero.count}}">
@@ -70,10 +60,7 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <!-- TODO: privacy policy and terms of use pages -->
-    <p>{{footer}}</p>
-  </footer>
+{{> footer}}
   <script>
   // Scroll-driven hero: while the tall .hero-scroll passes, the figure stays put
   // and each photo (and its caption) fades into the next.

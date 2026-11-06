@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Template: the Abimal exhibition page, built to /abimal/. Copy and layout follow the old Readymag page (hamzashah.ch/abimal). Header and footer come from src/partials/. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{name}} — Abimal 2026</title>
+  <meta name="description" content="Abimal. Painting as a Language of Gratitude. St. Elisabeth Berlin, 30 May 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=EB+Garamond&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{root}}style.css">
+</head>
+<body>
+{{> header}}
+
+  <main class="exhibition-page">
+    <article class="ex">
+      <p class="ex-label">Latest exhibition</p>
+      <h1 class="ex-title">Abimal. Painting as a Language of Gratitude - St. Elisabeth Berlin 30 May 2026</h1>
+
+      <figure class="ex-hero">
+        <img src="{{root}}images/abimal/abimal-01-altar.jpg" alt="Abimal installation view at St. Elisabeth Berlin, looking towards the apse" width="1800" height="1298">
+      </figure>
+
+      <div class="ex-text">
+        <p class="ex-p ex-p1">Abimal, is a concept that i developed by defining a conceptual space where minimalism, abstrac&shy;tion, and expressionism meet. This term rests on the idea that a work of art is never truly complete until it exists within the eye and heart of the view&shy;er, a phenomenological experience that varies according to the spectator. Perceptions are dictated by unique life experiences and socio-cultural con&shy;texts; where one person perceives the pure color of a pigment, another seizes its raw texture or form.<br>
+        Abimal is this subjective, plural visual truth that invites visitors to trust their own eyes: what they see is their.</p>
+
+        <p class="ex-p ex-p3">The creative process is rooted in Sufi practice, particularly the quest for "Fana" the dissolution of the ego. To create these pieces, I enter a state of trance and fasting; a ritual of purification intended to thin the gap between the physical realm and the divine. By consciously detaching from modern over-consumption, i try to become a vessel for spiritual and ancestral work. While each painting carries the same intention, they function as different chapters of the same continuous meditation.</p>
+
+        <span class="ex-word ex-w1" aria-hidden="true">Ab</span>
+        <span class="ex-word ex-w2" aria-hidden="true">im</span>
+        <span class="ex-word ex-w3" aria-hidden="true">al</span>
+
+        <p class="ex-p ex-p2">One of the central themes explored, Mothership, stands as a tribute to matriarchal resilience. I utilize coffee and tea as primary pigments, transforming my mother's daily rituals of labor and rest into a personal visual language of gratitude.<br>
+        Within this framework, coffee embodies the morning energy necessary for work, while tea symbolizes evening restoration and quiet recovery. This choice of raw materials complemented by organic tree extracts such as Quebracho distills the essence of a life spent entirely in service of the next gen&shy;eration. This sanctuary of warmth, composed of earthy beige and brown tones, offers an antidote to the city's structural aus&shy;terity. It joins the Sufi quest for unity, where creative gesture becomes a non-verbal expression of love.</p>
+      </div>
+
+      <div class="ex-gallery">
+        <figure class="ex-g1"><img src="{{root}}images/abimal/abimal-02-hall.jpg" alt="Abimal paintings suspended in the nave of St. Elisabeth" width="1800" height="1459" loading="lazy"></figure>
+        <figure class="ex-g2"><img src="{{root}}images/abimal/abimal-03-circle.jpg" alt="Round painting on a stand in front of a pale wall" width="1201" height="1800" loading="lazy"></figure>
+        <figure class="ex-g3"><img src="{{root}}images/abimal/abimal-04-panel.jpg" alt="Brown painted panel hanging in front of a brick wall" width="1215" height="1800" loading="lazy"></figure>
+        <figure class="ex-g4"><img src="{{root}}images/abimal/abimal-05-apse.jpg" alt="Painting above the altar with a red carpet in the light" width="1800" height="1200" loading="lazy"></figure>
+      </div>
+    </article>
+  </main>
+
+{{> footer}}
+</body>
+</html>

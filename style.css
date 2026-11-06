@@ -437,3 +437,170 @@ figcaption {
     grid-template-columns: 1fr;
   }
 }
+
+/* Homepage: an exhibition with its own page links to it */
+.exhibition-link {
+  display: block;
+}
+
+.exhibition-link:hover .title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------
+   Exhibition page (/abimal/)
+   Follows the old Readymag page: a 914-unit wide composition that
+   scales with the content width. --u is one Readymag pixel.
+   --------------------------------------------------------------- */
+.exhibition-page {
+  container-type: inline-size;
+  padding: 0 var(--gutter);
+}
+
+.ex {
+  --u: calc(100cqw / 914);
+  --ink: rgba(0, 0, 0, 0.8);
+  padding: calc(var(--u) * 60) 0 calc(var(--u) * 100);
+  color: #000;
+}
+
+.ex-label {
+  margin: 0;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: calc(var(--u) * 10);
+  line-height: calc(var(--u) * 12);
+  text-align: center;
+}
+
+.ex-title,
+.ex-word {
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: calc(var(--u) * -0.9);
+}
+
+.ex-title {
+  width: calc(var(--u) * 373);
+  margin: calc(var(--u) * 18) auto 0;
+  font-size: calc(var(--u) * 24);
+  line-height: calc(var(--u) * 24);
+  text-align: center;
+}
+
+.ex-hero {
+  width: calc(var(--u) * 458);
+  margin: calc(var(--u) * 33) auto 0;
+}
+
+.ex img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ex-hero img {
+  aspect-ratio: 458 / 286;
+}
+
+/* Text: three 274-unit columns */
+.ex-text {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--u) * 274));
+  justify-content: space-between;
+  align-items: start;
+  margin-top: calc(var(--u) * 109);
+}
+
+.ex-p {
+  margin: 0;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: calc(var(--u) * 11);
+  line-height: calc(var(--u) * 13);
+  text-align: justify;
+  hyphens: manual;
+}
+
+.ex-p1 { grid-column: 1; grid-row: 1; }
+.ex-p3 { grid-column: 3; grid-row: 1; }
+.ex-p2 { grid-column: 2; grid-row: 3; margin-top: calc(var(--u) * 35); }
+
+.ex-word {
+  grid-row: 2;
+  margin-top: calc(var(--u) * 43);
+  font-size: calc(var(--u) * 54);
+  line-height: calc(var(--u) * 54);
+}
+
+.ex-w1 { grid-column: 1; }
+.ex-w2 { grid-column: 2; }
+.ex-w3 { grid-column: 3; }
+
+/* Photos: placed like the Readymag page (914 x 511 units) */
+.ex-gallery {
+  position: relative;
+  aspect-ratio: 914 / 511;
+  margin-top: calc(var(--u) * 132);
+}
+
+.ex-gallery figure {
+  position: absolute;
+}
+
+.ex-g1 { left: calc(var(--u) * 1); top: 0; width: calc(var(--u) * 391); height: calc(var(--u) * 244); }
+.ex-g2 { left: calc(var(--u) * 414); top: 0; width: calc(var(--u) * 279); height: calc(var(--u) * 387); }
+.ex-g3 { left: calc(var(--u) * 708.77); top: 0; width: calc(var(--u) * 205.24); height: calc(var(--u) * 285); }
+.ex-g4 { left: calc(var(--u) * 1); top: calc(var(--u) * 267.13); width: calc(var(--u) * 391.3); height: calc(var(--u) * 244); }
+
+/* Phone and small tablet: the Readymag phone layout, one column,
+   each word above its paragraph. Here --u is 1/295 of the width. */
+@media (max-width: 767.98px) {
+  .ex {
+    --u: calc(100cqw / 295);
+    padding-top: calc(var(--u) * 30);
+  }
+
+  .ex-title {
+    width: auto;
+    margin-top: calc(var(--u) * 17);
+  }
+
+  .ex-hero {
+    width: auto;
+    margin-top: calc(var(--u) * 45);
+  }
+
+  .ex-hero img { aspect-ratio: 297 / 239; }
+
+  .ex-text {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .ex-w1 { order: 1; margin-top: calc(var(--u) * 45); }
+  .ex-p1 { order: 2; margin-top: calc(var(--u) * 40); }
+  .ex-w2 { order: 3; margin-top: calc(var(--u) * 46); }
+  .ex-p2 { order: 4; margin-top: calc(var(--u) * 37); }
+  .ex-w3 { order: 5; margin-top: calc(var(--u) * 66); }
+  .ex-p3 { order: 6; margin-top: calc(var(--u) * 37); }
+
+  .ex-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 25);
+    aspect-ratio: auto;
+    margin-top: calc(var(--u) * 42);
+  }
+
+  .ex-gallery figure {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+
+  .ex-g1 img, .ex-g4 img { aspect-ratio: 298 / 186; }
+  .ex-g2 img { aspect-ratio: 298 / 387; }
+  .ex-g3 img { aspect-ratio: 298 / 364; }
+}
