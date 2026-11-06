@@ -86,6 +86,17 @@ const exhibitionsHTML = exhibitions.map((e) => {
         </figure>`;
 }).join('\n');
 
+// ---- Hero slideshow ------------------------------------------------------
+// The first slide is home.hero itself (edited in the admin); home.hero.moreSlides
+// follow in order. On scroll, each photo crossfades into the next.
+const slides = [home.hero, ...(home.hero.moreSlides || [])].filter((s) => s && s.image && s.image.src);
+const heroImagesHTML = slides.map((s, i) =>
+  `      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}"${i ? ' aria-hidden="true"' : ''}>`
+).join('\n');
+const heroCaptionsHTML = slides.map((s, i) =>
+  `      <figcaption${i ? ' aria-hidden="true"' : ''}><span>${inline(s.captionLeft)}</span><span>${inline(s.captionRight)}</span></figcaption>`
+).join('\n');
+
 // ---- Fill the template ---------------------------------------------------
 const bio = String(about.bio || '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
   .map((p) => `          <p>${esc(p).replace(/\n/g, '<br>')}</p>`).join('\n');
@@ -95,12 +106,9 @@ const vars = {
   description: home.description,
   name: contact.name,
   email: contact.email,
-  'hero.src': home.hero.image.src,
-  'hero.alt': home.hero.image.alt,
-  'hero.width': home.hero.image.width,
-  'hero.height': home.hero.image.height,
-  'hero.captionLeft': inline(home.hero.captionLeft),
-  'hero.captionRight': inline(home.hero.captionRight),
+  'hero.count': slides.length,
+  'hero.images': heroImagesHTML,
+  'hero.captions': heroCaptionsHTML,
   'portrait.src': about.portrait.src,
   'portrait.alt': about.portrait.alt,
   'portrait.width': about.portrait.width,

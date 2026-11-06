@@ -24,13 +24,17 @@
     <a class="site-email" href="mailto:{{email}}">{{email}}</a>
   </header>
 
-  <figure class="hero">
-    <img src="{{hero.src}}" alt="{{hero.alt}}" width="{{hero.width}}" height="{{hero.height}}">
-    <figcaption>
-      <span>{{{hero.captionLeft}}}</span>
-      <span>{{{hero.captionRight}}}</span>
-    </figcaption>
-  </figure>
+  <!-- Hero: the photos crossfade one into the next as you scroll, with their captions -->
+  <div class="hero-scroll" style="--slides:{{hero.count}}">
+    <figure class="hero">
+      <div class="hero-frame">
+{{{hero.images}}}
+      </div>
+      <div class="hero-captions">
+{{{hero.captions}}}
+      </div>
+    </figure>
+  </div>
 
   <main>
     <section id="about" class="about">
@@ -70,5 +74,47 @@
     <!-- TODO: privacy policy and terms of use pages -->
     <p>{{footer}}</p>
   </footer>
+  <script>
+  // Scroll-driven hero: while the tall .hero-scroll passes, the figure stays put
+  // and each photo (and its caption) fades into the next.
+  (function () {
+    var wrap = document.querySelector('.hero-scroll');
+    if (!wrap) return;
+    var imgs = wrap.querySelectorAll('.hero-frame img');
+    var caps = wrap.querySelectorAll('.hero-captions figcaption');
+    var n = imgs.length;
+    if (n < 2) return;
+    document.documentElement.classList.add('hero-js');
+    var header = document.querySelector('.site-header');
+    var ease = function (a, b, x) { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+    var ticking = false;
+    function setHeader() {
+      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+    }
+    function update() {
+      ticking = false;
+      var r = wrap.getBoundingClientRect();
+      var run = wrap.offsetHeight - window.innerHeight;
+      var p = run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : 0;
+      var t = p * (n - 1);
+      for (var i = 0; i < n; i++) {
+        // Photos stack in order; each one fades in over the one before it.
+        var img = i === 0 ? 1 : ease(0.2, 0.8, t - (i - 1));
+        imgs[i].style.opacity = img;
+        // Captions swap in the middle of the fade, without overlapping.
+        var cin = i === 0 ? 1 : ease(0.5, 0.7, t - (i - 1));
+        var cout = i === n - 1 ? 0 : ease(0.3, 0.5, t - i);
+        var c = cin * (1 - cout);
+        caps[i].style.opacity = c;
+        caps[i].setAttribute('aria-hidden', c < 0.5 ? 'true' : 'false');
+        imgs[i].setAttribute('aria-hidden', c < 0.5 ? 'true' : 'false');
+      }
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    setHeader(); update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { setHeader(); onScroll(); });
+  })();
+  </script>
 </body>
 </html>

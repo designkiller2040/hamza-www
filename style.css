@@ -92,23 +92,50 @@ figure {
   text-underline-offset: 4px;
 }
 
-/* Hero: sharp photo, same width as the artwork rows below */
+/* Hero: scroll-driven slideshow, same width as the artwork rows below.
+   Without JavaScript only the first photo and caption show. */
+.hero-scroll {
+  position: relative;
+}
+
 .hero {
   padding: 2rem var(--gutter) 0;
 }
 
-.hero img {
+.hero-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.hero-captions figcaption {
+  grid-area: 1 / 1;
+}
+
+.hero-frame img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-frame img + img,
+.hero-captions figcaption + figcaption {
+  opacity: 0;
+}
+
+.hero-captions {
+  display: grid;
+  margin-top: 0.6rem;
 }
 
 .hero figcaption {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-content: start;
   gap: 0.25rem 1rem;
-  min-height: 0;
-  margin-top: 0.6rem;
   font-family: var(--sans);
   font-size: 0.95rem;
 }
@@ -116,6 +143,28 @@ figure {
 .hero figcaption em {
   font-family: var(--serif);
   font-size: 1.05em;
+}
+
+/* With JavaScript: the hero gets a tall scroll track (one screen per photo)
+   and the figure sticks under the header while the photos change. */
+.hero-js .hero-scroll {
+  height: calc(var(--slides) * 100svh);
+}
+
+.hero-js .hero {
+  position: sticky;
+  top: var(--header-h, 90px);
+  padding-top: 0;
+}
+
+.hero-js .hero-frame {
+  /* Fit the photo and its caption in the screen below the header */
+  max-height: calc(100svh - var(--header-h, 90px) - 4.5rem);
+  width: 100%;
+}
+
+.hero-js .hero-frame img {
+  will-change: opacity;
 }
 
 /* Sections */
