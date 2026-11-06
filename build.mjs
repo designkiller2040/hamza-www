@@ -1,5 +1,6 @@
 // Builds the site into dist/ from the template (src/index.html) and the
-// content files (content/). Netlify runs this on every push to main.
+// content files (content/). GitHub Actions runs this on every push to main
+// and publishes dist/ to GitHub Pages (.github/workflows/pages.yml).
 // Plain Node, no packages: `node build.mjs`.
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, cpSync, existsSync } from 'node:fs';
@@ -159,7 +160,7 @@ for (const p of ['style.css', 'images', 'admin']) {
 }
 mkdirSync(join(OUT, 'admin'), { recursive: true });
 writeFileSync(join(OUT, 'admin', 'version.json'), JSON.stringify({
-  commit: process.env.COMMIT_REF || null,
+  commit: process.env.COMMIT_REF || process.env.GITHUB_SHA || null,
   builtAt: new Date().toISOString(),
 }) + '\n');
 

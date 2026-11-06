@@ -51,8 +51,8 @@ A.start(function () {
   function lockSlug(slug) {
     $('slug-wrap').hidden = true;
     $('slug-lock').hidden = false;
-    $('slug-lock').querySelector('span').textContent = 'Page address: ' + location.host + '/#work-' + slug;
-    $('view').href = '/#work-' + slug;
+    $('slug-lock').querySelector('span').textContent = 'Page address: ' + location.host + '../#work-' + slug;
+    $('view').href = '../#work-' + slug;
     $('view').removeAttribute('aria-disabled');
   }
 

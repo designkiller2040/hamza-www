@@ -211,12 +211,12 @@
     p.innerHTML = '<i></i><span class="label">' + (state === 'live' ? 'Live' : 'Publishing') + '</span>';
     p.title = state === 'live'
       ? 'The live site shows the latest save.'
-      : 'Netlify is rebuilding the site with the latest save. This usually takes under a minute.';
+      : 'GitHub is rebuilding the site with the latest save. This usually takes under a minute.';
   }
   function checkStatus() {
     return Promise.all([
       GH.json(R + '/git/ref/heads/' + GH.BRANCH).then(function (r) { return r.object.sha; }),
-      fetch('/admin/version.json?t=' + Date.now(), { cache: 'no-store' })
+      fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     ]).then(function (res) {
       var head = expected || res[0], built = res[1] && res[1].commit;
