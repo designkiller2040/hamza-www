@@ -79,7 +79,7 @@ figure {
 .site-nav {
   display: flex;
   justify-content: center;
-  gap: clamp(1.5rem, 4vw, 4rem);
+  gap: clamp(3rem, 8vw, 8rem);
   font-size: 0.95rem;
   font-weight: 500;
   color: #000;
@@ -387,7 +387,8 @@ figcaption {
   .site-nav {
     grid-column: 1 / -1;
     grid-row: 2;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 2.5rem;
     font-size: 0.8rem;
   }
 
