@@ -1,0 +1,28 @@
+{
+  "_about": "Home #2 works layout, measured from alona's design (a 1512 px wide page). Each row has a height; each work has its left (x), top within the row (y) and width (w) in design pixels. caption: \"below\" shows title, materials and size under the photo; \"hover\" shows them on a light panel when the mouse is over the work.",
+  "rows": [
+    { "height": 512, "works": [
+      { "slug": "the-moons-red-tide", "x": 87, "y": 31, "w": 309, "caption": "hover" },
+      { "slug": "jungle-2026", "x": 596, "y": 28, "w": 318, "caption": "hover" },
+      { "slug": "your-night-ii-2024", "x": 1109, "y": 30, "w": 316, "caption": "hover" }
+    ] },
+    { "height": 588, "works": [
+      { "slug": "trust-2025", "x": 80, "y": 40, "w": 801, "caption": "hover" },
+      { "slug": "at-the-beginning-2026", "x": 1109, "y": 37, "w": 313, "caption": "hover" }
+    ] },
+    { "height": 670, "works": [
+      { "slug": "freedom-2026", "x": 84, "y": 33, "w": 273, "caption": "below" },
+      { "slug": "helvetica-2026", "x": 618, "y": 33, "w": 272, "caption": "below" },
+      { "slug": "deux-2026", "x": 1147, "y": 35, "w": 273, "caption": "below" }
+    ] },
+    { "height": 610, "works": [
+      { "slug": "un-2026", "x": 78, "y": 42, "w": 323, "caption": "below" },
+      { "slug": "shadowdance-2026", "x": 622, "y": 25, "w": 278, "caption": "below" },
+      { "slug": "cinq-2026", "x": 1113, "y": 40, "w": 327, "caption": "below" }
+    ] },
+    { "height": 578, "works": [
+      { "slug": "a-mothers-love-n-1-2024", "x": 67, "y": 27, "w": 617, "caption": "hover" },
+      { "slug": "a-mothers-love-n-2-2024", "x": 806, "y": 25, "w": 626, "caption": "hover" }
+    ] }
+  ]
+}

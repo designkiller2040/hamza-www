@@ -73,6 +73,40 @@ ${items.map(workFigure).join('\n')}
       </div>`;
 }).join('\n');
 
+// ---- Home #2 works ------------------------------------------------------
+// Placed exactly as in alona's design (content/home2.json, 1512 px wide page).
+// Every number is in design pixels; the CSS turns them into --u units.
+const home2 = existsSync(join(ROOT, 'content/home2.json')) ? readJSON('content/home2.json') : { rows: [] };
+const worksBySlug = new Map(works.map((w) => [w.slug, w]));
+function home2Figure(p) {
+  const w = worksBySlug.get(p.slug);
+  if (!w || w.hidden) return '';
+  const ratio = w.image && w.image.width ? w.image.width / w.image.height : (w.layout?.ratio || 1);
+  const img = w.image && w.image.src
+    ? `<img src="${esc(w.image.src)}" alt="${esc(w.image.alt || w.title)}" width="${w.image.width}" height="${w.image.height}" loading="lazy">`
+    : `<div class="placeholder" style="aspect-ratio:${num(ratio, 3)}"></div>`;
+  const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=Inquiry%20${encodeURIComponent(w.slug)}`;
+  const inquire = `<a class="w2-inquire" href="${mail}">Inquire to Purchase</a>`;
+  let caption;
+  if (p.caption === 'below') {
+    const lines = [esc(w.year ? `${w.title}, ${w.year}` : w.title)];
+    if (w.materials) lines.push(esc(w.materials));
+    if (w.size) lines.push(esc(w.size));
+    caption = `<figcaption class="w2-cap-below"><span class="w2-text">${lines.join('<br>')}</span>${inquire}</figcaption>`;
+  } else {
+    const first = esc(`"${w.title}"`) + (w.year ? ' ' + esc(w.year) : '');
+    const second = esc([w.materials, w.size].filter(Boolean).join('. '));
+    caption = `<figcaption class="w2-cap-hover">${inquire}<span class="w2-text">${first}${second ? '<br>' + second : ''}</span></figcaption>`;
+  }
+  return `        <figure class="w2" id="work-${esc(w.slug)}" style="--x:${p.x};--y:${p.y};--w:${p.w}">
+          ${img}
+          ${caption}
+        </figure>`;
+}
+const home2WorksHTML = home2.rows.map((r) => `      <div class="w2-row" style="--h:${r.height}">
+${r.works.map(home2Figure).filter(Boolean).join('\n')}
+      </div>`).join('\n');
+
 // ---- Exhibitions ---------------------------------------------------------
 const exhibitionsHTML = exhibitions.map((e) => {
   const img = e.image && e.image.src
@@ -98,6 +132,10 @@ const slides = [home.hero, ...(home.hero.moreSlides || [])].filter((s) => s && s
 const heroImagesHTML = slides.map((s, i) =>
   `      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}"${i ? ' aria-hidden="true"' : ''}>`
 ).join('\n');
+// Home #2: the captions sit left and right of the photo, one per slide.
+const heroSideHTML = (side) => slides.map((s, i) =>
+  `        <span data-slide="${i}"${i ? ' aria-hidden="true"' : ''}>${inline(side === 'left' ? s.captionLeft : s.captionRight)}</span>`
+).join('\n');
 const heroCaptionsHTML = slides.map((s, i) =>
   `      <figcaption${i ? ' aria-hidden="true"' : ''}><span>${inline(s.captionLeft)}</span><span>${inline(s.captionRight)}</span></figcaption>`
 ).join('\n');
@@ -122,6 +160,9 @@ const vars = {
   'about.quote': about.quote,
   'about.bio': bio,
   works: worksHTML,
+  'home2.works': home2WorksHTML,
+  'hero.left': heroSideHTML('left'),
+  'hero.right': heroSideHTML('right'),
   exhibitions: exhibitionsHTML,
   footer: home.footer,
 };

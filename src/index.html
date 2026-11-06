@@ -8,25 +8,50 @@
   <meta name="description" content="{{description}}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-{{> header}}
+<body class="home2">
+  <!-- Home #2 (alona's design, 2026-11-06). Home #1 is kept at /home-1/. -->
+  <header class="h2-header" id="home">
+    <nav class="h2-nav">
+      <a href="#works">Works</a>
+      <a href="#exhibited">Exhibited</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
 
-  <!-- Hero: the photos crossfade one into the next as you scroll, with their captions -->
-  <div class="hero-scroll" style="--slides:{{hero.count}}">
-    <figure class="hero">
-      <div class="hero-frame">
+  <!-- Hero: one scroll changes the photo; captions sit left and right of it -->
+  <div class="hero-scroll h2-hero" style="--slides:{{hero.count}}">
+    <p class="h2-cap h2-cap-left">
+{{{hero.left}}}
+    </p>
+    <figure class="hero-frame">
 {{{hero.images}}}
-      </div>
-      <div class="hero-captions">
-{{{hero.captions}}}
-      </div>
     </figure>
+    <p class="h2-cap h2-cap-right">
+{{{hero.right}}}
+    </p>
+  </div>
+
+  <div class="h2-credits">
+    <p class="h2-signature">Hamza Shah Mian<br>@2027</p>
+    <p class="h2-studio"><img src="images/vilna-logo.svg" alt="Vilna" width="90" height="63"><span>digital art direction</span></p>
   </div>
 
   <main>
+    <section id="works" class="h2-works">
+      <h2 class="visually-hidden">Works</h2>
+{{{home2.works}}}
+    </section>
+
+    <section id="exhibited" class="exhibitions">
+      <h2>Exhibitions</h2>
+      <div class="exhibition-list">
+{{{exhibitions}}}
+      </div>
+    </section>
+
     <section id="about" class="about">
       <h2 class="about-label">About</h2>
       <figure class="about-photo">
@@ -42,20 +67,8 @@
         </div>
       </div>
     </section>
-
-    <section id="exhibitions" class="exhibitions">
-      <h2>Exhibitions</h2>
-      <div class="exhibition-list">
-{{{exhibitions}}}
-      </div>
-    </section>
-    <!-- TODO: press, videos and interviews -->
-    <section id="media" class="media">
-      <h2>Media</h2>
-    </section>
   </main>
 
-{{> footer}}
   <script>
   // Hero slideshow: while the page is at the top, each scroll (wheel, swipe or
   // arrow key) fades to the next photo and caption. After the last photo the
@@ -64,25 +77,27 @@
     var wrap = document.querySelector('.hero-scroll');
     if (!wrap) return;
     var imgs = wrap.querySelectorAll('.hero-frame img');
-    var caps = wrap.querySelectorAll('.hero-captions figcaption');
+    var caps = wrap.querySelectorAll('[data-slide]');
     var n = imgs.length;
     if (n < 2) return;
     var root = document.documentElement;
     root.classList.add('hero-js');
-    var header = document.querySelector('.site-header');
     var idx = 0, lockedAt = 0, lastEvent = 0;
     var FADE = 900;
 
-    function setHeader() { root.style.setProperty('--header-h', header.offsetHeight + 'px'); }
     function show(k) {
       idx = k;
       for (var i = 0; i < n; i++) {
         // Photos up to the current one stay visible underneath, so a fade
         // always goes photo-to-photo, never through white.
         imgs[i].style.opacity = i <= idx ? 1 : 0;
-        caps[i].classList.toggle('is-active', i === idx);
-        caps[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
         imgs[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+      }
+      // Both captions (left and right of the photo) follow the photo.
+      for (var c = 0; c < caps.length; c++) {
+        var on = Number(caps[c].getAttribute('data-slide')) === idx;
+        caps[c].classList.toggle('is-active', on);
+        caps[c].setAttribute('aria-hidden', on ? 'false' : 'true');
       }
     }
     function atTop() { return window.scrollY <= 2; }
@@ -129,8 +144,7 @@
       if (step(dir)) e.preventDefault();
     });
 
-    setHeader(); show(0);
-    window.addEventListener('resize', setHeader);
+    show(0);
   })();
   </script>
 </body>
