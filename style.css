@@ -145,26 +145,25 @@ figure {
   font-size: 1.05em;
 }
 
-/* With JavaScript: the hero gets a tall scroll track (one screen per photo)
-   and the figure sticks under the header while the photos change. */
-.hero-js .hero-scroll {
-  height: calc(var(--slides) * 100svh);
-}
-
-.hero-js .hero {
-  position: sticky;
-  top: var(--header-h, 90px);
-  padding-top: 0;
-}
-
+/* With JavaScript: the photo fits the screen under the header, and each
+   scroll fades to the next photo and caption (see the script in index.html). */
 .hero-js .hero-frame {
-  /* Fit the photo and its caption in the screen below the header */
-  max-height: calc(100svh - var(--header-h, 90px) - 4.5rem);
+  max-height: calc(100svh - var(--header-h, 90px) - 6.5rem);
   width: 100%;
 }
 
 .hero-js .hero-frame img {
-  will-change: opacity;
+  transition: opacity 0.9s ease;
+}
+
+.hero-js .hero-captions figcaption {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hero-js .hero-captions figcaption.is-active {
+  opacity: 1;
+  transition-delay: 0.3s;
 }
 
 /* Sections */

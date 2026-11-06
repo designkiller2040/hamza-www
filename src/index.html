@@ -62,8 +62,9 @@
 
 {{> footer}}
   <script>
-  // Scroll-driven hero: while the tall .hero-scroll passes, the figure stays put
-  // and each photo (and its caption) fades into the next.
+  // Hero slideshow: while the page is at the top, each scroll (wheel, swipe or
+  // arrow key) fades to the next photo and caption. After the last photo the
+  // page scrolls on as normal; scrolling back up at the top steps back.
   (function () {
     var wrap = document.querySelector('.hero-scroll');
     if (!wrap) return;
@@ -71,36 +72,70 @@
     var caps = wrap.querySelectorAll('.hero-captions figcaption');
     var n = imgs.length;
     if (n < 2) return;
-    document.documentElement.classList.add('hero-js');
+    var root = document.documentElement;
+    root.classList.add('hero-js');
     var header = document.querySelector('.site-header');
-    var ease = function (a, b, x) { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
-    var ticking = false;
-    function setHeader() {
-      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-    }
-    function update() {
-      ticking = false;
-      var r = wrap.getBoundingClientRect();
-      var run = wrap.offsetHeight - window.innerHeight;
-      var p = run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : 0;
-      var t = p * (n - 1);
+    var idx = 0, lockedAt = 0, lastEvent = 0;
+    var FADE = 900;
+
+    function setHeader() { root.style.setProperty('--header-h', header.offsetHeight + 'px'); }
+    function show(k) {
+      idx = k;
       for (var i = 0; i < n; i++) {
-        // Photos stack in order; each one fades in over the one before it.
-        var img = i === 0 ? 1 : ease(0.2, 0.8, t - (i - 1));
-        imgs[i].style.opacity = img;
-        // Captions swap in the middle of the fade, without overlapping.
-        var cin = i === 0 ? 1 : ease(0.5, 0.7, t - (i - 1));
-        var cout = i === n - 1 ? 0 : ease(0.3, 0.5, t - i);
-        var c = cin * (1 - cout);
-        caps[i].style.opacity = c;
-        caps[i].setAttribute('aria-hidden', c < 0.5 ? 'true' : 'false');
-        imgs[i].setAttribute('aria-hidden', c < 0.5 ? 'true' : 'false');
+        // Photos up to the current one stay visible underneath, so a fade
+        // always goes photo-to-photo, never through white.
+        imgs[i].style.opacity = i <= idx ? 1 : 0;
+        caps[i].classList.toggle('is-active', i === idx);
+        caps[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+        imgs[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
       }
     }
-    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
-    setHeader(); update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () { setHeader(); onScroll(); });
+    function atTop() { return window.scrollY <= 2; }
+    function canStep(dir) { return atTop() && (dir > 0 ? idx < n - 1 : idx > 0); }
+    function busy(now) { return now - lockedAt < FADE || now - lastEvent < 120; }
+    // Returns true when the event was used to change the photo (or swallowed
+    // while a change is still running).
+    function step(dir) {
+      var now = Date.now();
+      var wasBusy = busy(now);
+      lastEvent = now;
+      // Hold the page still until the current gesture has ended, so one
+      // trackpad swipe moves one photo and doesn't run on into the page.
+      if (atTop() && wasBusy) return true;
+      if (!canStep(dir)) return false;
+      lockedAt = now;
+      show(idx + dir);
+      return true;
+    }
+
+    window.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaY) < 2) return;
+      if (step(e.deltaY > 0 ? 1 : -1)) e.preventDefault();
+    }, { passive: false });
+
+    var startY = null, swiped = false;
+    window.addEventListener('touchstart', function (e) {
+      startY = e.touches[0].clientY; swiped = false;
+    }, { passive: true });
+    window.addEventListener('touchmove', function (e) {
+      if (startY === null) return;
+      var dy = startY - e.touches[0].clientY;
+      var dir = dy > 0 ? 1 : -1;
+      if (!canStep(dir)) return;
+      e.preventDefault();
+      if (!swiped && Math.abs(dy) > 30) { swiped = true; lastEvent = 0; step(dir); }
+    }, { passive: false });
+    window.addEventListener('touchend', function () { startY = null; }, { passive: true });
+
+    window.addEventListener('keydown', function (e) {
+      var dir = { ArrowDown: 1, PageDown: 1, ' ': 1, ArrowUp: -1, PageUp: -1 }[e.key];
+      if (!dir || e.target.closest('input, textarea, select, button, a')) return;
+      lastEvent = 0;
+      if (step(dir)) e.preventDefault();
+    });
+
+    setHeader(); show(0);
+    window.addEventListener('resize', setHeader);
   })();
   </script>
 </body>
