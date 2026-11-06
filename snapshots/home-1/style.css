@@ -1,0 +1,605 @@
+:root {
+  --bg: #fff;
+  --text: #222;
+  --muted: #888;
+  --placeholder: #ece8e3;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Space between the screen edge and the content.
+     124px on desktop, smaller on tablets and phones (see breakpoints at the end). */
+  --gutter: 124px;
+  /* Space between columns */
+  --gap: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Header: name left, menu centre, email right, on the same side margins */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: 1rem var(--gap);
+  padding: 2rem var(--gutter);
+  background: var(--bg);
+}
+
+.site-name,
+.site-email {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.site-email {
+  justify-self: end;
+}
+
+.site-nav {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.site-nav a:hover,
+.site-email:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Hero: scroll-driven slideshow, same width as the artwork rows below.
+   Without JavaScript only the first photo and caption show. */
+.hero-scroll {
+  position: relative;
+}
+
+.hero {
+  padding: 2rem var(--gutter) 0;
+}
+
+.hero-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.hero-captions figcaption {
+  grid-area: 1 / 1;
+}
+
+.hero-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-frame img + img,
+.hero-captions figcaption + figcaption {
+  opacity: 0;
+}
+
+.hero-captions {
+  display: grid;
+  margin-top: 0.6rem;
+}
+
+.hero figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: start;
+  gap: 0.25rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.hero figcaption em {
+  font-family: var(--serif);
+  font-size: 1.05em;
+}
+
+/* With JavaScript: the photo fits the screen under the header, and each
+   scroll fades to the next photo and caption (see the script in index.html). */
+.hero-js .hero-frame {
+  max-height: calc(100svh - var(--header-h, 90px) - 6.5rem);
+  width: 100%;
+}
+
+.hero-js .hero-frame img {
+  transition: opacity 0.9s ease;
+}
+
+.hero-js .hero-captions figcaption {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hero-js .hero-captions figcaption.is-active {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+/* Sections */
+main section {
+  margin: 0 auto;
+  padding: 4rem var(--gutter);
+}
+
+h2 {
+  margin: 0 0 2rem;
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  background: var(--placeholder);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* About: 400px column in the middle, vertical "ABOUT" label on the left
+   edge, vertical photo caption on the right edge */
+.about {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 400px) 1fr;
+  column-gap: var(--gap);
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.about-label,
+.about-caption {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.about-label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: start;
+}
+
+.about-photo {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 518 / 587;
+  object-fit: cover;
+}
+
+.about-caption {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  align-self: end;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.about-text {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 2.5rem;
+}
+
+.about blockquote {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.about .bio {
+  margin-top: 2.25rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.15;
+  text-align: justify;
+  hyphens: none;
+}
+
+.about .bio p {
+  margin: 0 0 1.1em;
+}
+
+/* Artworks: positions follow the original 1024px-wide Readymag layout,
+   scaled with the viewport. Images sit on a shared bottom line per row. */
+main section.artworks {
+  padding: 2rem var(--gutter) 4rem;
+  font-size: clamp(0.5rem, 1.25vw, 0.8rem);
+}
+
+.row {
+  position: relative;
+  width: 100%;
+}
+
+.row figure {
+  position: absolute;
+  bottom: 0;
+}
+
+.row img {
+  width: 100%;
+  height: auto;
+  background: var(--placeholder);
+}
+
+figcaption {
+  min-height: 3.4em;
+  margin-top: 1.5em;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.inquire {
+  display: inline-block;
+  margin-top: 0.6em;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.inquire:hover {
+  color: var(--text);
+}
+
+.exhibition-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem var(--gap);
+  align-items: start;
+}
+
+.exhibition-list figcaption {
+  min-height: 0;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.placeholder.wide {
+  aspect-ratio: 8 / 5;
+}
+
+.site-footer {
+  margin: 0 auto;
+  padding: 3rem var(--gutter);
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.exhibition-list img {
+  width: 100%;
+  height: auto;
+}
+
+/* ---------------------------------------------------------------
+   Responsive breakpoints (same sizes Bootstrap uses)
+   - desktop  1200px and wider : 124px margins, full composed layout
+   - laptop   992px to 1199px  : 72px margins, full composed layout
+   - tablet   576px to 991px   : 72px margins, artworks in 2 columns
+   - phone    below 576px      : 24px margins, everything in 1 column
+   --------------------------------------------------------------- */
+
+@media (max-width: 1199.98px) {
+  :root {
+    --gutter: 72px;
+    --gap: 32px;
+  }
+}
+
+/* Tablet: the composed artwork rows turn into a simple 2-column grid */
+@media (max-width: 991.98px) {
+  main section.artworks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem var(--gap);
+    align-items: end;
+    font-size: 0.85rem;
+  }
+
+  .row {
+    display: contents;
+  }
+
+  .row figure {
+    position: static;
+    width: auto !important;
+  }
+
+  .exhibition-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* Name and email on the first line, menu on the second */
+  .site-header {
+    grid-template-columns: 1fr auto;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .site-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: space-between;
+    font-size: 0.8rem;
+  }
+
+  .site-name,
+  .site-email,
+  .hero figcaption {
+    font-size: 0.8rem;
+  }
+
+  /* Phone: label, photo, caption and text stack in one column */
+  .about {
+    grid-template-columns: minmax(0, 400px);
+    justify-content: center;
+    padding-top: 4rem;
+  }
+
+  .about > * {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .about-label,
+  .about-caption {
+    margin-bottom: 1rem;
+    writing-mode: horizontal-tb;
+    transform: none;
+    justify-self: start;
+  }
+
+  .about-caption {
+    margin: 0.6rem 0 0;
+  }
+
+  .about-caption br { display: none; }
+}
+
+/* Phone: one column */
+@media (max-width: 575.98px) {
+  :root {
+    --gutter: 24px;
+    --gap: 20px;
+  }
+
+  main section.artworks,
+  .exhibition-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Homepage: an exhibition with its own page links to it */
+.exhibition-link {
+  display: block;
+}
+
+.exhibition-link:hover .title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------
+   Exhibition page (/abimal/)
+   Follows the old Readymag page: a 914-unit wide composition that
+   scales with the content width. --u is one Readymag pixel.
+   --------------------------------------------------------------- */
+.exhibition-page {
+  container-type: inline-size;
+  padding: 0 var(--gutter);
+}
+
+.ex {
+  --u: calc(100cqw / 914);
+  --ink: rgba(0, 0, 0, 0.8);
+  padding: calc(var(--u) * 60) 0 calc(var(--u) * 100);
+  color: #000;
+}
+
+.ex-label {
+  margin: 0;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: calc(var(--u) * 10);
+  line-height: calc(var(--u) * 12);
+  text-align: center;
+}
+
+.ex-title,
+.ex-word {
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: calc(var(--u) * -0.9);
+}
+
+.ex-title {
+  width: calc(var(--u) * 373);
+  margin: calc(var(--u) * 18) auto 0;
+  font-size: calc(var(--u) * 24);
+  line-height: calc(var(--u) * 24);
+  text-align: center;
+}
+
+.ex-hero {
+  width: calc(var(--u) * 458);
+  margin: calc(var(--u) * 33) auto 0;
+}
+
+.ex img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ex-hero img {
+  aspect-ratio: 458 / 286;
+}
+
+/* Text: three 274-unit columns */
+.ex-text {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--u) * 274));
+  justify-content: space-between;
+  align-items: start;
+  margin-top: calc(var(--u) * 109);
+}
+
+.ex-p {
+  margin: 0;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: calc(var(--u) * 11);
+  line-height: calc(var(--u) * 13);
+  text-align: justify;
+  hyphens: manual;
+}
+
+.ex-p1 { grid-column: 1; grid-row: 1; }
+.ex-p3 { grid-column: 3; grid-row: 1; }
+.ex-p2 { grid-column: 2; grid-row: 3; margin-top: calc(var(--u) * 35); }
+
+.ex-word {
+  grid-row: 2;
+  margin-top: calc(var(--u) * 43);
+  font-size: calc(var(--u) * 54);
+  line-height: calc(var(--u) * 54);
+}
+
+.ex-w1 { grid-column: 1; }
+.ex-w2 { grid-column: 2; }
+.ex-w3 { grid-column: 3; }
+
+/* Photos: placed like the Readymag page (914 x 511 units) */
+.ex-gallery {
+  position: relative;
+  aspect-ratio: 914 / 511;
+  margin-top: calc(var(--u) * 132);
+}
+
+.ex-gallery figure {
+  position: absolute;
+}
+
+.ex-g1 { left: calc(var(--u) * 1); top: 0; width: calc(var(--u) * 391); height: calc(var(--u) * 244); }
+.ex-g2 { left: calc(var(--u) * 414); top: 0; width: calc(var(--u) * 279); height: calc(var(--u) * 387); }
+.ex-g3 { left: calc(var(--u) * 708.77); top: 0; width: calc(var(--u) * 205.24); height: calc(var(--u) * 285); }
+.ex-g4 { left: calc(var(--u) * 1); top: calc(var(--u) * 267.13); width: calc(var(--u) * 391.3); height: calc(var(--u) * 244); }
+
+/* Phone and small tablet: the Readymag phone layout, one column,
+   each word above its paragraph. Here --u is 1/295 of the width. */
+@media (max-width: 767.98px) {
+  .ex {
+    --u: calc(100cqw / 295);
+    padding-top: calc(var(--u) * 30);
+  }
+
+  .ex-title {
+    width: auto;
+    margin-top: calc(var(--u) * 17);
+  }
+
+  .ex-hero {
+    width: auto;
+    margin-top: calc(var(--u) * 45);
+  }
+
+  .ex-hero img { aspect-ratio: 297 / 239; }
+
+  .ex-text {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .ex-w1 { order: 1; margin-top: calc(var(--u) * 45); }
+  .ex-p1 { order: 2; margin-top: calc(var(--u) * 40); }
+  .ex-w2 { order: 3; margin-top: calc(var(--u) * 46); }
+  .ex-p2 { order: 4; margin-top: calc(var(--u) * 37); }
+  .ex-w3 { order: 5; margin-top: calc(var(--u) * 66); }
+  .ex-p3 { order: 6; margin-top: calc(var(--u) * 37); }
+
+  .ex-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 25);
+    aspect-ratio: auto;
+    margin-top: calc(var(--u) * 42);
+  }
+
+  .ex-gallery figure {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+
+  .ex-g1 img, .ex-g4 img { aspect-ratio: 298 / 186; }
+  .ex-g2 img { aspect-ratio: 298 / 387; }
+  .ex-g3 img { aspect-ratio: 298 / 364; }
+}
