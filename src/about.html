@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- Template: the About page, built to /about/. Layout follows alona's design (2026-11-07), drawn on a 1512 px wide page. Text comes from content/about.json. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{name}} — About</title>
+  <meta name="description" content="{{description}}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{root}}style.css">
+</head>
+<body class="home2 about2">
+  <header class="h2-header">
+    <nav class="h2-nav">
+      <a href="{{root}}#works">Works</a>
+      <a href="{{root}}abimal/">Exhibited</a>
+      <a href="{{root}}about/" aria-current="page">About</a>
+    </nav>
+  </header>
+
+  <main class="ab">
+    <h1 class="visually-hidden">About {{name}}</h1>
+    <blockquote class="ab-quote">{{about.quote}}</blockquote>
+
+    <figure class="ab-photo">
+      <img src="{{root}}{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
+    </figure>
+
+    <div class="ab-cv">
+      <div class="ab-block">
+        <h2 class="ab-label">{{about.soloShowsLabel}}</h2>
+        <div class="ab-list">
+{{{about.soloShows}}}
+        </div>
+      </div>
+      <div class="ab-block ab-studies">
+        <h2 class="ab-label">{{about.studiesLabel}}</h2>
+        <div class="ab-list">
+{{{about.studies}}}
+        </div>
+      </div>
+    </div>
+
+    <div class="ab-bio">
+{{{about.bio}}}
+    </div>
+
+    <p class="ab-links">
+{{{about.links}}}
+    </p>
+
+    <div class="ab-media">
+      <h2 class="ab-label">{{about.mediaLabel}}</h2>
+      <div class="ab-media-grid">
+{{{about.media}}}
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -144,6 +144,14 @@ const heroCaptionsHTML = slides.map((s, i) =>
 const bio = String(about.bio || '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
   .map((p) => `          <p>${esc(p).replace(/\n/g, '<br>')}</p>`).join('\n');
 
+// About page (/about/): lists and links from content/about.json.
+const aboutList = (items) => (items || []).map((t) => `          <p>${esc(t)}</p>`).join('\n');
+const aboutLinks = (about.links || []).map((l) =>
+  `          <a href="${esc(l.href || '#')}"${/^https?:/.test(l.href || '') ? ' target="_blank" rel="noopener"' : ''}><span>${esc(l.text)}</span><span>${esc(l.label)}</span></a>`
+).join('\n');
+const aboutMedia = Array.from({ length: Number(about.mediaCount) || 0 }, () =>
+  '        <div class="ab-media-item placeholder" aria-hidden="true"></div>').join('\n');
+
 const vars = {
   pageTitle: home.pageTitle,
   description: home.description,
@@ -159,6 +167,13 @@ const vars = {
   'about.caption': String(about.caption || '').split('\n').map(esc).join(' <br>'),
   'about.quote': about.quote,
   'about.bio': bio,
+  'about.soloShowsLabel': about.soloShowsLabel || 'Solo shows',
+  'about.soloShows': aboutList(about.soloShows),
+  'about.studiesLabel': about.studiesLabel || 'Studies',
+  'about.studies': aboutList(about.studies),
+  'about.links': aboutLinks,
+  'about.mediaLabel': about.mediaLabel || 'Media',
+  'about.media': aboutMedia,
   works: worksHTML,
   'home2.works': home2WorksHTML,
   'hero.left': heroSideHTML('left'),

@@ -962,3 +962,173 @@ html:has(.home2) {
     gap: 0.75rem;
   }
 }
+
+/* ---------------------------------------------------------------
+   About page (/about/), alona's design 2026-11-07.
+   Drawn on a 1512 px wide page (--u is one design pixel, set by
+   .home2): two 273 px columns with a 127 px gap, centred under the
+   menu. Phones get one column.
+   --------------------------------------------------------------- */
+.ab {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 273) calc(var(--u) * 273);
+  column-gap: calc(var(--u) * 127);
+  justify-content: center;
+  padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
+  /* Newsreader, the face in the design */
+  font-family: "Newsreader", Georgia, serif;
+  font-size: calc(var(--u) * 15);
+  line-height: calc(var(--u) * 18);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.ab p,
+.ab h2,
+.ab blockquote {
+  margin: 0;
+}
+
+.ab-quote {
+  grid-column: 1;
+  font-size: calc(var(--u) * 22);
+  line-height: calc(var(--u) * 24);
+  letter-spacing: -0.02em;
+  text-align: justify;
+}
+
+.ab-photo {
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: calc(var(--u) * 89);
+}
+
+.ab-photo img {
+  width: 100%;
+  aspect-ratio: 273 / 428;
+  object-fit: cover;
+}
+
+.ab-cv {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: calc(var(--u) * 89);
+}
+
+.ab-label {
+  text-transform: none;
+  letter-spacing: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  font-style: italic;
+  line-height: inherit;
+}
+
+.ab-list {
+  margin-top: calc(var(--u) * 36);
+  text-align: justify;
+}
+
+.ab-list p + p {
+  margin-top: calc(var(--u) * 18);
+}
+
+.ab-studies {
+  margin-top: calc(var(--u) * 86);
+}
+
+.ab-studies .ab-list {
+  margin-top: calc(var(--u) * 18);
+}
+
+.ab-bio {
+  grid-column: 1;
+  grid-row: 3;
+  margin-top: calc(var(--u) * 88);
+  text-align: justify;
+}
+
+.ab-bio p + p {
+  margin-top: calc(var(--u) * 18);
+}
+
+.ab-links {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: end;
+}
+
+.ab-links a {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ab-links a:hover span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ab-media {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  margin-top: calc(var(--u) * 110);
+}
+
+.ab-media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: calc(var(--u) * 36);
+  margin-top: calc(var(--u) * 32);
+}
+
+.ab-media-item.placeholder {
+  aspect-ratio: 200 / 242;
+  background: #efefef;
+}
+
+/* Tablet: same layout at a readable fixed size */
+@media (max-width: 991.98px) {
+  .ab {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 48px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 160px var(--gutter) 120px;
+  }
+}
+
+/* Phone: one column, in the same order as the design reads */
+@media (max-width: 575.98px) {
+  .ab {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 120px;
+  }
+
+  .ab > * {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  .ab-quote {
+    font-size: 24px;
+    line-height: 27px;
+  }
+
+  .ab-photo,
+  .ab-cv,
+  .ab-bio {
+    margin-top: 64px;
+  }
+
+  .ab .ab-links {
+    margin-top: 48px;
+  }
+
+  .ab-media {
+    margin-top: 80px;
+  }
+
+  .ab-media-grid {
+    column-gap: 12px;
+  }
+}

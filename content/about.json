@@ -7,5 +7,30 @@
   },
   "caption": "Studio in\nBerlin, 2024",
   "quote": "\"Abimal is this subjective, plural visual truth that invites visitors to trust their own eyes: what you see is your truth.\"",
-  "bio": "Hamza Shah (b. 1999) is a Swiss-Afghan multidisciplinary artist currently based in Berlin, Germany, whose practice spans painting, installation, and sound.\n\nHamza reflects on alignement, motherhood and belonging, themes rooted in both his personal and cultural background. His works evoke calm, stillness, and presence, embodying a meditative rhythm that mirrors his process of slowing down and listening inward.\n\nFor him, creating is a physical act a dialogue between hand, matter, and emotion. Each piece becomes a way to return to what is real, to something primitive, as he describes it, an antidote to the noise of the modern world."
+  "bio": "Hamza Shah (b. 1999) is a Swiss-Afghan multidisciplinary artist currently based in Berlin, Germany, whose practice spans painting, installation, and sound.\n\nHamza reflects on alignement, motherhood and belonging, themes rooted in both his personal and cultural background. His works evoke calm, stillness, and presence, embodying a meditative rhythm that mirrors his process of slowing down and listening inward.\n\nFor him, creating is a physical act a dialogue between hand, matter, and emotion. Each piece becomes a way to return to what is real, to something primitive, as he describes it, an antidote to the noise of the modern world.",
+  "soloShowsLabel": "Solo shows",
+  "soloShows": [
+    "2026 Regards Croisés, La Perception Comme Gratitude, Old Cinema Eldorardo, Lausanne. Switzerland",
+    "2026 Abimal, Painting as a Language of Gratitude, St. Elisabeth, Berlin. Germany",
+    "2025 What We Venerate, Berlin Art Week Mahalla Open, Berlin. Germany",
+    "2025 Cold Rush, Like A Casino, Berlin. Germany"
+  ],
+  "studiesLabel": "Studies",
+  "studies": [
+    "2022 Sound Design & Electronic Music Production, Catalyst, Berlin. Germany"
+  ],
+  "links": [
+    {
+      "text": "@hamzashah",
+      "label": "(ig)",
+      "href": "https://www.instagram.com/hamzashah/"
+    },
+    {
+      "text": "hello@hamzashah.com",
+      "label": "(email)",
+      "href": "mailto:hello@hamzashah.com"
+    }
+  ],
+  "mediaLabel": "Media",
+  "mediaCount": 3
 }

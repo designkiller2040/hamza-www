@@ -1,7 +1,7 @@
 A.single({
   name: 'about',
   path: 'content/about.json',
-  view: '/#about',
+  view: '../about/',
   fields: ['caption', 'quote', 'bio', 'alt'],
   load: function (d, $) {
     $('caption').value = d.caption || '';
