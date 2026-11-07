@@ -620,8 +620,34 @@ figcaption {
 }
 
 /* Menu: three links spread across the width of the photo */
+/* Menu (top) and credits (bottom) stay fixed on the screen. They are
+   drawn in white with mix-blend-mode: difference, so they show black on
+   the white page and turn into the photo's inverse when one passes under. */
+.h2-header,
+.h2-credits {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  color: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.h2-header a,
+.h2-credits a {
+  pointer-events: auto;
+}
+
 .h2-header {
+  top: 0;
   padding: calc(var(--u) * 44) 0 0;
+}
+
+/* The logo is black with a white fill; inverted so the difference turns it
+   back into black on white. */
+.h2-studio img {
+  filter: invert(1);
 }
 
 .h2-nav {
@@ -649,7 +675,7 @@ figcaption {
   grid-template-columns: 1fr calc(var(--u) * 673) 1fr;
   align-items: center;
   column-gap: calc(var(--u) * 40);
-  padding: calc(var(--u) * 171) calc(var(--u) * 83) 0;
+  padding: calc(var(--u) * 227) calc(var(--u) * 83) 0;
 }
 
 .home2 .hero-frame {
@@ -712,7 +738,8 @@ figcaption {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: start;
-  padding: calc(var(--u) * 189) calc(var(--u) * 83) 0;
+  bottom: 0;
+  padding: 0 calc(var(--u) * 83) calc(var(--u) * 44);
 }
 
 .h2-signature {
@@ -742,7 +769,7 @@ figcaption {
 
 /* Works: each row has a set height; works sit at their design positions */
 .home2 main section.h2-works {
-  padding: calc(var(--u) * 194) 0 0;
+  padding: calc(var(--u) * 418) 0 0;
 }
 
 .w2-row {
@@ -834,7 +861,7 @@ figcaption {
   }
 
   .h2-header {
-    padding: 1.5rem var(--gutter) 0;
+    padding: 24px var(--gutter) 0;
   }
 
   .h2-nav {
@@ -845,7 +872,7 @@ figcaption {
   .home2 .h2-hero {
     grid-template-columns: 1fr 1fr;
     row-gap: 0.75rem;
-    padding: 4rem var(--gutter) 0;
+    padding: calc(24px + 4rem) var(--gutter) 0;
   }
 
   .home2 .hero-frame {
@@ -860,7 +887,8 @@ figcaption {
   }
 
   .h2-credits {
-    padding: 5rem var(--gutter) 0;
+    align-items: end;
+    padding: 0 var(--gutter) 24px;
   }
 
   .h2-signature {
@@ -917,15 +945,6 @@ figcaption {
 }
 
 @media (max-width: 575.98px) {
-  .h2-credits {
-    grid-template-columns: 1fr;
-    row-gap: 2.5rem;
-  }
-
-  .h2-studio {
-    justify-self: center;
-  }
-
   .home2 main section.h2-works {
     grid-template-columns: 1fr;
   }
