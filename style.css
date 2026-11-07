@@ -629,10 +629,10 @@ figcaption {
   justify-content: space-between;
   width: calc(var(--u) * 673);
   margin: 0 auto;
-  font-family: var(--garamond);
+  /* Same font as the earlier menu (Cormorant Garamond, medium) */
+  font-family: var(--serif);
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
 }
