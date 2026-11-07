@@ -63,9 +63,10 @@
   </main>
 
   <script>
-  // Hero slideshow: while the page is at the top, each scroll (wheel, swipe or
-  // arrow key) fades to the next photo and caption. After the last photo the
-  // page scrolls on as normal; scrolling back up at the top steps back.
+  // Hero slideshow, driven by normal page scrolling (nothing is blocked, so
+  // it can never get stuck): the photo stays pinned while you scroll through
+  // a short stretch of page, and each stretch fades in the next photo and
+  // caption. After the last photo the page carries on to the works.
   (function () {
     var wrap = document.querySelector('.hero-scroll');
     if (!wrap) return;
@@ -73,12 +74,11 @@
     var caps = wrap.querySelectorAll('[data-slide]');
     var n = imgs.length;
     if (n < 2) return;
-    var root = document.documentElement;
-    root.classList.add('hero-js');
-    var idx = 0, lockedAt = 0, lastEvent = 0;
-    var FADE = 900;
+    document.documentElement.classList.add('hero-js');
+    var idx = -1;
 
     function show(k) {
+      if (k === idx) return;
       idx = k;
       for (var i = 0; i < n; i++) {
         // Photos up to the current one stay visible underneath, so a fade
@@ -86,59 +86,22 @@
         imgs[i].style.opacity = i <= idx ? 1 : 0;
         imgs[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
       }
-      // Both captions (left and right of the photo) follow the photo.
       for (var c = 0; c < caps.length; c++) {
         var on = Number(caps[c].getAttribute('data-slide')) === idx;
         caps[c].classList.toggle('is-active', on);
         caps[c].setAttribute('aria-hidden', on ? 'false' : 'true');
       }
     }
-    function atTop() { return window.scrollY <= 2; }
-    function canStep(dir) { return atTop() && (dir > 0 ? idx < n - 1 : idx > 0); }
-    // Returns true when the event was used to change the photo (or swallowed
-    // while a change is still running).
-    function step(dir) {
-      var now = Date.now();
-      lastEvent = now;
-      // Hold the page still until the current gesture has ended, so one
-      // trackpad swipe moves one photo and doesn't run on into the page.
-      // Hold the page still while a fade runs. After that the next scroll
-      // event moves on, even if the trackpad is still sending the same
-      // swipe, so a long swipe can never get stuck on one photo.
-      if (atTop() && now - lockedAt < FADE) return true;
-      if (!canStep(dir)) return false;
-      lockedAt = now;
-      show(idx + dir);
-      return true;
+    function update() {
+      // One photo per stretch of scrolling (--step, half a screen).
+      var step = window.innerHeight * 0.5;
+      var into = -wrap.getBoundingClientRect().top;
+      var k = Math.floor((into + step * 0.5) / step);
+      show(Math.max(0, Math.min(n - 1, k)));
     }
-
-    window.addEventListener('wheel', function (e) {
-      if (Math.abs(e.deltaY) < 2) return;
-      if (step(e.deltaY > 0 ? 1 : -1)) e.preventDefault();
-    }, { passive: false });
-
-    var startY = null, swiped = false;
-    window.addEventListener('touchstart', function (e) {
-      startY = e.touches[0].clientY; swiped = false;
-    }, { passive: true });
-    window.addEventListener('touchmove', function (e) {
-      if (startY === null) return;
-      var dy = startY - e.touches[0].clientY;
-      var dir = dy > 0 ? 1 : -1;
-      if (!canStep(dir)) return;
-      e.preventDefault();
-      if (!swiped && Math.abs(dy) > 30) { swiped = true; lastEvent = 0; step(dir); }
-    }, { passive: false });
-    window.addEventListener('touchend', function () { startY = null; }, { passive: true });
-
-    window.addEventListener('keydown', function (e) {
-      var dir = { ArrowDown: 1, PageDown: 1, ' ': 1, ArrowUp: -1, PageUp: -1 }[e.key];
-      if (!dir || e.target.closest('input, textarea, select, button, a')) return;
-      lastEvent = 0;
-      if (step(dir)) e.preventDefault();
-    });
-
-    show(0);
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   })();
   </script>
 </body>

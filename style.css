@@ -680,9 +680,19 @@ html:has(.home2) {
   text-underline-offset: 3px;
 }
 
-/* Slideshow: a big photo with its caption underneath; each scroll at the
-   top of the page fades to the next one (script in src/index.html).
-   The photo fits between the fixed menu and the fixed credits. */
+/* Slideshow: a big photo with its caption underneath. It stays pinned
+   while the page scrolls through half a screen per photo, and each step
+   fades to the next one (script in src/index.html). The photo fits
+   between the fixed menu and the fixed credits. */
+.hero-js .home2 .h2-slides {
+  height: calc(100svh + (var(--slides) - 1) * 50svh);
+}
+
+.hero-js .home2 .h2-slides .hero {
+  position: sticky;
+  top: 0;
+}
+
 .home2 .h2-slides .hero {
   padding: calc(var(--u) * 100) calc(var(--u) * 44) 0;
 }
