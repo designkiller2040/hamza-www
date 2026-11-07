@@ -681,7 +681,7 @@ figcaption {
   grid-template-columns: 1fr calc(var(--u) * 673) 1fr;
   align-items: center;
   column-gap: calc(var(--u) * 40);
-  padding: calc(var(--u) * 227) calc(var(--u) * 83) 0;
+  padding: calc(var(--u) * 227) calc(var(--u) * 44) 0;
 }
 
 .home2 .hero-frame {
@@ -745,7 +745,7 @@ figcaption {
   grid-template-columns: 1fr auto 1fr;
   align-items: start;
   bottom: 0;
-  padding: 0 calc(var(--u) * 83) calc(var(--u) * 44);
+  padding: 0 calc(var(--u) * 44) calc(var(--u) * 44);
 }
 
 .h2-signature {
