@@ -143,7 +143,7 @@ const exhibitionRowsHTML = slides.map((s) => `    <figure class="h2-hero">
       <figcaption class="h2-cap h2-cap-right">${inline(s.captionRight)}</figcaption>
     </figure>`).join('\n');
 const heroCaptionsHTML = slides.map((s, i) =>
-  `      <figcaption${i ? ' aria-hidden="true"' : ''}><span>${inline(s.captionLeft)}</span><span>${inline(s.captionRight)}</span></figcaption>`
+  `      <figcaption data-slide="${i}"${i ? ' aria-hidden="true"' : ''}><span>${inline(s.captionLeft)}</span><span>${inline(s.captionRight)}</span></figcaption>`
 ).join('\n');
 
 // ---- Fill the template ---------------------------------------------------

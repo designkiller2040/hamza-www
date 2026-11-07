@@ -680,40 +680,27 @@ html:has(.home2) {
   text-underline-offset: 3px;
 }
 
-/* Exhibitions: caption | photo | caption, one row per exhibition,
-   stacked one under the other. Photos keep their own proportions. */
-.h2-exhibitions {
-  display: grid;
-  row-gap: calc(var(--u) * 160);
-  padding: calc(var(--u) * 227) calc(var(--u) * 44) 0;
+/* Slideshow: a big photo with its caption underneath; each scroll at the
+   top of the page fades to the next one (script in src/index.html).
+   The photo fits between the fixed menu and the fixed credits. */
+.home2 .h2-slides .hero {
+  padding: calc(var(--u) * 100) calc(var(--u) * 44) 0;
 }
 
-.home2 .h2-hero {
-  display: grid;
-  grid-template-columns: 1fr calc(var(--u) * 673) 1fr;
-  align-items: center;
-  column-gap: calc(var(--u) * 40);
-  margin: 0;
+.home2.hero-js .hero-frame,
+.hero-js .home2 .hero-frame,
+.home2 .hero-frame {
+  max-height: calc(100svh - var(--u) * 250 - 2rem);
 }
 
-.h2-hero img {
-  width: 100%;
-}
-
-.h2-cap {
-  margin: 0;
-  font-family: var(--sans);
+.home2 .hero figcaption {
   font-size: calc(var(--u) * 15);
-  line-height: 1.15;
   letter-spacing: -0.01em;
 }
 
-.h2-cap-right {
-  text-align: right;
-}
-
-.h2-cap em {
-  font-family: var(--garamond);
+.home2 .hero figcaption em {
+  font-family: var(--serif);
+  font-size: 1.1em;
 }
 
 /* Signature left, studio logo in the middle */
@@ -848,19 +835,16 @@ html:has(.home2) {
     max-width: 480px;
   }
 
-  .h2-exhibitions {
-    row-gap: 4rem;
-    padding: calc(24px + 4rem) var(--gutter) 0;
+  .home2 .h2-slides .hero {
+    padding: calc(24px + 3rem) var(--gutter) 0;
   }
 
-  .home2 .h2-hero {
-    grid-template-columns: 1fr 1fr;
-    row-gap: 0.75rem;
+  .home2 .hero-frame {
+    max-height: none;
   }
 
-  .h2-hero img {
-    grid-column: 1 / -1;
-    grid-row: 1;
+  .home2 .hero figcaption {
+    font-size: 0.8rem;
   }
 
   .h2-cap {
