@@ -680,50 +680,32 @@ html:has(.home2) {
   text-underline-offset: 3px;
 }
 
-/* Hero: caption | photo | caption, all centred on one line */
+/* Exhibitions: caption | photo | caption, one row per exhibition,
+   stacked one under the other. Photos keep their own proportions. */
+.h2-exhibitions {
+  display: grid;
+  row-gap: calc(var(--u) * 160);
+  padding: calc(var(--u) * 227) calc(var(--u) * 44) 0;
+}
+
 .home2 .h2-hero {
   display: grid;
   grid-template-columns: 1fr calc(var(--u) * 673) 1fr;
   align-items: center;
   column-gap: calc(var(--u) * 40);
-  padding: calc(var(--u) * 227) calc(var(--u) * 44) 0;
-}
-
-.home2 .hero-frame {
-  position: relative;
-  aspect-ratio: 673 / 353;
-  max-height: none;
   margin: 0;
-  overflow: hidden;
 }
 
-.home2 .hero-frame img {
-  position: absolute;
-  inset: 0;
+.h2-hero img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.home2 .hero-frame img + img {
-  opacity: 0;
 }
 
 .h2-cap {
-  display: grid;
   margin: 0;
   font-family: var(--sans);
   font-size: calc(var(--u) * 15);
   line-height: 1.15;
   letter-spacing: -0.01em;
-}
-
-.h2-cap span {
-  grid-area: 1 / 1;
-}
-
-.h2-cap span + span {
-  opacity: 0;
 }
 
 .h2-cap-right {
@@ -732,16 +714,6 @@ html:has(.home2) {
 
 .h2-cap em {
   font-family: var(--garamond);
-}
-
-.hero-js .h2-cap span {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.hero-js .h2-cap span.is-active {
-  opacity: 1;
-  transition-delay: 0.3s;
 }
 
 /* Signature left, studio logo in the middle */
@@ -780,7 +752,7 @@ html:has(.home2) {
 
 /* Works: each row has a set height; works sit at their design positions */
 .home2 main section.h2-works {
-  padding: calc(var(--u) * 418) 0 0;
+  padding: calc(var(--u) * 240) 0 0;
 }
 
 .w2-row {
@@ -876,13 +848,17 @@ html:has(.home2) {
     max-width: 480px;
   }
 
-  .home2 .h2-hero {
-    grid-template-columns: 1fr 1fr;
-    row-gap: 0.75rem;
+  .h2-exhibitions {
+    row-gap: 4rem;
     padding: calc(24px + 4rem) var(--gutter) 0;
   }
 
-  .home2 .hero-frame {
+  .home2 .h2-hero {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.75rem;
+  }
+
+  .h2-hero img {
     grid-column: 1 / -1;
     grid-row: 1;
   }

@@ -136,6 +136,12 @@ const heroImagesHTML = slides.map((s, i) =>
 const heroSideHTML = (side) => slides.map((s, i) =>
   `        <span data-slide="${i}"${i ? ' aria-hidden="true"' : ''}>${inline(side === 'left' ? s.captionLeft : s.captionRight)}</span>`
 ).join('\n');
+// Home #2: the exhibitions one under the other, captions left and right.
+const exhibitionRowsHTML = slides.map((s) => `    <figure class="h2-hero">
+      <figcaption class="h2-cap h2-cap-left">${inline(s.captionLeft)}</figcaption>
+      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}">
+      <figcaption class="h2-cap h2-cap-right">${inline(s.captionRight)}</figcaption>
+    </figure>`).join('\n');
 const heroCaptionsHTML = slides.map((s, i) =>
   `      <figcaption${i ? ' aria-hidden="true"' : ''}><span>${inline(s.captionLeft)}</span><span>${inline(s.captionRight)}</span></figcaption>`
 ).join('\n');
@@ -176,6 +182,7 @@ const vars = {
   'about.media': aboutMedia,
   works: worksHTML,
   'home2.works': home2WorksHTML,
+  'home2.exhibitions': exhibitionRowsHTML,
   'hero.left': heroSideHTML('left'),
   'hero.right': heroSideHTML('right'),
   exhibitions: exhibitionsHTML,
