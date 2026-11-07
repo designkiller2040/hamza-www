@@ -799,10 +799,6 @@ figcaption {
   width: 100%;
 }
 
-.w2:hover {
-  background: #fbfbf9;
-  z-index: 1;
-}
 
 .w2 figcaption {
   font-family: var(--garamond);
