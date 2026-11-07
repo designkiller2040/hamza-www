@@ -102,16 +102,17 @@
     }
     function atTop() { return window.scrollY <= 2; }
     function canStep(dir) { return atTop() && (dir > 0 ? idx < n - 1 : idx > 0); }
-    function busy(now) { return now - lockedAt < FADE || now - lastEvent < 120; }
     // Returns true when the event was used to change the photo (or swallowed
     // while a change is still running).
     function step(dir) {
       var now = Date.now();
-      var wasBusy = busy(now);
       lastEvent = now;
       // Hold the page still until the current gesture has ended, so one
       // trackpad swipe moves one photo and doesn't run on into the page.
-      if (atTop() && wasBusy) return true;
+      // Hold the page still while a fade runs. After that the next scroll
+      // event moves on, even if the trackpad is still sending the same
+      // swipe, so a long swipe can never get stuck on one photo.
+      if (atTop() && now - lockedAt < FADE) return true;
       if (!canStep(dir)) return false;
       lockedAt = now;
       show(idx + dir);

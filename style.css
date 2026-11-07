@@ -20,9 +20,9 @@ html {
   scroll-behavior: smooth;
 }
 
-/* No rubber-band bounce at the top and bottom of the page (Safari, Chrome) */
-html,
-body {
+/* No rubber-band bounce at the top and bottom of the page (Safari, Chrome).
+   Only on html: on body it can stop Safari from scrolling at all. */
+html {
   overscroll-behavior: none;
 }
 
@@ -622,7 +622,12 @@ figcaption {
   --ink: #000;
   --garamond: "EB Garamond", Georgia, serif;
   color: var(--ink);
-  overflow-x: hidden;
+}
+
+/* Cut off anything wider than the window without making body its own
+   scroll box (overflow: hidden on body breaks scrolling in Safari). */
+html:has(.home2) {
+  overflow-x: clip;
 }
 
 /* Menu: three links spread across the width of the photo */
