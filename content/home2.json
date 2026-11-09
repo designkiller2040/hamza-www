@@ -116,6 +116,108 @@
           "caption": "below"
         }
       ]
+    },
+    {
+      "height": 693,
+      "works": [
+        {
+          "slug": "trois-2026",
+          "x": 80,
+          "y": 30,
+          "w": 273,
+          "caption": "below"
+        },
+        {
+          "slug": "burning-steps-2026",
+          "x": 620,
+          "y": 30,
+          "w": 273,
+          "caption": "below"
+        },
+        {
+          "slug": "16-august-2025",
+          "x": 1159,
+          "y": 30,
+          "w": 273,
+          "caption": "below"
+        }
+      ]
+    },
+    {
+      "height": 764,
+      "works": [
+        {
+          "slug": "cant-stop-melting-with-you-2025",
+          "x": 80,
+          "y": 30,
+          "w": 316,
+          "caption": "below"
+        },
+        {
+          "slug": "chambre-des-r-ves-2024",
+          "x": 620,
+          "y": 30,
+          "w": 273,
+          "caption": "below"
+        },
+        {
+          "slug": "cold-rush-2024",
+          "x": 1116,
+          "y": 30,
+          "w": 316,
+          "caption": "below"
+        }
+      ]
+    },
+    {
+      "height": 735,
+      "works": [
+        {
+          "slug": "espiral-2025",
+          "x": 80,
+          "y": 30,
+          "w": 617,
+          "caption": "below"
+        },
+        {
+          "slug": "your-night-i-2024",
+          "x": 806,
+          "y": 30,
+          "w": 626,
+          "caption": "below"
+        }
+      ]
+    },
+    {
+      "height": 678,
+      "works": [
+        {
+          "slug": "shapeless-identities-n-1-2024",
+          "x": 80,
+          "y": 30,
+          "w": 617,
+          "caption": "below"
+        },
+        {
+          "slug": "seperation-s-grace-2024",
+          "x": 806,
+          "y": 30,
+          "w": 626,
+          "caption": "below"
+        }
+      ]
+    },
+    {
+      "height": 895,
+      "works": [
+        {
+          "slug": "tribute-for-hunger-2024",
+          "x": 80,
+          "y": 30,
+          "w": 801,
+          "caption": "below"
+        }
+      ]
     }
   ]
 }
