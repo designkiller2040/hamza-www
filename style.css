@@ -664,7 +664,7 @@ html:has(.home2) {
 .h2-nav {
   display: flex;
   justify-content: space-between;
-  width: calc(var(--u) * 673);
+  width: calc(var(--u) * 1352);
   margin: 0 auto;
   /* Same font as the earlier menu (Cormorant Garamond, medium) */
   font-family: var(--serif);
@@ -719,7 +719,7 @@ html:has(.home2) {
   grid-template-columns: 1fr auto 1fr;
   align-items: start;
   bottom: 0;
-  padding: 0 calc(var(--u) * 44) calc(var(--u) * 44);
+  padding: 0 calc(var(--u) * 80) calc(var(--u) * 44);
 }
 
 .h2-signature {
