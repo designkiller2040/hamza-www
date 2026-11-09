@@ -663,8 +663,8 @@ html:has(.home2) {
 
 .h2-nav {
   display: flex;
-  justify-content: space-between;
-  width: calc(var(--u) * 1352);
+  justify-content: center;
+  gap: calc(var(--u) * 80);
   margin: 0 auto;
   /* Same font as the earlier menu (Cormorant Garamond, medium) */
   font-family: var(--serif);
@@ -717,7 +717,8 @@ html:has(.home2) {
 .h2-credits {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items: start;
+  /* Name sits on the same bottom line as "digital art direction" */
+  align-items: end;
   bottom: 0;
   padding: 0 calc(var(--u) * 80) calc(var(--u) * 44);
 }
@@ -725,7 +726,7 @@ html:has(.home2) {
 .h2-signature {
   margin: 0;
   font-family: var(--sans);
-  font-size: calc(var(--u) * 15);
+  font-size: calc(var(--u) * 12);
   line-height: 1.07;
   letter-spacing: -0.01em;
 }
@@ -1100,5 +1101,13 @@ html:has(.home2) {
 
   .ab-media-grid {
     column-gap: 12px;
+  }
+}
+
+/* Home #2: About sits between the slideshow and the works, on the same
+   80 px grid as everything else. */
+@media (min-width: 992px) {
+  .home2 main section.about {
+    padding: calc(var(--u) * 200) calc(var(--u) * 80) 0;
   }
 }
