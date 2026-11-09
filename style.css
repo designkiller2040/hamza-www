@@ -622,6 +622,8 @@ figcaption {
   --ink: #000;
   --garamond: "EB Garamond", Georgia, serif;
   color: var(--ink);
+  /* One face for the whole page (alona, 2026-11-09) */
+  font-family: var(--garamond);
 }
 
 /* Cut off anything wider than the window without making body its own
@@ -666,8 +668,7 @@ html:has(.home2) {
   justify-content: center;
   gap: calc(var(--u) * 80);
   margin: 0 auto;
-  /* Same font as the earlier menu (Cormorant Garamond, medium) */
-  font-family: var(--serif);
+  font-family: var(--garamond);
   font-size: 12px;
   font-weight: 500;
   line-height: 1;
@@ -709,7 +710,7 @@ html:has(.home2) {
 }
 
 .home2 .hero figcaption em {
-  font-family: var(--serif);
+  font-family: var(--garamond);
   font-size: 1.1em;
 }
 
@@ -725,7 +726,7 @@ html:has(.home2) {
 
 .h2-signature {
   margin: 0;
-  font-family: var(--sans);
+  font-family: var(--garamond);
   font-size: calc(var(--u) * 12);
   line-height: 1.07;
   letter-spacing: -0.01em;
@@ -735,7 +736,7 @@ html:has(.home2) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: calc(var(--u) * -22) 0 0;
+  margin: 0;
   font-family: var(--garamond);
   font-size: calc(var(--u) * 11);
   font-weight: 500;
@@ -745,12 +746,12 @@ html:has(.home2) {
 .h2-studio img {
   width: calc(var(--u) * 56);
   height: auto;
-  margin-bottom: calc(var(--u) * 7);
+  margin-bottom: 0;
 }
 
 /* Works: each row has a set height; works sit at their design positions */
 .home2 main section.h2-works {
-  padding: calc(var(--u) * 240) 0 0;
+  padding: calc(var(--u) * 179) 0 calc(var(--u) * 160);
 }
 
 .w2-row {
@@ -772,6 +773,14 @@ html:has(.home2) {
 .w2 img,
 .w2 .placeholder {
   width: 100%;
+}
+
+/* Photos cropped to the size drawn in the canvas */
+.w2-fixed img,
+.w2-fixed .placeholder {
+  height: auto;
+  aspect-ratio: var(--w) / var(--ih);
+  object-fit: cover;
 }
 
 
@@ -816,14 +825,24 @@ html:has(.home2) {
   font-size: 13px;
 }
 
-/* "below": title, materials and size under the photo, always shown */
+/* "below": title, materials and size under the photo, always shown.
+   "above": the same, over the photo. */
 .w2-cap-below {
   margin-top: calc(var(--u) * 28);
 }
 
-.w2-cap-below .w2-text {
+.w2-cap-above {
+  margin-bottom: calc(var(--u) * 28);
+}
+
+.w2-cap-below .w2-text,
+.w2-cap-above .w2-text {
   display: block;
   margin-bottom: calc(var(--u) * 20);
+}
+
+.w2-cap-above .w2-inquire {
+  display: inline-block;
 }
 
 /* After the works: exhibitions and about as before */
@@ -913,7 +932,12 @@ html:has(.home2) {
     margin-top: 0.75rem;
   }
 
-  .w2-cap-below .w2-text {
+  .w2-cap-above {
+    margin-bottom: 0.75rem;
+  }
+
+  .w2-cap-below .w2-text,
+  .w2-cap-above .w2-text {
     margin-bottom: 0.75rem;
   }
 
@@ -1104,10 +1128,101 @@ html:has(.home2) {
   }
 }
 
-/* Home #2: About sits between the slideshow and the works, on the same
-   80 px grid as everything else. */
+/* Home #2: About sits between the slideshow and the works, as in
+   alona's canvas (2026-11-09): quote top-left and bio bottom-left, the
+   560 px square portrait on the right edge, its caption running up its
+   left side 40 px away. */
+.home2 .about blockquote {
+  font-family: var(--garamond);
+  font-weight: 400;
+}
+
+.home2 .about .bio,
+.home2 .about-label,
+.home2 .about-caption,
+.home2 .hero figcaption {
+  font-family: var(--garamond);
+}
+
+/* Phone: name left, logo right, so they never run into each other */
+@media (max-width: 575.98px) {
+  .h2-credits {
+    grid-template-columns: 1fr auto;
+  }
+}
+
 @media (min-width: 992px) {
   .home2 main section.about {
+    grid-template-columns: minmax(0, 1fr) calc(var(--u) * 560);
+    column-gap: 0;
     padding: calc(var(--u) * 200) calc(var(--u) * 80) 0;
+  }
+
+  .home2 .about-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .home2 .about-photo {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .home2 .about-photo img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .home2 .about-caption {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    align-self: end;
+    font-family: var(--garamond);
+    font-size: calc(var(--u) * 12);
+    line-height: 1.2;
+    text-align: left;
+    text-align-last: auto;
+    white-space: nowrap;
+    /* Sits left of the photo with 40 px between */
+    transform: translateX(calc(-100% - var(--u) * 40)) rotate(180deg);
+  }
+
+  .home2 .about-caption br {
+    display: none;
+  }
+
+  .home2 .about-text {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .home2 .about blockquote {
+    width: calc(var(--u) * 431);
+    font-size: calc(var(--u) * 33);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .home2 .about .bio {
+    width: calc(var(--u) * 473);
+    margin: 0;
+    font-size: calc(var(--u) * 13);
+    line-height: 1.3;
+  }
+
+  .home2 .about .bio p {
+    margin: 0 0 1.3em;
+  }
+
+  .home2 .about .bio p:last-child {
+    margin-bottom: 0;
   }
 }

@@ -1,220 +1,257 @@
 {
-  "_about": "Home #2 works layout, from alona's design (a 1512 px wide page). Each row has a height; each work has its left (x), top within the row (y) and width (w) in design pixels. Columns line up: left works start at x 80, right works end at x 1432 (80 from the right edge), middle works are centred on the page (756). caption: \"below\" shows title, materials and size under the photo.",
+  "_about": "Home #2 works layout, copied from alona's Design canvas (1512 px wide page) on 2026-11-09. Each row has a height (its works plus the 160 px gap to the next row); each work has its left edge (x), top within the row (y), photo width (w) and photo height (h) in design pixels. Left works start at x 80, right works end at 1432, middle works are centred (756). caption: \"below\" or \"above\" the photo.",
   "rows": [
     {
-      "height": 512,
+      "height": 586,
       "works": [
         {
           "slug": "the-moons-red-tide",
           "x": 80,
-          "y": 31,
+          "y": 0,
           "w": 309,
+          "h": 305,
           "caption": "below"
         },
         {
           "slug": "jungle-2026",
           "x": 597,
-          "y": 28,
+          "y": 0,
           "w": 318,
+          "h": 318,
           "caption": "below"
         },
         {
           "slug": "cant-stop-melting-with-you-2025",
           "x": 1116,
-          "y": 30,
+          "y": 0,
           "w": 316,
+          "h": 309,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 588,
+      "height": 582,
       "works": [
         {
           "slug": "trust-2025",
           "x": 80,
-          "y": 40,
+          "y": 0,
           "w": 801,
+          "h": 310,
           "caption": "below"
         },
         {
           "slug": "at-the-beginning-2026",
           "x": 1119,
-          "y": 37,
+          "y": 0,
           "w": 313,
+          "h": 314,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 670,
+      "height": 604,
       "works": [
         {
           "slug": "freedom-2026",
           "x": 80,
-          "y": 33,
+          "y": 0,
           "w": 273,
+          "h": 336,
           "caption": "below"
         },
         {
           "slug": "helvetica-2026",
           "x": 620,
-          "y": 33,
+          "y": 0,
           "w": 272,
+          "h": 335,
           "caption": "below"
         },
         {
           "slug": "deux-2026",
           "x": 1159,
-          "y": 35,
+          "y": 0,
           "w": 273,
+          "h": 335,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 610,
+      "height": 608,
       "works": [
         {
           "slug": "un-2026",
           "x": 80,
-          "y": 42,
+          "y": 0,
           "w": 323,
+          "h": 325,
           "caption": "below"
         },
         {
           "slug": "shadowdance-2026",
           "x": 617,
-          "y": 25,
+          "y": 0,
           "w": 278,
+          "h": 340,
           "caption": "below"
         },
         {
           "slug": "cinq-2026",
           "x": 1105,
-          "y": 40,
+          "y": 0,
           "w": 327,
+          "h": 327,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 578,
+      "height": 592,
       "works": [
         {
           "slug": "a-mothers-love-n-1-2024",
           "x": 80,
-          "y": 27,
+          "y": 0,
           "w": 617,
+          "h": 320,
           "caption": "below"
         },
         {
           "slug": "a-mothers-love-n-2-2024",
           "x": 806,
-          "y": 25,
+          "y": 0,
           "w": 626,
+          "h": 324,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 693,
+      "height": 631,
       "works": [
         {
           "slug": "trois-2026",
           "x": 80,
-          "y": 30,
+          "y": 0,
           "w": 273,
+          "h": 327,
           "caption": "below"
         },
         {
           "slug": "burning-steps-2026",
           "x": 620,
-          "y": 30,
+          "y": 0,
           "w": 273,
+          "h": 333,
           "caption": "below"
         },
         {
           "slug": "16-august-2025",
           "x": 1159,
-          "y": 30,
+          "y": 0,
           "w": 273,
+          "h": 363,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 764,
+      "height": 702,
       "works": [
         {
-          "slug": "your-night-ii-2024",
+          "slug": "seperation-s-grace-2024",
           "x": 80,
-          "y": 30,
-          "w": 316,
+          "y": 0,
+          "w": 859,
+          "h": 434,
           "caption": "below"
         },
         {
           "slug": "chambre-des-r-ves-2024",
-          "x": 620,
-          "y": 30,
+          "x": 1159,
+          "y": 0,
           "w": 273,
-          "caption": "below"
-        },
-        {
-          "slug": "cold-rush-2024",
-          "x": 1116,
-          "y": 30,
-          "w": 316,
+          "h": 434,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 735,
+      "height": 702,
       "works": [
         {
-          "slug": "espiral-2025",
+          "slug": "cold-rush-2024",
           "x": 80,
-          "y": 30,
-          "w": 617,
+          "y": 0,
+          "w": 316,
+          "h": 312,
+          "caption": "above"
+        },
+        {
+          "slug": "tribute-for-hunger-2024",
+          "x": 817,
+          "y": 0,
+          "w": 615,
+          "h": 434,
           "caption": "below"
+        }
+      ]
+    },
+    {
+      "height": 685,
+      "works": [
+        {
+          "slug": "your-night-ii-2024",
+          "x": 1116,
+          "y": 0,
+          "w": 316,
+          "h": 312,
+          "caption": "above"
         },
         {
           "slug": "your-night-i-2024",
-          "x": 806,
-          "y": 30,
-          "w": 626,
+          "x": 80,
+          "y": 0,
+          "w": 696,
+          "h": 417,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 678,
+      "height": 661,
+      "works": [
+        {
+          "slug": "dual-weild",
+          "x": 80,
+          "y": 0,
+          "w": 357,
+          "h": 404,
+          "caption": "below"
+        },
+        {
+          "slug": "espiral-2025",
+          "x": 826,
+          "y": 0,
+          "w": 606,
+          "h": 393,
+          "caption": "below"
+        }
+      ]
+    },
+    {
+      "height": 475,
       "works": [
         {
           "slug": "shapeless-identities-n-1-2024",
           "x": 80,
-          "y": 30,
-          "w": 617,
-          "caption": "below"
-        },
-        {
-          "slug": "seperation-s-grace-2024",
-          "x": 806,
-          "y": 30,
-          "w": 626,
-          "caption": "below"
-        }
-      ]
-    },
-    {
-      "height": 895,
-      "works": [
-        {
-          "slug": "tribute-for-hunger-2024",
-          "x": 80,
-          "y": 30,
-          "w": 801,
+          "y": 0,
+          "w": 650,
+          "h": 367,
           "caption": "below"
         }
       ]

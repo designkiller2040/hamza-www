@@ -61,7 +61,7 @@ function workFigure(w) {
 
 const byRow = new Map();
 for (const w of works) {
-  if (w.hidden) continue;
+  if (w.hidden || !w.layout) continue; // works added on Home #2 only have no old-grid layout
   const r = Number(w.layout?.row) || 1;
   if (!byRow.has(r)) byRow.set(r, []);
   byRow.get(r).push(w);
@@ -88,19 +88,23 @@ function home2Figure(p) {
   const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=Inquiry%20${encodeURIComponent(w.slug)}`;
   const inquire = `<a class="w2-inquire" href="${mail}">Inquire to Purchase</a>`;
   let caption;
-  if (p.caption === 'below') {
+  if (p.caption === 'below' || p.caption === 'above') {
     const lines = [esc(w.year ? `${w.title}, ${w.year}` : w.title)];
     if (w.materials) lines.push(esc(w.materials));
     if (w.size) lines.push(esc(w.size));
-    caption = `<figcaption class="w2-cap-below"><span class="w2-text">${lines.join('<br>')}</span>${inquire}</figcaption>`;
+    caption = `<figcaption class="w2-cap-${p.caption}"><span class="w2-text">${lines.join('<br>')}</span>${inquire}</figcaption>`;
   } else {
     const first = esc(`"${w.title}"`) + (w.year ? ' ' + esc(w.year) : '');
     const second = esc([w.materials, w.size].filter(Boolean).join('. '));
     caption = `<figcaption class="w2-cap-hover">${inquire}<span class="w2-text">${first}${second ? '<br>' + second : ''}</span></figcaption>`;
   }
-  return `        <figure class="w2" id="work-${esc(w.slug)}" style="--x:${p.x};--y:${p.y};--w:${p.w}">
-          ${img}
-          ${caption}
+  // "h" crops the photo to the height drawn in the canvas; "above" puts the caption over the photo.
+  const size = `--x:${p.x};--y:${p.y};--w:${p.w}` + (p.h ? `;--ih:${p.h}` : '');
+  const inner = p.caption === 'above' ? `${caption}
+          ${img}` : `${img}
+          ${caption}`;
+  return `        <figure class="w2${p.h ? ' w2-fixed' : ''}" id="work-${esc(w.slug)}" style="${size}">
+          ${inner}
         </figure>`;
 }
 const home2WorksHTML = home2.rows.map((r) => `      <div class="w2-row" style="--h:${r.height}">
