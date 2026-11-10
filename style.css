@@ -620,9 +620,10 @@ figcaption {
 .home2 {
   --u: calc(100vw / 1512);
   --ink: #000;
-  --garamond: "EB Garamond", Georgia, serif;
+  /* One face for the whole page: Cormorant Garamond (alona, 2026-11-10;
+     EB Garamond before). Everything on Home #2 uses --garamond. */
+  --garamond: "Cormorant Garamond", Georgia, serif;
   color: var(--ink);
-  /* One face for the whole page (alona, 2026-11-09) */
   font-family: var(--garamond);
 }
 
