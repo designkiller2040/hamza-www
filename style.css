@@ -1227,3 +1227,108 @@ html:has(.home2) {
     margin-bottom: 0;
   }
 }
+
+/* ---------------------------------------------------------------
+   Legal notice & Privacy (/legal/), styled like the About page:
+   Newsreader, italic labels, one justified column as wide as the
+   About page's two columns (273 + 127 + 273 design px).
+   --------------------------------------------------------------- */
+.lg {
+  width: calc(var(--u) * 673);
+  margin: 0 auto;
+  padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: calc(var(--u) * 15);
+  line-height: calc(var(--u) * 18);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.lg p,
+.lg h1,
+.lg h2 {
+  margin: 0;
+}
+
+.lg p {
+  text-align: justify;
+}
+
+.lg p + p {
+  margin-top: calc(var(--u) * 18);
+}
+
+.lg a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.lg-block + .lg-block {
+  margin-top: calc(var(--u) * 120);
+}
+
+.lg-title {
+  margin-bottom: calc(var(--u) * 36) !important;
+  font-size: calc(var(--u) * 22);
+  line-height: calc(var(--u) * 24);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.lg-label {
+  margin: calc(var(--u) * 54) 0 calc(var(--u) * 18) !important;
+  font-size: inherit;
+  font-weight: 400;
+  font-style: italic;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.lg .lg-date {
+  margin-top: calc(var(--u) * 54);
+  font-style: italic;
+}
+
+/* Tablet and phone: readable fixed sizes */
+@media (max-width: 991.98px) {
+  .lg {
+    width: auto;
+    max-width: 720px;
+    padding: 160px var(--gutter) 120px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .lg p + p { margin-top: 1em; }
+  .lg-block + .lg-block { margin-top: 80px; }
+  .lg-title { margin-bottom: 24px !important; font-size: 24px; line-height: 1.15; }
+  .lg-label { margin: 40px 0 12px !important; }
+  .lg .lg-date { margin-top: 40px; }
+}
+
+@media (max-width: 575.98px) {
+  .lg { padding-top: 120px; }
+}
+
+/* Small "Legal & Privacy" link at the very end of Home #2, above the
+   fixed credits so the two never overlap. */
+.h2-legal {
+  margin: 0;
+  padding: 0 0 calc(var(--u) * 140);
+  text-align: center;
+  font-family: var(--garamond);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.h2-legal a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 991.98px) {
+  .h2-legal { padding-bottom: 96px; }
+}
