@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!-- Template: the "fun" page, built to /lens/. A sharp photo under a blurred,
+     grainy copy; a soft round hole in the blurred copy follows the cursor.
+     Tweak the lens size with --r and its soft edge with --feather below. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Look closer — {{name}}</title>
+  <meta name="description" content="Look closer: an installation by {{name}}.">
+  <link rel="stylesheet" href="{{root}}fonts/fonts.css">
+  <link rel="stylesheet" href="{{root}}style.css">
+  <style>
+    .lens-page {
+      margin: 0;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background: #000;
+    }
+    .lens-hero {
+      --r: 90px;        /* lens radius */
+      --feather: 30px;  /* soft edge of the lens */
+      --x: 50%;
+      --y: 50%;
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .lens-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+    .lens-top {
+      -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y),
+        transparent 0, transparent calc(var(--r) - var(--feather)), #000 var(--r), #000 100%);
+      mask-image: radial-gradient(circle var(--r) at var(--x) var(--y),
+        transparent 0, transparent calc(var(--r) - var(--feather)), #000 var(--r), #000 100%);
+    }
+  </style>
+</head>
+<body class="home2 lens-page">
+  <div class="lens-hero" id="lens">
+    <img class="lens-bottom" src="{{root}}images/lens/sharp.jpg" alt="What We Venerate: piles of earth in an old hall, a blue stone hanging from chains" width="2263" height="1051">
+    <img class="lens-top" src="{{root}}images/lens/blur.jpg" alt="" aria-hidden="true" width="2263" height="1051">
+  </div>
+
+  <div class="h2-credits">
+    <p class="h2-signature">Hamza Shah Mian @2027</p>
+    <p class="h2-studio"><img src="{{root}}images/vilna-logo.svg" alt="Vilna" width="90" height="63"><span>web art direction</span></p>
+    <p class="h2-fun"><a href="{{root}}">Back</a></p>
+  </div>
+
+  <script>
+  (function () {
+    var hero = document.getElementById('lens');
+    var style = getComputedStyle(hero);
+    var R = parseFloat(style.getPropertyValue('--r')) || 90; // open size, from CSS
+    var EASE = 0.15;
+
+    var tx = hero.clientWidth / 2, ty = hero.clientHeight / 2; // target
+    var x = tx, y = ty;                                         // drawn
+    var tr = 0, r = 0;                                          // target / drawn radius
+    var lastInput = 0, idle = true, t0 = performance.now();
+    var IDLE_AFTER = 2500; // ms without input before the drift starts
+
+    function setTarget(e) {
+      var b = hero.getBoundingClientRect();
+      tx = e.clientX - b.left;
+      ty = e.clientY - b.top;
+      lastInput = performance.now();
+      idle = false;
+    }
+
+    // Mouse / pen: lens follows while the pointer is over the hero.
+    hero.addEventListener('pointerenter', function (e) {
+      if (e.pointerType === 'touch') return;
+      setTarget(e);
+      if (r < 1) { x = tx; y = ty; } // open where the cursor is, not glide in
+      tr = R;
+    });
+    hero.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && !e.buttons && e.pressure === 0) return;
+      setTarget(e);
+      tr = R;
+    });
+    hero.addEventListener('pointerleave', function (e) {
+      if (e.pointerType === 'touch') return;
+      lastInput = performance.now();
+      tr = 0;
+    });
+
+    // Touch: follow the finger while dragging, close on release.
+    hero.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'touch') return;
+      setTarget(e);
+      x = tx; y = ty;
+      tr = R;
+    });
+    function release(e) {
+      if (e.pointerType !== 'touch') return;
+      lastInput = performance.now();
+      tr = 0;
+    }
+    hero.addEventListener('pointerup', release);
+    hero.addEventListener('pointercancel', release);
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function frame(now) {
+      // Idle drift: with no input for a while, the lens wanders slowly.
+      if (!reduce && tr === 0 && now - lastInput > IDLE_AFTER) {
+        if (!idle) { idle = true; t0 = now; }
+        var w = hero.clientWidth, h = hero.clientHeight, t = (now - t0) / 1000;
+        tx = w / 2 + Math.sin(t * 0.23) * w * 0.32;
+        ty = h / 2 + Math.sin(t * 0.31 + 1) * h * 0.25;
+        if (r < 1) { x = tx; y = ty; }
+        r += (R - r) * 0.03;
+      } else {
+        r += (tr - r) * EASE;
+      }
+      x += (tx - x) * EASE;
+      y += (ty - y) * EASE;
+      hero.style.setProperty('--x', x.toFixed(1) + 'px');
+      hero.style.setProperty('--y', y.toFixed(1) + 'px');
+      hero.style.setProperty('--r', Math.max(0, r).toFixed(1) + 'px');
+      requestAnimationFrame(frame);
+    }
+    // Start closed; the drift (or the cursor) opens it.
+    hero.style.setProperty('--r', '0px');
+    requestAnimationFrame(frame);
+  })();
+  </script>
+</body>
+</html>
