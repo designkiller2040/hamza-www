@@ -222,7 +222,7 @@ for (const f of pages) {
 // Saved homepage versions (snapshots/home-1/ -> /home-1/) are frozen copies,
 // copied as they are without filling in any content.
 if (existsSync(join(ROOT, 'snapshots'))) cpSync(join(ROOT, 'snapshots'), OUT, { recursive: true });
-for (const p of ['style.css', 'images', 'admin']) {
+for (const p of ['style.css', 'fonts', 'images', 'admin']) {
   if (existsSync(join(ROOT, p))) cpSync(join(ROOT, p), join(OUT, p), { recursive: true });
 }
 mkdirSync(join(OUT, 'admin'), { recursive: true });
