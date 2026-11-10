@@ -787,7 +787,7 @@ html:has(.home2) {
 
 .w2 figcaption {
   font-family: var(--garamond);
-  font-size: 11px;
+  font-size: 8px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.36;
@@ -796,7 +796,7 @@ html:has(.home2) {
 .w2-inquire {
   color: #8a8a8a;
   font-weight: 400;
-  font-size: 11px;
+  font-size: 8px;
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
