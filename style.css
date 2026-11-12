@@ -1045,25 +1045,24 @@ html:has(.home2) {
   margin-top: calc(var(--u) * 18);
 }
 
-.ab-block + .ab-block {
-  margin-top: calc(var(--u) * 86);
-}
-
 .ab-studies .ab-list {
   margin-top: calc(var(--u) * 18);
 }
 
 .ab-side {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: calc(var(--u) * 36);
-  margin-top: calc(var(--u) * 89);
+  margin-top: calc(var(--u) * 88);
 }
 
 .ab-bio {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: calc(var(--u) * 89);
   text-align: justify;
 }
 
@@ -1128,6 +1127,7 @@ html:has(.home2) {
   }
 
   .ab-photo,
+  .ab-bio,
   .ab-cv,
   .ab-side {
     margin-top: 64px;
@@ -1136,10 +1136,6 @@ html:has(.home2) {
   .ab-side {
     gap: 48px;
   }
-
-  /* Studies and Solo shows straight under the photo, then the bio */
-  .ab-side { order: 1; }
-  .ab-media { order: 2; }
 
   .ab-media {
     margin-top: 80px;

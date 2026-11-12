@@ -26,31 +26,32 @@
       <img src="{{root}}{{aboutPage.src}}" alt="{{aboutPage.alt}}" width="{{aboutPage.width}}" height="{{aboutPage.height}}">
     </figure>
 
-    <!-- Beside the photo: bio at the top, ig and email at the bottom, level with the photo's bottom edge -->
-    <div class="ab-side">
-      <div class="ab-bio">
+    <!-- Beside the photo -->
+    <div class="ab-bio">
 {{{about.bio}}}
-      </div>
-
-      <p class="ab-links">
-{{{about.links}}}
-      </p>
     </div>
 
-    <!-- Under the photo: Studies, then Solo shows (the list Hamza keeps adding to) -->
-    <div class="ab-cv">
-      <div class="ab-block ab-studies">
+    <!-- Under the photo: Solo shows (the list Hamza keeps adding to) -->
+    <div class="ab-cv ab-solo">
+      <h2 class="ab-label">{{about.soloShowsLabel}}</h2>
+      <div class="ab-list">
+{{{about.soloShows}}}
+      </div>
+    </div>
+
+    <!-- Under the bio: Studies at the top, ig and email at the bottom,
+         level with the last solo show -->
+    <div class="ab-side">
+      <div class="ab-studies">
         <h2 class="ab-label">{{about.studiesLabel}}</h2>
         <div class="ab-list">
 {{{about.studies}}}
         </div>
       </div>
-      <div class="ab-block ab-solo">
-        <h2 class="ab-label">{{about.soloShowsLabel}}</h2>
-        <div class="ab-list">
-{{{about.soloShows}}}
-        </div>
-      </div>
+
+      <p class="ab-links">
+{{{about.links}}}
+      </p>
     </div>
 
     <div class="ab-media">
