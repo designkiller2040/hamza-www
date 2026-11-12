@@ -1218,8 +1218,8 @@ html:has(.home2) {
     text-align: left;
     text-align-last: auto;
     white-space: nowrap;
-    /* Sits left of the photo with 40 px between */
-    transform: translateX(calc(-100% - var(--u) * 40)) rotate(180deg);
+    /* Sits left of the photo with 12 px between (alona 2026-11-12) */
+    transform: translateX(calc(-100% - var(--u) * 12)) rotate(180deg);
   }
 
   .home2 .about-caption br {
