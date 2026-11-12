@@ -177,6 +177,11 @@ const vars = {
   'about.caption': String(about.caption || '').split('\n').map(esc).join(' <br>'),
   'about.quote': about.quote,
   'about.bio': bio,
+  // The /about/ page keeps its own photo (the dark portrait); the homepage uses about.portrait.
+  'aboutPage.src': (about.pagePortrait || about.portrait).src,
+  'aboutPage.alt': (about.pagePortrait || about.portrait).alt,
+  'aboutPage.width': (about.pagePortrait || about.portrait).width,
+  'aboutPage.height': (about.pagePortrait || about.portrait).height,
   'about.soloShowsLabel': about.soloShowsLabel || 'Solo shows',
   'about.soloShows': aboutList(about.soloShows),
   'about.studiesLabel': about.studiesLabel || 'Studies',

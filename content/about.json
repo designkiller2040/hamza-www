@@ -32,5 +32,11 @@
     }
   ],
   "mediaLabel": "Media",
-  "mediaCount": 3
+  "mediaCount": 3,
+  "pagePortrait": {
+    "src": "images/portrait.jpg",
+    "width": 1600,
+    "height": 2241,
+    "alt": "Portrait of Hamza Shah Mian"
+  }
 }
