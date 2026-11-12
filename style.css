@@ -1350,7 +1350,7 @@ html:has(.home2) {
 }
 
 @media (max-width: 991.98px) {
-  .h2-legal { padding-bottom: 96px; }
+  .h2-legal { margin-top: 96px; padding-bottom: 150px; }
 }
 
 /* Phone: menu size follows the Abimal menu (.site-nav) on phones */
