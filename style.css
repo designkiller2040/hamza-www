@@ -1060,10 +1060,17 @@ html:has(.home2) {
   margin-top: calc(var(--u) * 88);
 }
 
-.ab-bio {
+.ab-beside {
   grid-column: 2;
   grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--u) * 36);
   margin-top: calc(var(--u) * 89);
+}
+
+.ab-bio {
   text-align: justify;
 }
 
@@ -1076,7 +1083,8 @@ html:has(.home2) {
   justify-content: space-between;
 }
 
-.ab-links a:hover span:first-child {
+/* @hamzashah and the email are underlined (alona 2026-11-12) */
+.ab-links a span:first-child {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1128,13 +1136,13 @@ html:has(.home2) {
   }
 
   .ab-photo,
-  .ab-bio,
+  .ab-beside,
   .ab-cv,
   .ab-side {
     margin-top: 64px;
   }
 
-  .ab-side {
+  .ab-beside {
     gap: 48px;
   }
 
