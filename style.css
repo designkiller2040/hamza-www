@@ -670,7 +670,7 @@ html:has(.home2) {
   gap: calc(var(--u) * 80);
   margin: 0 auto;
   font-family: var(--garamond);
-  font-size: 0.95rem; /* same as the Abimal menu (.site-nav) */
+  font-size: 17px; /* desktop: 17px (alona 2026-11-12); phones: see end of file */
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
@@ -1354,8 +1354,33 @@ html:has(.home2) {
 }
 
 /* Phone: menu size follows the Abimal menu (.site-nav) on phones */
+@media (max-width: 991.98px) {
+  .h2-nav {
+    font-size: 0.95rem;
+  }
+}
+
 @media (max-width: 767.98px) {
   .h2-nav {
     font-size: 0.8rem;
   }
+}
+
+/* Fixed credits on every page (alona, 2026-11-12). They carry their own
+   design unit and font so they look the same on pages without .home2
+   (like /abimal/). */
+.h2-credits {
+  --u: calc(100vw / 1512);
+  --garamond: "Cormorant Garamond", Georgia, serif;
+}
+
+@media (max-width: 991.98px) {
+  .h2-credits {
+    --u: 1px;
+  }
+}
+
+/* Abimal page: room under the footer so the fixed credits don't cover it */
+body:has(.h2-credits) .site-footer {
+  padding-bottom: 160px;
 }
