@@ -5,6 +5,7 @@
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, cpSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 
 const ROOT = new URL('.', import.meta.url).pathname;
 const OUT = join(ROOT, 'dist');
@@ -201,8 +202,12 @@ const vars = {
 // Shared parts ({{> header}}, {{> footer}}) come from src/partials/.
 // {{root}} is the way back to the site root: "" on the home page,
 // "../" on pages that live in their own folder (like /abimal/).
+// style.css gets ?v=<content hash>, so a browser never pairs a new page with
+// an old cached stylesheet (GitHub Pages lets browsers cache it for 10 minutes).
+const cssVersion = createHash('sha1').update(read('style.css')).digest('hex').slice(0, 8);
 function render(file, root) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
+  html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
   html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
   const all = { ...vars, root };
   return html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
