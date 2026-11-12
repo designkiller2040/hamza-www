@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- Template: the Regards Croisés exhibition page, built to /regards-croises/. Same layout family as the Abimal page. Header and footer come from src/partials/. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{name}} — Regards Croisés</title>
+  <meta name="description" content="Regards Croisés. Hamza Shah Mian, text and curation by Jean-Rodolphe Petter.">
+  <link rel="stylesheet" href="{{root}}fonts/fonts.css">
+  <link rel="stylesheet" href="{{root}}style.css">
+</head>
+<body class="exhibition-body">
+{{> header}}
+
+  <main class="exhibition-page">
+    <article class="ex ex-rc">
+      <p class="ex-label">Latest exhibition</p>
+      <h1 class="ex-title">Regards Croisés</h1>
+
+      <figure class="ex-hero">
+        <img src="{{root}}images/regards/regards-01-hall.jpg" alt="Regards Croisés installation view: a round painting under a lit white rectangle, smaller works on both sides" width="1800" height="1252">
+      </figure>
+
+      <div class="rc-text">
+        <div class="rc-col">
+          <span class="ex-word" aria-hidden="true">Re</span>
+          <p class="ex-p">“Entering Hamza Shah Mian’s exhibition is first of all an experience of weight. Thirty-six kilograms of Afghan lapis lazuli hang in the space. The stone draws us in with its colour and preciousness as much as it unsettles us with its mass… it seems stable, yet its suspension keeps the possibility of a fall alive. This tension says something about Shah’s relationship with Afghanistan. Swiss-Afghan, he knows this land through what has been passed down to him: the stories of his mother and grandmother, the languages, the music, the tea, everyday gestures, but also the image of a mineral landscape of mountains and beige and brown earth.<br>
+          This memory also belongs to a wider cultural geography. For Shah Mian, this multiple belonging forms a métissage from which his references, his materials and his way of seeing are built: belonging is not reduced to one territory or one origin, but is shaped by the coexistence of these different heritages.”</p>
+        </div>
+        <div class="rc-col">
+          <span class="ex-word" aria-hidden="true">gards</span>
+          <p class="ex-p">“The tones of his paintings thus extend an inherited and imagined geography without trying to depict it literally. They also carry the memory of a family history marked by several major ruptures in contemporary Afghan history: his mother and grandmother left the country amid the political upheavals and conflicts that deeply transformed Afghanistan from the late 1970s and through the 1990s.<br>
+          This history resonates today with a country once again governed de facto by the Taliban since 2021, where the rights of women and girls have been almost entirely abolished, especially in education, work and participation in public life. The suspended stone condenses several tensions without trying to illustrate them directly: attachment and distance, power and vulnerability, what is passed on and what remains heavy.”</p>
+        </div>
+        <div class="rc-col">
+          <span class="ex-word" aria-hidden="true">croisés</span>
+          <p class="ex-p">“This transmission becomes even more intimate when it passes through the figure of his mother, to whom Shah Mian dedicates a large part of his work. Coffee, tea, quebracho and cutch form the deliberately limited vocabulary of his painting, applied in successive layers on raw canvas. Shah calls Abimal the grammar he has built around this practice: abstraction, so as not to impose a single story on the image; a minimal economy of materials; and expression as the transmission of an affect.<br>
+          The expression in question is not only that of the gesture: it is above all the expression of love and gratitude towards his mother. Shah Mian places this dimension within a form of matriarchal resilience, that of a mother raising her son, whose sacrifices, presence and everyday gestures in turn become material to pass on. In his family experience, love does not always come first through words or explicit displays, but through actions, presence and care. His paintings then become a way of giving this love back. A son who, in his turn, thanks the one who carried him.”</p>
+        </div>
+        <p class="rc-credit">Text &amp; curation by Jean-Rodolphe Petter</p>
+      </div>
+
+      <div class="rc-gallery">
+        <div class="rc-row">
+          <figure style="--r:1.5000"><img src="{{root}}images/regards/regards-02-room.jpg" alt="Long dark hall with lit paintings and the hanging lapis lazuli" width="1800" height="1200" loading="lazy"></figure>
+          <figure style="--r:0.6667"><img src="{{root}}images/regards/regards-03-lapis.jpg" alt="Lapis lazuli hanging from chains above a pile of coffee, a lit painting behind" width="1200" height="1800" loading="lazy"></figure>
+        </div>
+        <div class="rc-row">
+          <figure style="--r:0.6667"><img src="{{root}}images/regards/regards-04-circle.jpg" alt="Round painting lit from behind on a concrete wall" width="1200" height="1800" loading="lazy"></figure>
+          <figure style="--r:0.7500"><img src="{{root}}images/regards/regards-05-wall.jpg" alt="Round painting under a lit white rectangle, a small work on each side" width="1350" height="1800" loading="lazy"></figure>
+          <figure style="--r:0.6667"><img src="{{root}}images/regards/regards-06-panels.jpg" alt="Two lit paintings standing on the floor in front of a dark wall" width="1200" height="1800" loading="lazy"></figure>
+        </div>
+        <div class="rc-row">
+          <figure style="--r:1.5000"><img src="{{root}}images/regards/regards-07-paintings.jpg" alt="Four lit paintings in a row under concrete beams" width="1800" height="1200" loading="lazy"></figure>
+          <figure style="--r:1.5000"><img src="{{root}}images/regards/regards-08-room-circle.jpg" alt="The hall with a row of paintings and the round painting at the far end" width="1800" height="1200" loading="lazy"></figure>
+        </div>
+        <div class="rc-row rc-row-narrow">
+          <figure style="--r:0.6667"><img src="{{root}}images/regards/regards-09-room.jpg" alt="Round painting, two plinths and a framed work in the dark hall" width="1200" height="1800" loading="lazy"></figure>
+          <figure style="--r:0.7139"><img src="{{root}}images/regards/regards-10-portrait.jpg" alt="Portrait of Hamza Shah Mian in front of one of his paintings" width="1285" height="1800" loading="lazy"></figure>
+        </div>
+      </div>
+    </article>
+  </main>
+
+{{> footer}}
+
+{{> credits}}
+</body>
+</html>

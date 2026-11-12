@@ -1412,3 +1412,162 @@ body:has(.h2-credits) .site-footer {
     padding-top: 66px;
   }
 }
+
+/* ---------------------------------------------------------------
+   Single-column exhibition pages (/venerate/, /coldrush/)
+   Same 914-unit scheme as /abimal/: everything sits in the middle
+   458-unit column, like the old Readymag pages.
+   --------------------------------------------------------------- */
+.ex-single .ex-hero,
+.ex-single .ex-slot,
+.ex-single .ex-pair {
+  width: calc(var(--u) * 458.7);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ex-single .ex-s1 { margin-top: calc(var(--u) * 33); }
+
+/* The first text keeps a fixed slot, so the second photo always starts
+   at the same height (Readymag y 568 -> 715). */
+.ex-single .ex-slot {
+  min-height: calc(var(--u) * 146.85);
+  margin-top: calc(var(--u) * 60.5);
+}
+
+.ex-single .ex-slot .ex-p + .ex-p {
+  margin-top: calc(var(--u) * 13);
+}
+
+.ex-single .ex-s2 { margin-top: 0; }
+
+.ex-single .ex-pair {
+  display: grid;
+  grid-template-columns: 176.22fr 220.6fr;
+  column-gap: calc(var(--u) * 61.8);
+  align-items: start;
+  margin-top: calc(var(--u) * 51.4);
+}
+
+.ex-single .ex-pair-one {
+  grid-template-columns: 1fr;
+}
+
+/* ---------------------------------------------------------------
+   Regards Croisés (/regards-croises/)
+   Same top as /abimal/; the three words each head one column of the
+   curator's text, then the photos in rows of equal height.
+   --------------------------------------------------------------- */
+.rc-text {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--u) * 274));
+  justify-content: space-between;
+  align-items: start;
+  margin-top: calc(var(--u) * 109);
+}
+
+.ex-rc .ex-word {
+  display: block;
+  margin: 0;
+}
+
+.rc-col .ex-p {
+  margin-top: calc(var(--u) * 35);
+}
+
+.rc-credit {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin: calc(var(--u) * 43) 0 0;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: calc(var(--u) * 11);
+  line-height: calc(var(--u) * 13);
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.rc-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 23);
+  margin-top: calc(var(--u) * 132);
+}
+
+/* Each photo's share of the row is its width/height ratio (--r),
+   so every photo in a row ends up the same height. */
+.rc-row {
+  display: flex;
+  gap: calc(var(--u) * 23);
+}
+
+.rc-row figure {
+  flex: var(--r) 1 0;
+  min-width: 0;
+}
+
+.rc-row img {
+  height: auto;
+}
+
+/* Two portraits side by side would be very tall at full width */
+.rc-row-narrow {
+  width: calc(var(--u) * 609);
+  margin: 0 auto;
+}
+
+@media (max-width: 767.98px) {
+  .ex-single .ex-hero,
+  .ex-single .ex-slot,
+  .ex-single .ex-pair {
+    width: auto;
+  }
+
+  .ex-single .ex-s1 { margin-top: calc(var(--u) * 46); }
+  .ex-single .ex-s1 img { aspect-ratio: 295 / 213; }
+  .ex-single .ex-s2 img { aspect-ratio: 297 / 185; }
+
+  .ex-single .ex-slot {
+    min-height: 0;
+    margin-top: calc(var(--u) * 45);
+  }
+
+  .ex-single .ex-s2 { margin-top: calc(var(--u) * 59); }
+
+  .ex-single .ex-pair {
+    grid-template-columns: 1fr;
+    row-gap: calc(var(--u) * 32);
+    margin-top: calc(var(--u) * 48);
+  }
+
+  .rc-text {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .rc-col { margin-top: calc(var(--u) * 45); }
+  .rc-col + .rc-col { margin-top: calc(var(--u) * 66); }
+  .rc-col .ex-p { margin-top: calc(var(--u) * 40); }
+
+  .rc-credit {
+    margin-top: calc(var(--u) * 37);
+  }
+
+  .rc-gallery,
+  .rc-row {
+    gap: calc(var(--u) * 25);
+  }
+
+  .rc-gallery { margin-top: calc(var(--u) * 42); }
+
+  .rc-row {
+    flex-direction: column;
+  }
+
+  .rc-row-narrow {
+    width: auto;
+  }
+
+  .rc-row figure {
+    flex: none;
+  }
+}

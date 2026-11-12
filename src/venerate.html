@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- Template: the What We Venerate exhibition page, built to /venerate/. Copy and layout follow the old Readymag page (hamzashah.ch/venerate). Header and footer come from src/partials/. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{name}} — What We Venerate 2025</title>
+  <meta name="description" content="What We Venerate. Coffee, lapis lazuli, chain. Mahalla Open, Berlin Art Week 2025.">
+  <link rel="stylesheet" href="{{root}}fonts/fonts.css">
+  <link rel="stylesheet" href="{{root}}style.css">
+</head>
+<body class="exhibition-body">
+{{> header}}
+
+  <main class="exhibition-page">
+    <article class="ex ex-single">
+      <p class="ex-label">Previous exhibition</p>
+      <h1 class="ex-title">What We Venerate<br>Mahalla Open - Berlin Art Week 2025</h1>
+
+      <figure class="ex-hero ex-s1">
+        <img src="{{root}}images/venerate/venerate-01-room.jpg" alt="Piles of coffee and a lapis lazuli stone hanging from chains in an old tiled room" width="1800" height="1199">
+      </figure>
+
+      <div class="ex-slot">
+        <p class="ex-p">This installation grew out of a reflection on Afghanistan, its land, its history, its people. the piles of coffee represent the mountains of the country: dry, vast, silent, full of memory and scent.</p>
+        <p class="ex-p">I weilded old chains measured specifically for this specimen of lapis lazuli. the stone comes from my family, brought in 2003. lapis has always held a special meaning there, the bluest stone, deep and luminous, mined from the same mountains. it represents the heart of all the women in afghanistan: still present, still powerful, even under the weight of oppression. it also speaks for the country as a whole, a place that feels like an open-air jail.</p>
+      </div>
+
+      <figure class="ex-hero ex-s2">
+        <img src="{{root}}images/venerate/venerate-02-visitors.jpg" alt="Visitors talking under the hanging lapis lazuli among the piles of coffee" width="1800" height="1200" loading="lazy">
+      </figure>
+
+      <div class="ex-pair">
+        <p class="ex-p">The chain connects the piece and confines it at the same time. i think about how freedom can feel like that, heavy, suspended, never simple.. i wanted the work to be physical, to make that weight felt, not just imagined.  the use of coffee also speaks about fast consumption, how something we drink every morning for energy becomes a symbol of productivity and habit.</p>
+        <p class="ex-p">Here it’s transformed into something still. a landscape that asks for slowness, calm, and presence. to stop and look, to sense what we often overlook in our daily rhythm. what we forget nowadays.  for me, this piece is not only about afghanistan as a place, but about how people keep their heart and dignity even when everything feels restricted. the materials, the coffee, the stone, the metal, each carry their own history, but together they hold a moment of balance.</p>
+      </div>
+    </article>
+  </main>
+
+{{> footer}}
+
+{{> credits}}
+</body>
+</html>
