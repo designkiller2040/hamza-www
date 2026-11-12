@@ -4,7 +4,8 @@
   --muted: #888;
   --placeholder: #ece8e3;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* One font on the whole site (alona, 2026-11-12) */
+  --sans: var(--serif);
   /* Space between the screen edge and the content.
      124px on desktop, smaller on tablets and phones (see breakpoints at the end). */
   --gutter: 124px;
@@ -473,7 +474,7 @@ figcaption {
 
 .ex-label {
   margin: 0;
-  font-family: "EB Garamond", Georgia, serif;
+  font-family: var(--serif);
   font-size: calc(var(--u) * 10);
   line-height: calc(var(--u) * 12);
   text-align: center;
@@ -521,7 +522,7 @@ figcaption {
 
 .ex-p {
   margin: 0;
-  font-family: "EB Garamond", Georgia, serif;
+  font-family: var(--serif);
   font-size: calc(var(--u) * 11);
   line-height: calc(var(--u) * 13);
   text-align: justify;
@@ -987,8 +988,7 @@ html:has(.home2) {
   column-gap: calc(var(--u) * 127);
   justify-content: center;
   padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
-  /* Newsreader, the face in the design */
-  font-family: "Newsreader", Georgia, serif;
+  font-family: var(--serif);
   font-size: calc(var(--u) * 15);
   line-height: calc(var(--u) * 18);
   letter-spacing: -0.01em;
@@ -1251,14 +1251,14 @@ html:has(.home2) {
 
 /* ---------------------------------------------------------------
    Legal notice & Privacy (/legal/), styled like the About page:
-   Newsreader, italic labels, one justified column as wide as the
+   Cormorant Garamond, italic labels, one justified column as wide as the
    About page's two columns (273 + 127 + 273 design px).
    --------------------------------------------------------------- */
 .lg {
   width: calc(var(--u) * 673);
   margin: 0 auto;
   padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
-  font-family: "Newsreader", Georgia, serif;
+  font-family: var(--serif);
   font-size: calc(var(--u) * 15);
   line-height: calc(var(--u) * 18);
   letter-spacing: -0.01em;
@@ -1475,7 +1475,7 @@ body:has(.h2-credits) .site-footer {
   grid-column: 1 / -1;
   justify-self: end;
   margin: calc(var(--u) * 43) 0 0;
-  font-family: "EB Garamond", Georgia, serif;
+  font-family: var(--serif);
   font-size: calc(var(--u) * 11);
   line-height: calc(var(--u) * 13);
   color: rgba(0, 0, 0, 0.55);
