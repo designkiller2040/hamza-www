@@ -1236,7 +1236,8 @@ html:has(.home2) {
   .home2 .about .bio {
     width: calc(var(--u) * 473);
     margin: 0;
-    font-size: calc(var(--u) * 13);
+    /* Main text size, same as the About and Legal pages (alona 2026-11-12) */
+    font-size: calc(var(--u) * 15);
     line-height: 1.3;
   }
 
