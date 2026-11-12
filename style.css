@@ -1607,3 +1607,13 @@ body:has(.h2-credits) .site-footer {
     padding: 0 66px 66px;
   }
 }
+
+/* Main text size on desktop: exhibition page paragraphs match the About,
+   Legal and Home texts at 15 px on a 1512 px wide window (alona 2026-11-12). */
+@media (min-width: 992px) {
+  .ex-p,
+  .rc-credit {
+    font-size: calc(100vw / 1512 * 15);
+    line-height: calc(100vw / 1512 * 18);
+  }
+}
