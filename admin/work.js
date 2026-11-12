@@ -2,28 +2,22 @@
 A.start(function () {
   var slugParam = A.param('slug');
   var isNew = !slugParam || A.param('new') === '1';
-  var works = [], me = null, ed = null, zone = null, slugTouched = false;
+  var works = [], home2 = { rows: [] }, me = null, ed = null, zone = null, slugTouched = false;
   var $ = function (id) { return document.getElementById(id); };
   var F = ['title', 'year', 'materials', 'size', 'alt', 'note', 'row', 'slug'];
 
-  function rowOf(w) { return Number(w.data.layout && w.data.layout.row) || 1; }
-  function rowNumbers() {
-    var s = {};
-    works.forEach(function (w) { if (!me || w.slug !== me.slug) s[rowOf(w)] = 1; });
-    if (me && !isNew) s[rowOf(me)] = 1;
-    return Object.keys(s).map(Number).sort(function (a, b) { return a - b; });
-  }
+  // Rows are the homepage rows in content/home2.json.
+  function title(slug) { var w = works.filter(function (x) { return x.slug === slug; })[0]; return w ? w.data.title : slug; }
+  function currentRow() { return me ? A.H2.rowOf(home2, me.slug) : -1; }
   function fillRows() {
-    var nums = rowNumbers();
-    $('row').innerHTML = nums.map(function (r, i) {
-      var names = works.filter(function (w) { return rowOf(w) === r && (!me || w.slug !== me.slug); })
-        .sort(function (a, b) { return a.data.layout.left - b.data.layout.left; })
-        .map(function (w) { return w.data.title; });
+    $('row').innerHTML = home2.rows.map(function (r, i) {
+      var names = r.works.filter(function (p) { return !me || p.slug !== me.slug; }).map(function (p) { return title(p.slug); });
       var label = 'Row ' + (i + 1) + (names.length ? ': ' + names.join(', ') : '');
       if (label.length > 70) label = label.slice(0, 68) + '…';
-      return '<option value="' + r + '">' + A.esc(label) + '</option>';
-    }).join('') + '<option value="new">A new row at the bottom</option>';
+      return '<option value="' + i + '">' + A.esc(label) + '</option>';
+    }).join('') + '<option value="new">A new row at the bottom</option><option value="none">Not on the homepage</option>';
   }
+  function rowValue() { var r = currentRow(); return r < 0 ? (me ? 'none' : 'new') : String(r); }
 
   function state() {
     var s = {};
@@ -51,7 +45,7 @@ A.start(function () {
   function lockSlug(slug) {
     $('slug-wrap').hidden = true;
     $('slug-lock').hidden = false;
-    $('slug-lock').querySelector('span').textContent = 'Page address: ' + location.host + '../#work-' + slug;
+    $('slug-lock').querySelector('span').textContent = 'Page address: ' + new URL('../#work-' + slug, location.href).href.replace(/^https?:\/\//, '');
     $('view').href = '../#work-' + slug;
     $('view').removeAttribute('aria-disabled');
   }
@@ -75,56 +69,47 @@ A.start(function () {
     var slug = isNew ? A.slugify($('slug').value || $('title').value) : me.slug;
     var path = 'content/works/' + slug + '.json';
     var old = me ? me.data : null;
-    var data = old ? JSON.parse(JSON.stringify(old)) : { layout: {} };
+    var data = old ? JSON.parse(JSON.stringify(old)) : {};
     ['title', 'year', 'materials', 'size', 'note'].forEach(function (k) { data[k] = $(k).value.trim(); });
     var alt = $('alt').value.trim();
     var img = A.imageChanges(zone, old && old.image, 'works', slug, alt);
     data.image = img.image;
     var changes = img.changes.slice();
-    var forget = [];
-
-    var oldRow = old ? rowOf(me) : null;
-    var pick = $('row').value;
-    var others = works.filter(function (w) { return w.slug !== slug; });
-    var maxRow = Math.max.apply(null, [0].concat(works.map(rowOf)));
-    var newRow = pick === 'new' ? maxRow + 1 : Number(pick);
-    if (pick === 'new' && old && oldRow === maxRow && others.every(function (w) { return rowOf(w) !== oldRow; })) newRow = oldRow;
-
-    var copies = {};
-    function copy(w) { return copies[w.slug] || (copies[w.slug] = { path: w.path, data: JSON.parse(JSON.stringify(w.data)) }); }
-
-    if (!old || newRow !== oldRow) {
-      // Joining a row: lay the row out again with this work at the end.
-      data.layout = data.layout || {};
-      data.layout.row = newRow;
-      var rowItems = others.filter(function (w) { return rowOf(w) === newRow; })
-        .sort(function (a, b) { return a.data.layout.left - b.data.layout.left; }).map(function (w) { return copy(w).data; });
-      A.autoLayout(rowItems.concat([data]));
-      forget.push(newRow);
-      if (old) {
-        var left = others.filter(function (w) { return rowOf(w) === oldRow; })
-          .sort(function (a, b) { return a.data.layout.left - b.data.layout.left; }).map(function (w) { return copy(w).data; });
-        A.autoLayout(left);
-        forget.push(oldRow);
-      }
-    } else if (zone.hasUpload() && A.workRatio(data) !== data.layout.ratio) {
-      // New picture with a different shape: same width, new height.
-      data.layout.ratio = A.workRatio(data);
-      forget.push(newRow);
-    }
-
     changes.push({ path: path, text: A.json(data) });
-    Object.keys(copies).forEach(function (s) {
-      var c = copies[s];
-      var orig = works.filter(function (w) { return w.slug === s; })[0];
-      if (JSON.stringify(c.data) !== JSON.stringify(orig.data)) changes.push({ path: c.path, text: A.json(c.data) });
-    });
-    if (forget.length) changes.push(A.forgetRowHeights(forget));
+
+    // Homepage placement (content/home2.json).
+    var was = currentRow();
+    var pick = $('row').value;
+    var size = A.H2.size(data);
+    var moved = isNew || pick !== rowValue();
+    var reshaped = !moved && zone.hasUpload() && was >= 0;
+    function place(h2) {
+      if (moved) {
+        var target = pick === 'new' || pick === 'none' ? null : h2.rows[Number(pick)];
+        A.H2.remove(h2, slug);
+        if (pick === 'new') {
+          h2.rows.push(A.H2.place({ height: 0, works: [{ slug: slug, x: A.H2.LEFT, y: 0, w: size.w, h: size.h, caption: 'below' }] }));
+        } else if (target && h2.rows.indexOf(target) >= 0) {
+          target.works.push({ slug: slug, x: 0, y: 0, w: size.w, h: size.h, caption: 'below' });
+          A.H2.place(target);
+        }
+      } else if (reshaped) {
+        // New picture with a different shape: keep its width, adjust its height.
+        h2.rows.forEach(function (r) {
+          r.works.forEach(function (p) {
+            if (p.slug === slug && p.h && data.image) {
+              p.h = Math.round(p.w * data.image.height / data.image.width);
+              A.H2.place(r);
+            }
+          });
+        });
+      }
+    }
+    if (moved || reshaped) changes.push(A.H2.update(place));
 
     var msg = (isNew ? 'Add work: ' : 'Update work: ') + data.title;
     return A.commit(msg, changes).then(function () {
-      // Keep our copy of everything in step with what was saved.
-      Object.keys(copies).forEach(function (s) { works.filter(function (w) { return w.slug === s; })[0].data = copies[s].data; });
+      if (moved || reshaped) place(home2);
       if (isNew) {
         me = { slug: slug, path: path, data: data };
         works.push(me);
@@ -138,7 +123,7 @@ A.start(function () {
       zone.saved(data.image);
       noteBanner(data.note);
       fillRows();
-      $('row').value = String(rowOf(me));
+      $('row').value = rowValue();
     });
   }
 
@@ -150,15 +135,8 @@ A.start(function () {
     btn.lastChild.textContent = 'Deleting…';
     var changes = [{ path: me.path, remove: true }];
     if (me.data.image && me.data.image.src) changes.push({ path: me.data.image.src, remove: true });
-    var row = rowOf(me);
-    var rest = works.filter(function (w) { return w.slug !== me.slug && rowOf(w) === row; })
-      .sort(function (a, b) { return a.data.layout.left - b.data.layout.left; });
-    if (rest.length) {
-      var ds = rest.map(function (w) { return JSON.parse(JSON.stringify(w.data)); });
-      A.autoLayout(ds);
-      rest.forEach(function (w, i) { changes.push({ path: w.path, text: A.json(ds[i]) }); });
-    }
-    changes.push(A.forgetRowHeights([row]));
+    var slug = me.slug;
+    changes.push(A.H2.update(function (h2) { A.H2.remove(h2, slug); }));
     A.commit('Delete work: ' + (me.data.title || me.slug), changes).then(function () {
       ed.leave('works.html');
     }).catch(function (e) {
@@ -168,8 +146,10 @@ A.start(function () {
     });
   }
 
-  return A.readFolder('content/works').then(function (all) {
-    works = all;
+  return Promise.all([A.readFolder('content/works'), A.readJSON(A.H2.PATH)]).then(function (res) {
+    works = res[0];
+    home2 = res[1] || { rows: [] };
+    home2.rows = home2.rows || [];
     if (!isNew) {
       me = works.filter(function (w) { return w.slug === slugParam; })[0];
       if (!me) throw new Error('There’s no work called “' + slugParam + '”. It may have been deleted.');
@@ -179,7 +159,7 @@ A.start(function () {
     ['title', 'year', 'materials', 'size', 'note'].forEach(function (k) { $(k).value = d[k] || ''; });
     $('alt').value = (d.image && d.image.alt) || '';
     fillRows();
-    $('row').value = me ? String(rowOf(me)) : 'new';
+    $('row').value = rowValue();
     if (me) { $('slug').value = me.slug; lockSlug(me.slug); }
     else { $('delete').hidden = true; $('view').setAttribute('aria-disabled', 'true'); }
     noteBanner(d.note);

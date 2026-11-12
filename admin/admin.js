@@ -253,7 +253,9 @@
   A.MAX_BYTES = 20 * 1024 * 1024;
   A.MAX_SIDE = 2400;
 
-  A.imageURL = function (src) { return src ? '/' + String(src).replace(/^\//, '') : ''; };
+  // The admin lives at <site>/admin/, so site files are one folder up
+  // (works on GitHub Pages under /hamza-www/ and on a custom domain alike).
+  A.imageURL = function (src) { return src ? '../' + String(src).replace(/^\//, '') : ''; };
   // A new image may not be on the live site until Netlify finishes. Then load it from GitHub.
   A.showImage = function (img, src) {
     img.onerror = function () {
@@ -637,6 +639,62 @@
     };
   };
   function round2(x) { return Math.round(x * 100) / 100; }
+
+  /* ---------- Homepage works layout (content/home2.json) ---------- */
+  // Rows of works placed in design pixels on a 1512 px page: left works start at
+  // x 66, right works end at 1446, middle works are centred on 756.
+  var H2 = A.H2 = { PATH: 'content/home2.json', LEFT: 66, RIGHT: 1446, MID: 756, BELOW: 268, PHOTO_H: 318, MAX_W: 801 };
+  H2.rowOf = function (home2, slug) {
+    for (var i = 0; i < home2.rows.length; i++) {
+      if (home2.rows[i].works.some(function (p) { return p.slug === slug; })) return i;
+    }
+    return -1;
+  };
+  // Photo size for a work joining a row: 318 px tall, at most 801 px wide.
+  H2.size = function (work) {
+    var r = work.image && work.image.width ? work.image.width / work.image.height : 1;
+    var h = H2.PHOTO_H, w = Math.round(h * r);
+    if (w > H2.MAX_W) { w = H2.MAX_W; h = Math.round(w / r); }
+    return { w: w, h: h };
+  };
+  // Lay a row out along the anchors, keeping each photo's size.
+  H2.place = function (row, keepHeight) {
+    var ps = row.works, n = ps.length;
+    if (n === 1) ps[0].x = H2.LEFT;
+    else if (n === 2) { ps[0].x = H2.LEFT; ps[1].x = H2.RIGHT - ps[1].w; }
+    else if (n === 3) { ps[0].x = H2.LEFT; ps[1].x = Math.round(H2.MID - ps[1].w / 2); ps[2].x = H2.RIGHT - ps[2].w; }
+    else if (n > 3) {
+      var total = ps.reduce(function (a, p) { return a + p.w; }, 0);
+      var gap = (H2.RIGHT - H2.LEFT - total) / (n - 1), x = H2.LEFT;
+      ps.forEach(function (p) { p.x = Math.round(x); x += p.w + gap; });
+    }
+    if (!keepHeight && n) {
+      row.height = Math.max.apply(null, ps.map(function (p) { return (p.y || 0) + (p.h || H2.PHOTO_H); })) + H2.BELOW;
+    }
+    return row;
+  };
+  // Remove a work from every row; empty rows disappear.
+  H2.remove = function (home2, slug) {
+    home2.rows.forEach(function (r) {
+      var before = r.works.length;
+      r.works = r.works.filter(function (p) { return p.slug !== slug; });
+      if (r.works.length !== before && r.works.length) H2.place(r);
+    });
+    home2.rows = home2.rows.filter(function (r) { return r.works.length; });
+    return home2;
+  };
+  // An update for home2.json that re-reads the latest version before changing it.
+  H2.update = function (fn) {
+    return {
+      path: H2.PATH,
+      update: function (old) {
+        var data = old ? JSON.parse(old) : { rows: [] };
+        data.rows = data.rows || [];
+        fn(data);
+        return A.json(data);
+      },
+    };
+  };
 
   /* ---------- Page start ---------- */
   A.start = function (fn) {

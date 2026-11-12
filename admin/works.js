@@ -4,13 +4,18 @@ A.start(function () {
   var saveBtn = A.$('#save-order');
   var works = [], rows = [], before = '';
 
-  function rowOf(w) { return Number(w.data.layout && w.data.layout.row) || 1; }
+  var home2 = { rows: [] };
+  function bySlug(slug) { return works.filter(function (w) { return w.slug === slug; })[0]; }
+  // Groups follow the homepage rows (content/home2.json). Works that aren't
+  // placed on the homepage go in a last group.
   function group() {
-    var by = {};
-    works.forEach(function (w) { (by[rowOf(w)] = by[rowOf(w)] || []).push(w); });
-    rows = Object.keys(by).map(Number).sort(function (a, b) { return a - b; }).map(function (r) {
-      return { row: r, items: by[r].sort(function (a, b) { return a.data.layout.left - b.data.layout.left; }) };
-    });
+    var placed = {};
+    rows = home2.rows.map(function (r, i) {
+      var items = r.works.map(function (p) { placed[p.slug] = 1; return bySlug(p.slug); }).filter(Boolean);
+      return { row: i, items: items };
+    }).filter(function (r) { return r.items.length; });
+    var loose = works.filter(function (w) { return !placed[w.slug]; });
+    if (loose.length) rows.push({ row: 'none', items: loose });
   }
   function orderKey() { return rows.map(function (r) { return r.items.map(function (w) { return w.slug; }).join(','); }).join('|'); }
 
@@ -34,14 +39,14 @@ A.start(function () {
     list.innerHTML = '<div class="groups">' + rows.map(function (r, gi) {
       var last = gi === rows.length - 1;
       return '<div class="group" data-row="' + r.row + '">' +
-        '<div class="group-head"><h3>Row ' + (gi + 1) + '</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
+        '<div class="group-head"><h3>' + (r.row === 'none' ? 'Not on the homepage' : 'Row ' + (gi + 1)) + '</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
         '<div class="cards">' + r.items.map(function (w) { n++; return card(w, n); }).join('') +
         (last ? '<a class="new-card" href="work.html?new=1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New work</a>' : '') +
         '</div></div>';
     }).join('') + (rows.length ? '' : '<div class="cards"><a class="new-card" href="work.html?new=1">+ New work</a></div>') +
       '</div><p class="empty-search" id="no-results" hidden>No works match that search.</p>';
     A.$$('img[data-src]', list).forEach(function (img) { A.showImage(img, img.dataset.src); });
-    A.$$('.group .cards', list).forEach(function (c) {
+    A.$$('.group:not([data-row="none"]) .cards', list).forEach(function (c) {
       A.sortable(c, { items: '.card', disabled: searching, onEnd: changed });
     });
   }
@@ -88,39 +93,45 @@ A.start(function () {
   saveBtn.addEventListener('click', function () {
     saveBtn.disabled = true;
     saveBtn.textContent = 'Saving…';
-    var changes = [];
+    // New order of each homepage row that changed.
+    var orders = {};
     rows.forEach(function (r) {
-      var copies = r.items.map(function (w) { return { slug: w.slug, path: w.path, data: JSON.parse(JSON.stringify(w.data)) }; });
-      var ds = copies.map(function (c) { return c.data; });
-      // Was this row reordered?
-      var was = r.items.slice().sort(function (a, b) { return a.data.layout.left - b.data.layout.left; }).map(function (w) { return w.slug; }).join(',');
-      if (was === r.items.map(function (w) { return w.slug; }).join(',')) return;
-      A.slotLayout(ds);
-      copies.forEach(function (c, i) {
-        if (JSON.stringify(c.data) !== JSON.stringify(r.items[i].data)) changes.push({ path: c.path, text: A.json(c.data), copy: c });
-      });
+      if (r.row === 'none') return;
+      var was = home2.rows[r.row].works.map(function (p) { return p.slug; }).join(',');
+      var now = r.items.map(function (w) { return w.slug; });
+      if (now.join(',') !== was) orders[r.row] = now;
     });
-    if (!changes.length) { saveBtn.hidden = true; saveBtn.disabled = false; saveBtn.textContent = 'Save order'; return; }
-    A.commit('Reorder works', changes.map(function (c) { return { path: c.path, text: c.text }; })).then(function () {
-      changes.forEach(function (c) {
-        var w = works.filter(function (x) { return x.slug === c.copy.slug; })[0];
-        w.data = c.copy.data;
+    function apply(data) {
+      Object.keys(orders).forEach(function (i) {
+        var row = data.rows[i];
+        if (!row) return;
+        var want = orders[i];
+        var same = row.works.length === want.length && row.works.every(function (p) { return want.indexOf(p.slug) >= 0; });
+        if (!same) return; // someone changed this row meanwhile; leave it
+        row.works.sort(function (a, b) { return want.indexOf(a.slug) - want.indexOf(b.slug); });
+        A.H2.place(row, true);
       });
-      group();
+    }
+    function done() { saveBtn.disabled = false; saveBtn.textContent = 'Save order'; }
+    if (!Object.keys(orders).length) { saveBtn.hidden = true; done(); return; }
+    A.commit('Reorder works on the homepage', [A.H2.update(apply)]).then(function () {
+      apply(home2);
       before = orderKey();
       saveBtn.hidden = true;
       A.toast('Order saved. The site updates in about a minute.');
     }).catch(function (e) {
       A.toast('Couldn’t save the order: ' + e.message, true);
-    }).then(function () { saveBtn.disabled = false; saveBtn.textContent = 'Save order'; });
+    }).then(done);
   });
 
   window.addEventListener('beforeunload', function (e) {
     if (!saveBtn.hidden) { e.preventDefault(); e.returnValue = ''; }
   });
 
-  return A.readFolder('content/works').then(function (all) {
-    works = all;
+  return Promise.all([A.readFolder('content/works'), A.readJSON(A.H2.PATH)]).then(function (res) {
+    works = res[0];
+    home2 = res[1] || { rows: [] };
+    home2.rows = home2.rows || [];
     group();
     before = orderKey();
     render();
