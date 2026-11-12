@@ -670,7 +670,7 @@ html:has(.home2) {
   gap: calc(var(--u) * 80);
   margin: 0 auto;
   font-family: var(--garamond);
-  font-size: 12px;
+  font-size: 0.95rem; /* same as the Abimal menu (.site-nav) */
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
@@ -1351,4 +1351,11 @@ html:has(.home2) {
 
 @media (max-width: 991.98px) {
   .h2-legal { padding-bottom: 96px; }
+}
+
+/* Phone: menu size follows the Abimal menu (.site-nav) on phones */
+@media (max-width: 767.98px) {
+  .h2-nav {
+    font-size: 0.8rem;
+  }
 }
