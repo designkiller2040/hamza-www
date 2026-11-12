@@ -26,23 +26,25 @@
       <img src="{{root}}{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
     </figure>
 
+    <!-- Beside the photo -->
+    <div class="ab-bio">
+{{{about.bio}}}
+    </div>
+
+    <!-- Under the photo: Studies, then Solo shows (the list Hamza keeps adding to) -->
     <div class="ab-cv">
-      <div class="ab-block">
-        <h2 class="ab-label">{{about.soloShowsLabel}}</h2>
-        <div class="ab-list">
-{{{about.soloShows}}}
-        </div>
-      </div>
       <div class="ab-block ab-studies">
         <h2 class="ab-label">{{about.studiesLabel}}</h2>
         <div class="ab-list">
 {{{about.studies}}}
         </div>
       </div>
-    </div>
-
-    <div class="ab-bio">
-{{{about.bio}}}
+      <div class="ab-block ab-solo">
+        <h2 class="ab-label">{{about.soloShowsLabel}}</h2>
+        <div class="ab-list">
+{{{about.soloShows}}}
+        </div>
+      </div>
     </div>
 
     <p class="ab-links">
