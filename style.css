@@ -670,7 +670,7 @@ html:has(.home2) {
   gap: calc(var(--u) * 80);
   margin: 0 auto;
   font-family: var(--garamond);
-  font-size: 17px; /* desktop: 17px (alona 2026-11-12); phones: see end of file */
+  font-size: 15px; /* desktop: 15px (alona 2026-11-12, was 17); phones: see end of file */
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
@@ -1565,5 +1565,44 @@ body:has(.h2-credits) .site-footer {
 
   .rc-row figure {
     flex: none;
+  }
+}
+
+/* Desktop: real 66 px margins on every screen width, not scaled
+   (alona 2026-11-12). The design unit --u now divides the space between
+   the margins (1380 design px) instead of the whole 1512 frame, so the
+   works keep their places and sizes relative to each other. */
+@media (min-width: 992px) {
+  .home-page {
+    --u: calc((100vw - 132px) / 1380);
+  }
+
+  /* -3px: the letters start a little below the top of their line */
+  .home-page .h2-header {
+    padding-top: 64px;
+  }
+
+  /* Photo starts under the menu (66 px + its 15 px line) with the
+     design gap; it fits above the caption and the credits. */
+  .home-page .h2-slides .hero {
+    padding: calc(81px + var(--u) * 41) 66px 0;
+  }
+
+  .hero-js .home-page .hero-frame,
+  .home-page.hero-js .hero-frame,
+  .home-page .hero-frame {
+    max-height: calc(100svh - 147px - var(--u) * 147 - 2rem);
+  }
+
+  .home-page main section.about {
+    padding: calc(var(--u) * 200) 66px 0;
+  }
+
+  .home-page .w2 {
+    left: calc(66px + var(--u) * (var(--x) - 66 - 42));
+  }
+
+  .h2-credits {
+    padding: 0 66px 66px;
   }
 }
