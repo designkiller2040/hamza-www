@@ -656,7 +656,7 @@ html:has(.home2) {
 
 .h2-header {
   top: 0;
-  padding: calc(var(--u) * 66) 0 0;
+  padding: calc(var(--u) * 44) 0 0;
 }
 
 /* The logo is black with a white fill; inverted so the difference turns it
@@ -723,7 +723,8 @@ html:has(.home2) {
   /* Name sits on the same bottom line as "digital art direction" */
   align-items: end;
   bottom: 0;
-  padding: 0 calc(var(--u) * 66) calc(var(--u) * 66);
+  /* sides: 66 px like the homepage content; bottom as on the About page */
+  padding: 0 66px calc(var(--u) * 44);
 }
 
 .h2-signature {
@@ -1371,14 +1372,31 @@ html:has(.home2) {
 /* Fixed credits on every page (alona, 2026-11-12). They carry their own
    design unit and font so they look the same on pages without .home2
    (like /abimal/). */
+/* Master elements: the fixed top menu (src/partials/menu.html) and
+   bottom credits (src/partials/credits.html) look exactly the same on
+   every page, as on the About page (alona, 2026-11-12). They carry their
+   own design unit and font so the page around them can't change them. */
+.h2-header,
 .h2-credits {
   --u: calc(100vw / 1512);
   --garamond: "Cormorant Garamond", Georgia, serif;
 }
 
 @media (max-width: 991.98px) {
+  .h2-header,
   .h2-credits {
     --u: 1px;
+  }
+}
+
+/* Exhibition pages: room at the top for the fixed menu */
+.exhibition-body .exhibition-page {
+  padding-top: calc(100vw * 100 / 1512);
+}
+
+@media (max-width: 991.98px) {
+  .exhibition-body .exhibition-page {
+    padding-top: 72px;
   }
 }
 
@@ -1391,16 +1409,6 @@ body:has(.h2-credits) .site-footer {
    exhibition pages (alona, 2026-11-12). About and Legal keep their own
    grid, so their fixed menu and credits stay at 44 / 80 px. */
 @media (min-width: 992px) {
-  .about2 .h2-header,
-  .legal2 .h2-header {
-    padding-top: calc(var(--u) * 44);
-  }
-
-  .about2 .h2-credits,
-  .legal2 .h2-credits {
-    padding: 0 calc(var(--u) * 80) calc(var(--u) * 44);
-  }
-
   .exhibition-body {
     --gutter: 66px;
   }
@@ -1578,21 +1586,16 @@ body:has(.h2-credits) .site-footer {
     --u: calc((100vw - 132px) / 1380);
   }
 
-  /* -3px: the letters start a little below the top of their line */
-  .home-page .h2-header {
-    padding-top: 64px;
-  }
-
-  /* Photo starts under the menu (66 px + its 15 px line) with the
-     design gap; it fits above the caption and the credits. */
+  /* Photo starts under the master menu (44 design px from the top)
+     and fits above the caption and the credits. */
   .home-page .h2-slides .hero {
-    padding: calc(81px + var(--u) * 41) 66px 0;
+    padding: calc(100vw * 100 / 1512) 66px 0;
   }
 
   .hero-js .home-page .hero-frame,
   .home-page.hero-js .hero-frame,
   .home-page .hero-frame {
-    max-height: calc(100svh - 147px - var(--u) * 147 - 2rem);
+    max-height: calc(100svh - 100vw * 250 / 1512 - 2rem);
   }
 
   .home-page main section.about {
@@ -1603,7 +1606,4 @@ body:has(.h2-credits) .site-footer {
     left: calc(66px + var(--u) * (var(--x) - 66 - 42));
   }
 
-  .h2-credits {
-    padding: 0 66px 66px;
-  }
 }
