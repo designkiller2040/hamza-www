@@ -1,0 +1,1627 @@
+:root {
+  --bg: #fff;
+  --text: #222;
+  --muted: #888;
+  --placeholder: #ece8e3;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  /* One font on the whole site (alona, 2026-11-12) */
+  --sans: var(--serif);
+  /* Space between the screen edge and the content.
+     124px on desktop, smaller on tablets and phones (see breakpoints at the end). */
+  --gutter: 124px;
+  /* Space between columns */
+  --gap: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* No rubber-band bounce at the top and bottom of the page (Safari, Chrome).
+   Only on html: on body it can stop Safari from scrolling at all. */
+html {
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Header: name left, menu centre, email right, on the same side margins */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: 1rem var(--gap);
+  padding: 2rem var(--gutter);
+  background: var(--bg);
+}
+
+.site-name,
+.site-email {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.site-email {
+  justify-self: end;
+}
+
+.site-nav {
+  display: flex;
+  justify-content: center;
+  gap: clamp(3rem, 8vw, 8rem);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.site-nav a:hover,
+.site-email:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Hero: scroll-driven slideshow, same width as the artwork rows below.
+   Without JavaScript only the first photo and caption show. */
+.hero-scroll {
+  position: relative;
+}
+
+.hero {
+  padding: 2rem var(--gutter) 0;
+}
+
+.hero-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.hero-captions figcaption {
+  grid-area: 1 / 1;
+}
+
+.hero-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-frame img + img,
+.hero-captions figcaption + figcaption {
+  opacity: 0;
+}
+
+.hero-captions {
+  display: grid;
+  margin-top: 0.6rem;
+}
+
+.hero figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: start;
+  gap: 0.25rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.hero figcaption em {
+  font-family: var(--serif);
+  font-size: 1.05em;
+}
+
+/* With JavaScript: the photo fits the screen under the header, and each
+   scroll fades to the next photo and caption (see the script in index.html). */
+.hero-js .hero-frame {
+  max-height: calc(100svh - var(--header-h, 90px) - 6.5rem);
+  width: 100%;
+}
+
+.hero-js .hero-frame img {
+  transition: opacity 0.9s ease;
+}
+
+.hero-js .hero-captions figcaption {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hero-js .hero-captions figcaption.is-active {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+/* Sections */
+main section {
+  margin: 0 auto;
+  padding: 4rem var(--gutter);
+}
+
+h2 {
+  margin: 0 0 2rem;
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  background: var(--placeholder);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* About: 400px column in the middle, vertical "ABOUT" label on the left
+   edge, vertical photo caption on the right edge */
+.about {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 400px) 1fr;
+  column-gap: var(--gap);
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.about-label,
+.about-caption {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.about-label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: start;
+}
+
+.about-photo {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 518 / 587;
+  object-fit: cover;
+}
+
+.about-caption {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  align-self: end;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.about-text {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 2.5rem;
+}
+
+.about blockquote {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.about .bio {
+  margin-top: 2.25rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.15;
+  text-align: justify;
+  hyphens: none;
+}
+
+.about .bio p {
+  margin: 0 0 1.1em;
+}
+
+/* Artworks: positions follow the original 1024px-wide Readymag layout,
+   scaled with the viewport. Images sit on a shared bottom line per row. */
+main section.artworks {
+  padding: 2rem var(--gutter) 4rem;
+  font-size: clamp(0.5rem, 1.25vw, 0.8rem);
+}
+
+.row {
+  position: relative;
+  width: 100%;
+}
+
+.row figure {
+  position: absolute;
+  bottom: 0;
+}
+
+.row img {
+  width: 100%;
+  height: auto;
+  background: var(--placeholder);
+}
+
+figcaption {
+  min-height: 3.4em;
+  margin-top: 1.5em;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.inquire {
+  display: inline-block;
+  margin-top: 0.6em;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.inquire:hover {
+  color: var(--text);
+}
+
+.exhibition-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem var(--gap);
+  align-items: start;
+}
+
+.exhibition-list figcaption {
+  min-height: 0;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.placeholder.wide {
+  aspect-ratio: 8 / 5;
+}
+
+.site-footer {
+  margin: 0 auto;
+  padding: 3rem var(--gutter);
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.exhibition-list img {
+  width: 100%;
+  height: auto;
+}
+
+/* ---------------------------------------------------------------
+   Responsive breakpoints (same sizes Bootstrap uses)
+   - desktop  1200px and wider : 124px margins, full composed layout
+   - laptop   992px to 1199px  : 72px margins, full composed layout
+   - tablet   576px to 991px   : 72px margins, artworks in 2 columns
+   - phone    below 576px      : 24px margins, everything in 1 column
+   --------------------------------------------------------------- */
+
+@media (max-width: 1199.98px) {
+  :root {
+    --gutter: 72px;
+    --gap: 32px;
+  }
+}
+
+/* Tablet: the composed artwork rows turn into a simple 2-column grid */
+@media (max-width: 991.98px) {
+  main section.artworks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem var(--gap);
+    align-items: end;
+    font-size: 0.85rem;
+  }
+
+  .row {
+    display: contents;
+  }
+
+  .row figure {
+    position: static;
+    width: auto !important;
+  }
+
+  .exhibition-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* Name and email on the first line, menu on the second */
+  .site-header {
+    grid-template-columns: 1fr auto;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .site-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: 2.5rem;
+    font-size: 0.8rem;
+  }
+
+  .site-name,
+  .site-email,
+  .hero figcaption {
+    font-size: 0.8rem;
+  }
+
+  /* Phone: label, photo, caption and text stack in one column */
+  .about {
+    grid-template-columns: minmax(0, 400px);
+    justify-content: center;
+    padding-top: 4rem;
+  }
+
+  .about > * {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .about-label,
+  .about-caption {
+    margin-bottom: 1rem;
+    writing-mode: horizontal-tb;
+    transform: none;
+    justify-self: start;
+  }
+
+  .about-caption {
+    margin: 0.6rem 0 0;
+  }
+
+  .about-caption br { display: none; }
+}
+
+/* Phone: one column */
+@media (max-width: 575.98px) {
+  :root {
+    --gutter: 24px;
+    --gap: 20px;
+  }
+
+  main section.artworks,
+  .exhibition-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Homepage: an exhibition with its own page links to it */
+.exhibition-link {
+  display: block;
+}
+
+.exhibition-link:hover .title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------
+   Exhibition page (/abimal/)
+   Follows the old Readymag page: a 914-unit wide composition that
+   scales with the content width. --u is one Readymag pixel.
+   --------------------------------------------------------------- */
+.exhibition-page {
+  container-type: inline-size;
+  padding: 0 var(--gutter);
+}
+
+.ex {
+  --u: calc(100cqw / 914);
+  --ink: rgba(0, 0, 0, 0.8);
+  padding: calc(var(--u) * 60) 0 calc(var(--u) * 100);
+  color: #000;
+}
+
+.ex-label {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: calc(var(--u) * 10);
+  line-height: calc(var(--u) * 12);
+  text-align: center;
+}
+
+.ex-title,
+.ex-word {
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: calc(var(--u) * -0.9);
+}
+
+.ex-title {
+  width: calc(var(--u) * 373);
+  margin: calc(var(--u) * 18) auto 0;
+  font-size: calc(var(--u) * 24);
+  line-height: calc(var(--u) * 24);
+  text-align: center;
+}
+
+.ex-hero {
+  width: calc(var(--u) * 458);
+  margin: calc(var(--u) * 33) auto 0;
+}
+
+.ex img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ex-hero img {
+  aspect-ratio: 458 / 286;
+}
+
+/* Text: three 274-unit columns */
+.ex-text {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--u) * 274));
+  justify-content: space-between;
+  align-items: start;
+  margin-top: calc(var(--u) * 109);
+}
+
+.ex-p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: calc(var(--u) * 11);
+  line-height: calc(var(--u) * 13);
+  text-align: justify;
+  hyphens: manual;
+}
+
+.ex-p1 { grid-column: 1; grid-row: 1; }
+.ex-p3 { grid-column: 3; grid-row: 1; }
+.ex-p2 { grid-column: 2; grid-row: 3; margin-top: calc(var(--u) * 35); }
+
+.ex-word {
+  grid-row: 2;
+  margin-top: calc(var(--u) * 43);
+  font-size: calc(var(--u) * 54);
+  line-height: calc(var(--u) * 54);
+}
+
+.ex-w1 { grid-column: 1; }
+.ex-w2 { grid-column: 2; }
+.ex-w3 { grid-column: 3; }
+
+/* Photos: placed like the Readymag page (914 x 511 units) */
+.ex-gallery {
+  position: relative;
+  aspect-ratio: 914 / 511;
+  margin-top: calc(var(--u) * 132);
+}
+
+.ex-gallery figure {
+  position: absolute;
+}
+
+.ex-g1 { left: calc(var(--u) * 1); top: 0; width: calc(var(--u) * 391); height: calc(var(--u) * 244); }
+.ex-g2 { left: calc(var(--u) * 414); top: 0; width: calc(var(--u) * 279); height: calc(var(--u) * 387); }
+.ex-g3 { left: calc(var(--u) * 708.77); top: 0; width: calc(var(--u) * 205.24); height: calc(var(--u) * 285); }
+.ex-g4 { left: calc(var(--u) * 1); top: calc(var(--u) * 267.13); width: calc(var(--u) * 391.3); height: calc(var(--u) * 244); }
+
+/* Phone and small tablet: the Readymag phone layout, one column,
+   each word above its paragraph. Here --u is 1/295 of the width. */
+@media (max-width: 767.98px) {
+  .ex {
+    --u: calc(100cqw / 295);
+    padding-top: calc(var(--u) * 30);
+  }
+
+  .ex-title {
+    width: auto;
+    margin-top: calc(var(--u) * 17);
+  }
+
+  .ex-hero {
+    width: auto;
+    margin-top: calc(var(--u) * 45);
+  }
+
+  .ex-hero img { aspect-ratio: 297 / 239; }
+
+  .ex-text {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .ex-w1 { order: 1; margin-top: calc(var(--u) * 45); }
+  .ex-p1 { order: 2; margin-top: calc(var(--u) * 40); }
+  .ex-w2 { order: 3; margin-top: calc(var(--u) * 46); }
+  .ex-p2 { order: 4; margin-top: calc(var(--u) * 37); }
+  .ex-w3 { order: 5; margin-top: calc(var(--u) * 66); }
+  .ex-p3 { order: 6; margin-top: calc(var(--u) * 37); }
+
+  .ex-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 25);
+    aspect-ratio: auto;
+    margin-top: calc(var(--u) * 42);
+  }
+
+  .ex-gallery figure {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+
+  .ex-g1 img, .ex-g4 img { aspect-ratio: 298 / 186; }
+  .ex-g2 img { aspect-ratio: 298 / 387; }
+  .ex-g3 img { aspect-ratio: 298 / 364; }
+}
+
+/* ---------------------------------------------------------------
+   Home #2 (alona's design, 2026-11-06)
+   Drawn on a 1512 px wide page. --u is one design pixel, so the
+   whole page scales with the window on laptops and desktops.
+   Tablets and phones get a simple stacked version (end of block).
+   --------------------------------------------------------------- */
+.home2 {
+  --u: calc(100vw / 1512);
+  --ink: #000;
+  /* One face for the whole page: Cormorant Garamond (alona, 2026-11-10;
+     EB Garamond before). Everything on Home #2 uses --garamond. */
+  --garamond: "Cormorant Garamond", Georgia, serif;
+  color: var(--ink);
+  font-family: var(--garamond);
+}
+
+/* Cut off anything wider than the window without making body its own
+   scroll box (overflow: hidden on body breaks scrolling in Safari). */
+html:has(.home2) {
+  overflow-x: clip;
+}
+
+/* Menu: three links spread across the width of the photo */
+/* Menu (top) and credits (bottom) stay fixed on the screen. They are
+   drawn in white with mix-blend-mode: difference, so they show black on
+   the white page and turn into the photo's inverse when one passes under. */
+.h2-header,
+.h2-credits {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  color: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.h2-header a,
+.h2-credits a {
+  pointer-events: auto;
+}
+
+.h2-header {
+  top: 0;
+  padding: calc(var(--u) * 44) 0 0;
+}
+
+/* The logo is black with a white fill; inverted so the difference turns it
+   back into black on white. */
+.h2-studio img {
+  filter: invert(1);
+}
+
+.h2-nav {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--u) * 80);
+  margin: 0 auto;
+  font-family: var(--garamond);
+  font-size: 15px; /* desktop: 15px (alona 2026-11-12, was 17); phones: see end of file */
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.h2-nav a:hover,
+.h2-inquire:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Slideshow: a big photo with its caption underneath. It stays pinned
+   while the page scrolls through half a screen per photo, and each step
+   fades to the next one (script in src/index.html). The photo fits
+   between the fixed menu and the fixed credits. */
+.hero-js .home2 .h2-slides {
+  height: calc(100svh + (var(--slides) - 1) * 50svh);
+}
+
+.hero-js .home2 .h2-slides .hero {
+  position: sticky;
+  top: 0;
+}
+
+.home2 .h2-slides .hero {
+  padding: calc(var(--u) * 122) calc(var(--u) * 66) 0;
+}
+
+.home2.hero-js .hero-frame,
+.hero-js .home2 .hero-frame,
+.home2 .hero-frame {
+  max-height: calc(100svh - var(--u) * 294 - 2rem);
+}
+
+.home2 .hero figcaption {
+  font-size: calc(var(--u) * 15);
+  letter-spacing: -0.01em;
+}
+
+.home2 .hero figcaption em {
+  font-family: var(--garamond);
+  font-size: 1.1em;
+}
+
+/* Signature left, studio logo in the middle */
+.h2-credits {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  /* Name sits on the same bottom line as "digital art direction" */
+  align-items: end;
+  bottom: 0;
+  /* sides: 66 px like the homepage content; bottom as on the About page */
+  padding: 0 66px calc(var(--u) * 44);
+}
+
+.h2-signature {
+  margin: 0;
+  font-family: var(--garamond);
+  font-size: calc(var(--u) * 12);
+  line-height: 1.07;
+  letter-spacing: -0.01em;
+}
+
+.h2-studio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-family: var(--garamond);
+  font-size: calc(var(--u) * 11);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.h2-studio img {
+  width: calc(var(--u) * 56);
+  height: auto;
+  margin-bottom: 0;
+}
+
+/* Fun page link, fixed in the bottom-right corner (third credits column) */
+.h2-fun {
+  justify-self: end;
+  margin: 0;
+  font-family: var(--garamond);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.h2-fun a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Works: each row has a set height; works sit at their design positions */
+.home2 main section.h2-works {
+  padding: calc(var(--u) * 179) 0 calc(var(--u) * 160);
+}
+
+.w2-row {
+  position: relative;
+  height: calc(var(--u) * var(--h));
+}
+
+/* The figure is the hover panel: it reaches 42 px left, 40 px above and
+   14 px right of the photo, like the "trust" card in the design. */
+.w2 {
+  position: absolute;
+  left: calc(var(--u) * (var(--x) - 42));
+  top: calc(var(--u) * (var(--y) - 40));
+  width: calc(var(--u) * (var(--w) + 56));
+  padding: calc(var(--u) * 40) calc(var(--u) * 14) calc(var(--u) * 24) calc(var(--u) * 42);
+  transition: background-color 0.3s ease;
+}
+
+.w2 img,
+.w2 .placeholder {
+  width: 100%;
+}
+
+/* Photos cropped to the size drawn in the canvas */
+.w2-fixed img,
+.w2-fixed .placeholder {
+  height: auto;
+  aspect-ratio: var(--w) / var(--ih);
+  object-fit: cover;
+}
+
+
+.w2 figcaption {
+  font-family: var(--garamond);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.36;
+}
+
+.w2-inquire {
+  color: #8a8a8a;
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+/* "hover": Inquire left, title and materials right, only on hover */
+.w2 .w2-cap-hover {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: calc(var(--u) * 12);
+  font-size: 12.5px;
+  letter-spacing: -0.035em;
+  line-height: 1.3;
+  text-align: right;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.w2:hover .w2-cap-hover,
+.w2:focus-within .w2-cap-hover {
+  opacity: 1;
+}
+
+.w2-cap-hover .w2-inquire {
+  font-size: 13px;
+}
+
+/* "below": title, materials and size under the photo, always shown.
+   "above": the same, over the photo. */
+.w2-cap-below {
+  margin-top: calc(var(--u) * 28);
+}
+
+.w2-cap-above {
+  margin-bottom: calc(var(--u) * 28);
+}
+
+.w2-cap-below .w2-text,
+.w2-cap-above .w2-text {
+  display: block;
+  margin-bottom: calc(var(--u) * 20);
+}
+
+.w2-cap-above .w2-inquire {
+  display: inline-block;
+}
+
+/* After the works: exhibitions and about as before */
+.home2 #exhibited {
+  padding-top: calc(var(--u) * 120);
+}
+
+/* Tablet and phone: stacked, captions always shown */
+@media (max-width: 991.98px) {
+  .home2 {
+    --u: 1px;
+  }
+
+  .h2-header {
+    padding: 24px var(--gutter) 0;
+  }
+
+  .h2-nav {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .home2 .h2-slides .hero {
+    padding: calc(24px + 3rem) var(--gutter) 0;
+  }
+
+  .home2 .hero-frame {
+    max-height: none;
+  }
+
+  .home2 .hero figcaption {
+    font-size: 0.8rem;
+  }
+
+  .h2-cap {
+    grid-row: 2;
+    align-self: start;
+    font-size: 0.85rem;
+  }
+
+  .h2-credits {
+    align-items: end;
+    padding: 0 var(--gutter) 24px;
+  }
+
+  .h2-signature {
+    font-size: 0.85rem;
+  }
+
+  .h2-studio {
+    margin-top: 0;
+    font-size: 11px;
+  }
+
+  .home2 main section.h2-works {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem var(--gap);
+    align-items: end;
+    padding: 6rem var(--gutter) 0;
+  }
+
+  .w2-row {
+    display: contents;
+  }
+
+  .w2 {
+    position: static;
+    width: auto;
+    padding: 0;
+  }
+
+  .w2:hover {
+    background: none;
+  }
+
+  .w2 .w2-cap-hover {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 0.75rem;
+    opacity: 1;
+  }
+
+  .w2-cap-below {
+    margin-top: 0.75rem;
+  }
+
+  .w2-cap-above {
+    margin-bottom: 0.75rem;
+  }
+
+  .w2-cap-below .w2-text,
+  .w2-cap-above .w2-text {
+    margin-bottom: 0.75rem;
+  }
+
+  .home2 #exhibited {
+    padding-top: 6rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .home2 main section.h2-works {
+    grid-template-columns: 1fr;
+  }
+
+  .w2 .w2-cap-hover {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+
+/* ---------------------------------------------------------------
+   About page (/about/), alona's design 2026-11-07.
+   Drawn on a 1512 px wide page (--u is one design pixel, set by
+   .home2): two 273 px columns with a 127 px gap, centred under the
+   menu. Phones get one column.
+   --------------------------------------------------------------- */
+.ab {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 273) calc(var(--u) * 273);
+  column-gap: calc(var(--u) * 127);
+  justify-content: center;
+  padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
+  font-family: var(--serif);
+  font-size: calc(var(--u) * 15);
+  line-height: calc(var(--u) * 18);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.ab p,
+.ab h2,
+.ab blockquote {
+  margin: 0;
+}
+
+.ab-quote {
+  grid-column: 1;
+  font-size: calc(var(--u) * 22);
+  line-height: calc(var(--u) * 24);
+  letter-spacing: -0.02em;
+  text-align: justify;
+}
+
+.ab-photo {
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: calc(var(--u) * 89);
+}
+
+.ab-photo img {
+  width: 100%;
+  aspect-ratio: 273 / 428;
+  object-fit: cover;
+}
+
+.ab-cv {
+  grid-column: 1;
+  grid-row: 3;
+  margin-top: calc(var(--u) * 88);
+}
+
+.ab-label {
+  text-transform: none;
+  letter-spacing: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  font-style: italic;
+  line-height: inherit;
+}
+
+.ab-list {
+  margin-top: calc(var(--u) * 36);
+  text-align: justify;
+}
+
+.ab-list p + p {
+  margin-top: calc(var(--u) * 18);
+}
+
+.ab-studies .ab-list {
+  margin-top: calc(var(--u) * 18);
+}
+
+.ab-side {
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--u) * 36);
+  margin-top: calc(var(--u) * 88);
+}
+
+.ab-beside {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--u) * 36);
+  margin-top: calc(var(--u) * 89);
+}
+
+.ab-bio {
+  text-align: justify;
+}
+
+.ab-bio p + p {
+  margin-top: calc(var(--u) * 18);
+}
+
+.ab-links a {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* @hamzashah and the email are underlined (alona 2026-11-12) */
+.ab-links a span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ab-media {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  margin-top: calc(var(--u) * 110);
+}
+
+.ab-media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: calc(var(--u) * 36);
+  margin-top: calc(var(--u) * 32);
+}
+
+.ab-media-item.placeholder {
+  aspect-ratio: 200 / 242;
+  background: #efefef;
+}
+
+/* Tablet: same layout at a readable fixed size */
+@media (max-width: 991.98px) {
+  .ab {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 48px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 160px var(--gutter) 120px;
+  }
+}
+
+/* Phone: one column, in the same order as the design reads */
+@media (max-width: 575.98px) {
+  .ab {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 120px;
+  }
+
+  .ab > * {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  .ab-quote {
+    font-size: 24px;
+    line-height: 27px;
+  }
+
+  .ab-photo,
+  .ab-beside,
+  .ab-cv,
+  .ab-side {
+    margin-top: 64px;
+  }
+
+  .ab-beside {
+    gap: 48px;
+  }
+
+  .ab-media {
+    margin-top: 80px;
+  }
+
+  .ab-media-grid {
+    column-gap: 12px;
+  }
+}
+
+/* Home #2: About sits between the slideshow and the works, as in
+   alona's canvas (2026-11-09): quote top-left and bio bottom-left, the
+   560 px square portrait on the right edge, its caption running up its
+   left side 40 px away. */
+.home2 .about blockquote {
+  font-family: var(--garamond);
+  font-weight: 400;
+}
+
+.home2 .about .bio,
+.home2 .about-label,
+.home2 .about-caption,
+.home2 .hero figcaption {
+  font-family: var(--garamond);
+}
+
+/* Phone: name left, logo right, so they never run into each other */
+@media (max-width: 575.98px) {
+  .h2-credits {
+    grid-template-columns: 1fr auto;
+  }
+  /* Logo above, fun link in the very corner */
+  .h2-signature { grid-row: 2; grid-column: 1; }
+  .h2-studio { grid-row: 1; grid-column: 2; margin-bottom: 12px; }
+  .h2-fun { grid-row: 2; grid-column: 2; font-size: 0.85rem; }
+}
+
+@media (min-width: 992px) {
+  .home2 main section.about {
+    grid-template-columns: minmax(0, 1fr) calc(var(--u) * 560);
+    column-gap: 0;
+    padding: calc(var(--u) * 200) calc(var(--u) * 66) 0;
+  }
+
+  .home2 .about-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .home2 .about-photo {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .home2 .about-photo img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .home2 .about-caption {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    align-self: end;
+    font-family: var(--garamond);
+    font-size: calc(var(--u) * 12);
+    line-height: 1.2;
+    text-align: left;
+    text-align-last: auto;
+    white-space: nowrap;
+    /* Sits left of the photo with 12 px between (alona 2026-11-12) */
+    transform: translateX(calc(-100% - var(--u) * 12)) rotate(180deg);
+  }
+
+  .home2 .about-caption br {
+    display: none;
+  }
+
+  .home2 .about-text {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .home2 .about blockquote {
+    width: calc(var(--u) * 431);
+    font-size: calc(var(--u) * 33);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .home2 .about .bio {
+    width: calc(var(--u) * 473);
+    margin: 0;
+    /* Main text size, same as the About and Legal pages (alona 2026-11-12) */
+    font-size: calc(var(--u) * 15);
+    line-height: 1.3;
+  }
+
+  .home2 .about .bio p {
+    margin: 0 0 1.3em;
+  }
+
+  .home2 .about .bio p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Legal notice & Privacy (/legal/), styled like the About page:
+   Cormorant Garamond, italic labels, one justified column as wide as the
+   About page's two columns (273 + 127 + 273 design px).
+   --------------------------------------------------------------- */
+.lg {
+  width: calc(var(--u) * 673);
+  margin: 0 auto;
+  padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
+  font-family: var(--serif);
+  font-size: calc(var(--u) * 15);
+  line-height: calc(var(--u) * 18);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.lg p,
+.lg h1,
+.lg h2 {
+  margin: 0;
+}
+
+.lg p {
+  text-align: justify;
+}
+
+.lg p + p {
+  margin-top: calc(var(--u) * 18);
+}
+
+.lg a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.lg-block + .lg-block {
+  margin-top: calc(var(--u) * 120);
+}
+
+.lg-title {
+  margin-bottom: calc(var(--u) * 36) !important;
+  font-size: calc(var(--u) * 22);
+  line-height: calc(var(--u) * 24);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.lg-label {
+  margin: calc(var(--u) * 54) 0 calc(var(--u) * 18) !important;
+  font-size: inherit;
+  font-weight: 400;
+  font-style: italic;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.lg .lg-date {
+  margin-top: calc(var(--u) * 54);
+  font-style: italic;
+}
+
+/* Tablet and phone: readable fixed sizes */
+@media (max-width: 991.98px) {
+  .lg {
+    width: auto;
+    max-width: 720px;
+    padding: 160px var(--gutter) 120px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .lg p + p { margin-top: 1em; }
+  .lg-block + .lg-block { margin-top: 80px; }
+  .lg-title { margin-bottom: 24px !important; font-size: 24px; line-height: 1.15; }
+  .lg-label { margin: 40px 0 12px !important; }
+  .lg .lg-date { margin-top: 40px; }
+}
+
+@media (max-width: 575.98px) {
+  .lg { padding-top: 120px; }
+}
+
+/* Small "Legal & Privacy" link at the very end of Home #2, above the
+   fixed credits so the two never overlap. */
+.h2-legal {
+  margin: 0;
+  padding: 0 0 calc(var(--u) * 140);
+  text-align: center;
+  font-family: var(--garamond);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.h2-legal a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 991.98px) {
+  .h2-legal { margin-top: 96px; padding-bottom: 150px; }
+}
+
+/* Phone: menu size follows the Abimal menu (.site-nav) on phones */
+@media (max-width: 991.98px) {
+  .h2-nav {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .h2-nav {
+    font-size: 0.8rem;
+  }
+}
+
+/* Fixed credits on every page (alona, 2026-11-12). They carry their own
+   design unit and font so they look the same on pages without .home2
+   (like /abimal/). */
+/* Master elements: the fixed top menu (src/partials/menu.html) and
+   bottom credits (src/partials/credits.html) look exactly the same on
+   every page, as on the About page (alona, 2026-11-12). They carry their
+   own design unit and font so the page around them can't change them. */
+.h2-header,
+.h2-credits {
+  --u: calc(100vw / 1512);
+  --garamond: "Cormorant Garamond", Georgia, serif;
+}
+
+@media (max-width: 991.98px) {
+  .h2-header,
+  .h2-credits {
+    --u: 1px;
+  }
+}
+
+/* Exhibition pages: room at the top for the fixed menu */
+.exhibition-body .exhibition-page {
+  padding-top: calc(100vw * 100 / 1512);
+}
+
+@media (max-width: 991.98px) {
+  .exhibition-body .exhibition-page {
+    padding-top: 72px;
+  }
+}
+
+/* Abimal page: room under the footer so the fixed credits don't cover it */
+body:has(.h2-credits) .site-footer {
+  padding-bottom: 160px;
+}
+
+/* Desktop margins, 66 px from every screen edge on Home and the
+   exhibition pages (alona, 2026-11-12). About and Legal keep their own
+   grid, so their fixed menu and credits stay at 44 / 80 px. */
+@media (min-width: 992px) {
+  .exhibition-body {
+    --gutter: 66px;
+  }
+
+  .exhibition-body .site-header {
+    padding-top: 66px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Single-column exhibition pages (/venerate/, /coldrush/)
+   Same 914-unit scheme as /abimal/: everything sits in the middle
+   458-unit column, like the old Readymag pages.
+   --------------------------------------------------------------- */
+.ex-single .ex-hero,
+.ex-single .ex-slot,
+.ex-single .ex-pair {
+  width: calc(var(--u) * 458.7);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ex-single .ex-s1 { margin-top: calc(var(--u) * 33); }
+
+/* The first text keeps a fixed slot, so the second photo always starts
+   at the same height (Readymag y 568 -> 715). */
+.ex-single .ex-slot {
+  min-height: calc(var(--u) * 146.85);
+  margin-top: calc(var(--u) * 60.5);
+}
+
+.ex-single .ex-slot .ex-p + .ex-p {
+  margin-top: calc(var(--u) * 13);
+}
+
+.ex-single .ex-s2 { margin-top: 0; }
+
+.ex-single .ex-pair {
+  display: grid;
+  grid-template-columns: 176.22fr 220.6fr;
+  column-gap: calc(var(--u) * 61.8);
+  align-items: start;
+  margin-top: calc(var(--u) * 51.4);
+}
+
+.ex-single .ex-pair-one {
+  grid-template-columns: 1fr;
+}
+
+/* ---------------------------------------------------------------
+   Regards Croisés (/regards-croises/)
+   Same top as /abimal/; the three words each head one column of the
+   curator's text, then the photos in rows of equal height.
+   --------------------------------------------------------------- */
+.rc-text {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--u) * 274));
+  justify-content: space-between;
+  align-items: start;
+  margin-top: calc(var(--u) * 109);
+}
+
+.ex-rc .ex-word {
+  display: block;
+  margin: 0;
+}
+
+.rc-col .ex-p {
+  margin-top: calc(var(--u) * 35);
+}
+
+.rc-credit {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin: calc(var(--u) * 43) 0 0;
+  font-family: var(--serif);
+  font-size: calc(var(--u) * 11);
+  line-height: calc(var(--u) * 13);
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.rc-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 23);
+  margin-top: calc(var(--u) * 132);
+}
+
+/* Each photo's share of the row is its width/height ratio (--r),
+   so every photo in a row ends up the same height. */
+.rc-row {
+  display: flex;
+  gap: calc(var(--u) * 23);
+}
+
+.rc-row figure {
+  flex: var(--r) 1 0;
+  min-width: 0;
+}
+
+.rc-row img {
+  height: auto;
+}
+
+/* Two portraits side by side would be very tall at full width */
+.rc-row-narrow {
+  width: calc(var(--u) * 609);
+  margin: 0 auto;
+}
+
+@media (max-width: 767.98px) {
+  .ex-single .ex-hero,
+  .ex-single .ex-slot,
+  .ex-single .ex-pair {
+    width: auto;
+  }
+
+  .ex-single .ex-s1 { margin-top: calc(var(--u) * 46); }
+  .ex-single .ex-s1 img { aspect-ratio: 295 / 213; }
+  .ex-single .ex-s2 img { aspect-ratio: 297 / 185; }
+
+  .ex-single .ex-slot {
+    min-height: 0;
+    margin-top: calc(var(--u) * 45);
+  }
+
+  .ex-single .ex-s2 { margin-top: calc(var(--u) * 59); }
+
+  .ex-single .ex-pair {
+    grid-template-columns: 1fr;
+    row-gap: calc(var(--u) * 32);
+    margin-top: calc(var(--u) * 48);
+  }
+
+  .rc-text {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .rc-col { margin-top: calc(var(--u) * 45); }
+  .rc-col + .rc-col { margin-top: calc(var(--u) * 66); }
+  .rc-col .ex-p { margin-top: calc(var(--u) * 40); }
+
+  .rc-credit {
+    margin-top: calc(var(--u) * 37);
+  }
+
+  .rc-gallery,
+  .rc-row {
+    gap: calc(var(--u) * 25);
+  }
+
+  .rc-gallery { margin-top: calc(var(--u) * 42); }
+
+  .rc-row {
+    flex-direction: column;
+  }
+
+  .rc-row-narrow {
+    width: auto;
+  }
+
+  .rc-row figure {
+    flex: none;
+  }
+}
+
+/* Desktop: real 66 px margins on every screen width, not scaled
+   (alona 2026-11-12). The design unit --u now divides the space between
+   the margins (1380 design px) instead of the whole 1512 frame, so the
+   works keep their places and sizes relative to each other. */
+@media (min-width: 992px) {
+  .home-page {
+    --u: calc((100vw - 132px) / 1380);
+  }
+
+  /* Photo starts under the master menu (44 design px from the top)
+     and fits above the caption and the credits. */
+  .home-page .h2-slides .hero {
+    padding: calc(100vw * 100 / 1512) 66px 0;
+  }
+
+  .hero-js .home-page .hero-frame,
+  .home-page.hero-js .hero-frame,
+  .home-page .hero-frame {
+    max-height: calc(100svh - 100vw * 250 / 1512 - 2rem);
+  }
+
+  .home-page main section.about {
+    padding: calc(var(--u) * 200) 66px 0;
+  }
+
+  .home-page .w2 {
+    left: calc(66px + var(--u) * (var(--x) - 66 - 42));
+  }
+
+}
+
+/* Main text size on desktop: exhibition page paragraphs match the About,
+   Legal and Home texts at 15 px on a 1512 px wide window (alona 2026-11-12). */
+@media (min-width: 992px) {
+  .ex-p,
+  .rc-credit {
+    font-size: calc(100vw / 1512 * 15);
+    line-height: calc(100vw / 1512 * 18);
+  }
+}

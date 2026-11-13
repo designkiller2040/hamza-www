@@ -161,7 +161,7 @@ const aboutLinks = (about.links || []).map((l) =>
   `          <a href="${esc(l.href || '#')}"${/^https?:/.test(l.href || '') ? ' target="_blank" rel="noopener"' : ''}><span>${esc(l.text)}</span><span>${esc(l.label)}</span></a>`
 ).join('\n');
 const aboutMedia = Array.from({ length: Number(about.mediaCount) || 0 }, () =>
-  '        <div class="ab-media-item placeholder" aria-hidden="true"></div>').join('\n');
+  '        <div class="abt-media-item placeholder" aria-hidden="true"></div>').join('\n');
 
 const vars = {
   pageTitle: home.pageTitle,
@@ -188,6 +188,7 @@ const vars = {
   'about.studiesLabel': about.studiesLabel || 'Studies',
   'about.studies': aboutList(about.studies),
   'about.links': aboutLinks,
+  'about.contactsLabel': about.contactsLabel || 'Contacts',
   'about.mediaLabel': about.mediaLabel || 'Media',
   'about.media': aboutMedia,
   works: worksHTML,

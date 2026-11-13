@@ -978,180 +978,179 @@ html:has(.home2) {
 }
 
 /* ---------------------------------------------------------------
-   About page (/about/), alona's design 2026-11-07.
-   Drawn on a 1512 px wide page (--u is one design pixel, set by
-   .home2): two 273 px columns with a 127 px gap, centred under the
-   menu. Phones get one column.
+   About page (/about/), alona's design 2026-11-13.
+   Top: the About section from the homepage (quote top left, bio bottom
+   left, portrait on the right). Then Solo shows / Studies / Contacts in
+   one row (Studies starts under the photo's left edge), then Media.
+   Drawn on a 1512 px page with 66 px side margins; --u is one design px.
+   The previous About page is kept at /about-1/.
    --------------------------------------------------------------- */
-.ab {
-  display: grid;
-  grid-template-columns: calc(var(--u) * 273) calc(var(--u) * 273);
-  column-gap: calc(var(--u) * 127);
-  justify-content: center;
-  padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
-  font-family: var(--serif);
-  font-size: calc(var(--u) * 15);
-  line-height: calc(var(--u) * 18);
-  letter-spacing: -0.01em;
+.abt {
+  padding: 140px var(--gutter) 160px;
+  font-family: var(--garamond);
+  font-size: 15px;
+  line-height: 20px;
   color: var(--ink);
 }
 
-.ab p,
-.ab h2,
-.ab blockquote {
+.abt p,
+.abt h2,
+.abt blockquote,
+.abt figure {
   margin: 0;
 }
 
-.ab-quote {
-  grid-column: 1;
-  font-size: calc(var(--u) * 22);
-  line-height: calc(var(--u) * 24);
-  letter-spacing: -0.02em;
+.abt-quote {
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+}
+
+.abt-bio {
+  margin-top: 48px;
   text-align: justify;
+  hyphens: none;
 }
 
-.ab-photo {
-  grid-column: 1;
-  grid-row: 2;
-  margin-top: calc(var(--u) * 89);
+.abt-bio p + p {
+  margin-top: 20px;
 }
 
-.ab-photo img {
+.abt .abt-photo {
+  margin-top: 48px;
+}
+
+.abt-photo img {
+  display: block;
   width: 100%;
-  aspect-ratio: 273 / 428;
+  height: auto;
+  aspect-ratio: 644 / 614;
   object-fit: cover;
 }
 
-.ab-cv {
-  grid-column: 1;
-  grid-row: 3;
-  margin-top: calc(var(--u) * 88);
+.abt-cv {
+  display: grid;
+  gap: 48px;
+  margin-top: 80px;
 }
 
-.ab-label {
-  text-transform: none;
-  letter-spacing: inherit;
+.abt-label {
   font-size: inherit;
+  line-height: inherit;
   font-weight: 400;
   font-style: italic;
-  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
 }
 
-.ab-list {
-  margin-top: calc(var(--u) * 36);
+.abt-list {
+  margin-top: 24px;
+}
+
+.abt-justify {
   text-align: justify;
 }
 
-.ab-list p + p {
-  margin-top: calc(var(--u) * 18);
-}
-
-.ab-studies .ab-list {
-  margin-top: calc(var(--u) * 18);
-}
-
-.ab-side {
-  grid-column: 2;
-  grid-row: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: calc(var(--u) * 36);
-  margin-top: calc(var(--u) * 88);
-}
-
-.ab-beside {
-  grid-column: 2;
-  grid-row: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: calc(var(--u) * 36);
-  margin-top: calc(var(--u) * 89);
-}
-
-.ab-bio {
-  text-align: justify;
-}
-
-.ab-bio p + p {
-  margin-top: calc(var(--u) * 18);
-}
-
-.ab-links a {
+.abt-links a {
   display: flex;
   justify-content: space-between;
+  color: inherit;
 }
 
 /* @hamzashah and the email are underlined (alona 2026-11-12) */
-.ab-links a span:first-child {
+.abt-links a span:first-child {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.ab-media {
-  grid-column: 1 / -1;
-  grid-row: 4;
-  margin-top: calc(var(--u) * 110);
+.abt-media {
+  margin-top: 80px;
 }
 
-.ab-media-grid {
+.abt-media-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: calc(var(--u) * 36);
-  margin-top: calc(var(--u) * 32);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 12px;
+  margin-top: 24px;
 }
 
-.ab-media-item.placeholder {
-  aspect-ratio: 200 / 242;
+.abt-media-item.placeholder {
+  aspect-ratio: 255 / 309;
   background: #efefef;
 }
 
-/* Tablet: same layout at a readable fixed size */
-@media (max-width: 991.98px) {
-  .ab {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 48px;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 160px var(--gutter) 120px;
+@media (min-width: 992px) {
+  .abt {
+    --u: calc((100vw - 132px) / 1380);
+    padding: calc(var(--u) * 183) 66px calc(var(--u) * 166);
+    font-size: calc(var(--u) * 15);
+    line-height: calc(var(--u) * 20);
+  }
+
+  .abt-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) calc(var(--u) * 644);
+  }
+
+  .abt-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .abt-quote {
+    width: calc(var(--u) * 540);
+    margin-top: calc(var(--u) * 10);
+    font-size: calc(var(--u) * 46);
+  }
+
+  .abt-bio {
+    width: calc(var(--u) * 584);
+    margin-top: calc(var(--u) * 48);
+  }
+
+  .abt-bio p + p {
+    margin-top: calc(var(--u) * 20);
+  }
+
+  .abt .abt-photo {
+    margin-top: 0;
+  }
+
+  .abt-cv {
+    grid-template-columns: minmax(0, 1fr) calc(var(--u) * 391) calc(var(--u) * 253);
+    gap: 0;
+    margin-top: calc(var(--u) * 107);
+  }
+
+  .abt-studies .abt-list {
+    width: calc(var(--u) * 315);
+  }
+
+  .abt-list {
+    margin-top: calc(var(--u) * 20);
+  }
+
+  .abt-media {
+    margin-top: calc(var(--u) * 110);
+  }
+
+  .abt-media-grid {
+    grid-template-columns: repeat(3, calc(var(--u) * 255));
+    column-gap: calc(var(--u) * 46);
+    margin-top: calc(var(--u) * 24);
   }
 }
 
-/* Phone: one column, in the same order as the design reads */
-@media (max-width: 575.98px) {
-  .ab {
-    grid-template-columns: minmax(0, 1fr);
-    padding-top: 120px;
+/* Tablet: Solo shows full width, Studies and Contacts side by side */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .abt-cv {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .ab > * {
-    grid-column: 1 !important;
-    grid-row: auto !important;
-  }
-
-  .ab-quote {
-    font-size: 24px;
-    line-height: 27px;
-  }
-
-  .ab-photo,
-  .ab-beside,
-  .ab-cv,
-  .ab-side {
-    margin-top: 64px;
-  }
-
-  .ab-beside {
-    gap: 48px;
-  }
-
-  .ab-media {
-    margin-top: 80px;
-  }
-
-  .ab-media-grid {
-    column-gap: 12px;
+  .abt-solo {
+    grid-column: 1 / -1;
   }
 }
 

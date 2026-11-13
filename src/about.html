@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Template: the About page, built to /about/. Layout follows alona's design (2026-11-07), drawn on a 1512 px wide page. Text comes from content/about.json. -->
+<!-- Template: the About page, built to /about/. Layout follows alona's design (2026-11-13), drawn on a 1512 px wide page. Text comes from content/about.json. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -12,47 +12,47 @@
 <body class="home2 about2">
 {{> menu}}
 
-  <main class="ab">
+  <!-- About page, alona's design 2026-11-13: the About section that was on
+       the homepage (quote top left, bio bottom left, portrait right), then
+       Solo shows / Studies / Contacts in a row, then Media. -->
+  <main class="abt">
     <h1 class="visually-hidden">About {{name}}</h1>
-    <blockquote class="ab-quote">{{about.quote}}</blockquote>
-
-    <figure class="ab-photo">
-      <img src="{{root}}{{aboutPage.src}}" alt="{{aboutPage.alt}}" width="{{aboutPage.width}}" height="{{aboutPage.height}}">
-    </figure>
-
-    <!-- Beside the photo: bio at the top, ig and email at the bottom,
-         level with the photo's bottom edge -->
-    <div class="ab-beside">
-      <div class="ab-bio">
+    <div class="abt-top">
+      <div class="abt-text">
+        <blockquote class="abt-quote">{{about.quote}}</blockquote>
+        <div class="abt-bio">
 {{{about.bio}}}
+        </div>
       </div>
-
-      <p class="ab-links">
-{{{about.links}}}
-      </p>
+      <figure class="abt-photo">
+        <img src="{{root}}{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
+      </figure>
     </div>
 
-    <!-- Under the photo: Solo shows (the list Hamza keeps adding to) -->
-    <div class="ab-cv ab-solo">
-      <h2 class="ab-label">{{about.soloShowsLabel}}</h2>
-      <div class="ab-list">
+    <div class="abt-cv">
+      <div class="abt-solo">
+        <h2 class="abt-label">{{about.soloShowsLabel}}</h2>
+        <div class="abt-list">
 {{{about.soloShows}}}
+        </div>
       </div>
-    </div>
-
-    <!-- Under the bio: Studies -->
-    <div class="ab-side">
-      <div class="ab-studies">
-        <h2 class="ab-label">{{about.studiesLabel}}</h2>
-        <div class="ab-list">
+      <div class="abt-studies">
+        <h2 class="abt-label">{{about.studiesLabel}}</h2>
+        <div class="abt-list abt-justify">
 {{{about.studies}}}
+        </div>
+      </div>
+      <div class="abt-contacts">
+        <h2 class="abt-label">{{about.contactsLabel}}</h2>
+        <div class="abt-list abt-links">
+{{{about.links}}}
         </div>
       </div>
     </div>
 
-    <div class="ab-media">
-      <h2 class="ab-label">{{about.mediaLabel}}</h2>
-      <div class="ab-media-grid">
+    <div class="abt-media">
+      <h2 class="abt-label">{{about.mediaLabel}}</h2>
+      <div class="abt-media-grid">
 {{{about.media}}}
       </div>
     </div>
