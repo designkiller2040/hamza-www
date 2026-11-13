@@ -28,22 +28,6 @@
 {{> credits}}
 
   <main>
-    <section id="about" class="about">
-      <h2 class="about-label">About</h2>
-      <figure class="about-photo">
-        <img src="{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
-      </figure>
-      <p class="about-caption">{{{about.caption}}}</p>
-      <div class="about-text">
-        <blockquote>
-          {{about.quote}}
-        </blockquote>
-        <div class="bio">
-{{{about.bio}}}
-        </div>
-      </div>
-    </section>
-
     <p class="h2-legal"><a href="lens/">Look closer</a></p>
 
 
@@ -53,7 +37,7 @@
   // Hero slideshow, driven by normal page scrolling (nothing is blocked, so
   // it can never get stuck): the photo stays pinned while you scroll through
   // a short stretch of page, and each stretch fades in the next photo and
-  // caption. After the last photo the page carries on to About.
+  // caption. After the last photo the page ends.
   (function () {
     var wrap = document.querySelector('.hero-scroll');
     if (!wrap) return;
