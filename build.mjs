@@ -177,6 +177,8 @@ const vars = {
   'portrait.height': about.portrait.height,
   'about.caption': String(about.caption || '').split('\n').map(esc).join(' <br>'),
   'about.quote': about.quote,
+  // Line breaks typed in the quote (alona's About design, 2026-11-13) show on desktop
+  'about.quoteLines': String(about.quote || '').split('\n').map((l) => esc(l.trim())).join('<br class="abt-br"> '),
   'about.bio': bio,
   // The /about/ page keeps its own photo (the dark portrait); the homepage uses about.portrait.
   'aboutPage.src': (about.pagePortrait || about.portrait).src,

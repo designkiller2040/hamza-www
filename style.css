@@ -1007,6 +1007,10 @@ html:has(.home2) {
   font-weight: 400;
 }
 
+.abt-br {
+  display: none;
+}
+
 .abt-bio {
   margin-top: 48px;
   text-align: justify;
@@ -1083,7 +1087,7 @@ html:has(.home2) {
 @media (min-width: 992px) {
   .abt {
     --u: calc((100vw - 132px) / 1380);
-    padding: calc(var(--u) * 183) 66px calc(var(--u) * 166);
+    padding: calc(var(--u) * 143) 66px calc(var(--u) * 166);
     font-size: calc(var(--u) * 15);
     line-height: calc(var(--u) * 20);
   }
@@ -1093,16 +1097,22 @@ html:has(.home2) {
     grid-template-columns: minmax(0, 1fr) calc(var(--u) * 644);
   }
 
+  .abt-br {
+    display: inline;
+  }
+
   .abt-text {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
+  /* alona's canvas 2026-11-13: 34 px, line height 1.2, her own line breaks */
   .abt-quote {
-    width: calc(var(--u) * 540);
-    margin-top: calc(var(--u) * 10);
-    font-size: calc(var(--u) * 46);
+    width: calc(var(--u) * 489);
+    font-size: calc(var(--u) * 34);
+    line-height: 1.2;
+    letter-spacing: calc(var(--u) * -1.38);
   }
 
   .abt-bio {
@@ -1133,7 +1143,7 @@ html:has(.home2) {
   }
 
   .abt-media {
-    margin-top: calc(var(--u) * 110);
+    margin-top: calc(var(--u) * 125);
   }
 
   .abt-media-grid {
