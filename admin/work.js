@@ -45,8 +45,8 @@ A.start(function () {
   function lockSlug(slug) {
     $('slug-wrap').hidden = true;
     $('slug-lock').hidden = false;
-    $('slug-lock').querySelector('span').textContent = 'Page address: ' + new URL('../#work-' + slug, location.href).href.replace(/^https?:\/\//, '');
-    $('view').href = '../#work-' + slug;
+    $('slug-lock').querySelector('span').textContent = 'Page address: ' + new URL('../works/#work-' + slug, location.href).href.replace(/^https?:\/\//, '');
+    $('view').href = '../works/#work-' + slug;
     $('view').removeAttribute('aria-disabled');
   }
 

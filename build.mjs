@@ -192,6 +192,8 @@ const vars = {
   'about.media': aboutMedia,
   works: worksHTML,
   'home2.works': home2WorksHTML,
+  // The /works/ page lives one folder down, so its image paths start with ../
+  'home2.worksPage': home2WorksHTML.replace(/src="(?!https?:|\/|data:)/g, 'src="../'),
   'home2.exhibitions': exhibitionRowsHTML,
   'hero.left': heroSideHTML('left'),
   'hero.right': heroSideHTML('right'),

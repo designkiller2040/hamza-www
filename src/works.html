@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!-- Template: the Works page, built to /works/. The works grid is the one that used to sit on the homepage (content/home2.json, edited in the admin Works tab). Menu and credits come from src/partials/. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Works — {{name}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="stylesheet" href="{{root}}fonts/fonts.css">
+  <link rel="stylesheet" href="{{root}}style.css">
+</head>
+<body class="home2 home-page works-page">
+{{> menu}}
+
+  <main>
+    <section id="works" class="h2-works">
+      <h1 class="visually-hidden">Works</h1>
+{{{home2.worksPage}}}
+    </section>
+  </main>
+
+{{> credits}}
+</body>
+</html>
