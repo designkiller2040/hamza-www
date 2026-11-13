@@ -1383,6 +1383,10 @@ html:has(.home2) {
 @media (max-width: 767.98px) {
   .h2-nav {
     font-size: 0.8rem;
+    /* four items (Home added 2026-11-13): spread them across the width
+       instead of the fixed 80px gaps, so they fit on phones */
+    gap: 0;
+    justify-content: space-between;
   }
 }
 
