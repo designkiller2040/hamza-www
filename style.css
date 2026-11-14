@@ -1897,3 +1897,27 @@ body:has(.h2-credits) .site-footer {
 .exd-js .exd-cursor.is-on {
   opacity: 1;
 }
+
+/* Works rows on desktop (alona 2026-11-14): works with the caption below
+   are bottom-aligned inside their row, so the "Inquire to Purchase" lines
+   of a row sit on one line and shorter paintings sit lower. The photo to
+   caption gap stays 28 design px everywhere. Rows grow to fit their tallest
+   work, then leave 118 design px to the next row's photos. */
+@media (min-width: 992px) {
+  .w2-row {
+    display: grid;
+    align-items: end;
+    height: auto;
+    padding-bottom: calc(var(--u) * 78);
+  }
+
+  .w2-row:last-child {
+    padding-bottom: 0;
+  }
+
+  .w2-row > .w2-below {
+    grid-area: 1 / 1;
+    position: relative;
+    justify-self: start;
+  }
+}
