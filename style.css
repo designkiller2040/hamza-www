@@ -1147,10 +1147,12 @@ html:has(.home2) {
 
 .abt-card-title {
   margin: 0;
-  font-weight: 500;
+  /* alona 2026-11-15: same look as the About quote (34 / 1.2, -1.38) */
+  font-family: var(--serif);
+  font-weight: 400;
   font-size: 6.2cqw;
-  line-height: 7.41cqw;
-  letter-spacing: 0;
+  line-height: 1.2;
+  letter-spacing: -0.0406em;
   text-align: left;
 }
 
