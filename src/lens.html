@@ -43,8 +43,16 @@
     }
     /* The blurred photo shows first; the sharp one stays hidden until the
        blurred one is on screen (script below). */
-    .lens-hero { opacity: 0; transition: opacity 0.4s; }
-    .lens-hero.shown { opacity: 1; }
+    /* While the photos load: a tiny blurred preview (inline, shows at once),
+       then the real blurred photo eases in over it (alona 2026-11-14). */
+    .lens-ph {
+      position: absolute;
+      inset: -40px;
+      background: center / cover no-repeat url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAWADADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDz+1trxN8qRyERMFcr2Jzgfoa2bHUIJCI5pJVf9K7HwRaxzW+qCQKT9rUfN24b/Grs3huwk8USNIEjiW0DHHAyWPNck43jzHRTn71jl4Y9PkA82/8ALJ7FWP8AKpZNHsnT/kJYz3+zvXVweE9JlhM8N1HLGVJDRyA8fWppNFtfIjCOdgwA5bOfxrBqUd0aupHozzq78OytBPc203mwWw3SyEFML681h206wYAyxYk7vUZ4r0zW9HVNFvY4nbBgJb5sLwR+dedXNoippwBK7iwJHfrWkNbJmd76nofhLw14gmtL57fUrS0jupfOQiMyMp54OcDvVW8+GWtyX5ubjxQ80xIyzI3I9MZ6e1FFdqirHJzyT0NuDwpodqoMumQvOVxIyu+1j34zTLvRNG+xtarYCOEnJSORgP50UVjU0NYyb3ZhvbWOlrNHDFcGKRSJI3uWZWHpg1x2pOTLF5KKkUMjFFYkkA9BRRWEX7xvb3T/2Q==");
+      filter: blur(24px);
+    }
+    .lens-top { opacity: 0; transition: opacity 0.9s ease; }
+    .lens-hero.shown .lens-top { opacity: 1; }
     .lens-bottom { visibility: hidden; }
     .lens-hero.ready .lens-bottom { visibility: visible; }
     .lens-top {
@@ -104,6 +112,7 @@
 </head>
 <body class="home2 lens-page">
   <div class="lens-hero" id="lens">
+    <div class="lens-ph" aria-hidden="true"></div>
     <img class="lens-bottom" data-src="{{root}}images/lens/sharp.jpg" alt="What We Venerate: piles of earth in an old hall, a blue stone hanging from chains" width="2263" height="1049">
     <img class="lens-top" src="{{root}}images/lens/blur.jpg" alt="" aria-hidden="true" fetchpriority="high" width="2263" height="1049">
   </div>
@@ -148,7 +157,7 @@
       if (started) return; started = true;
       hero.classList.add('shown');                 // blurred photo fades in
       bottom.src = bottom.dataset.src;             // only now ask for the sharp one
-      ready(bottom).then(function () {
+      Promise.all([ready(bottom), new Promise(function (r) { setTimeout(r, 900); })]).then(function () {
         hero.classList.add('ready');
         [modes.night.blur, modes.night.sharp].forEach(function (u) { new Image().src = u; });
       });
