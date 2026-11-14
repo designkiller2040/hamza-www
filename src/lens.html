@@ -20,8 +20,8 @@
       background: #000;
     }
     .lens-hero {
-      --r: 140px;       /* lens radius */
-      --r-big: 240px;   /* lens radius over a hotspot (the stone) */
+      --r: 100px;       /* lens radius */
+      --r-big: 140px;   /* lens radius over a hotspot (the stone) */
       --feather: 30px;  /* soft edge of the lens */
       --x: 50%;
       --y: 50%;
@@ -63,7 +63,6 @@
       font-size: 14px;
       line-height: 1.2;
       white-space: nowrap;
-      mix-blend-mode: difference; /* like the credits: readable on light and dark */
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s;
@@ -156,8 +155,8 @@
   (function () {
     var hero = document.getElementById('lens');
     var style = getComputedStyle(hero);
-    var R = parseFloat(style.getPropertyValue('--r')) || 140;        // open size, from CSS
-    var R_BIG = parseFloat(style.getPropertyValue('--r-big')) || 240; // over a hotspot
+    var R = parseFloat(style.getPropertyValue('--r')) || 100;        // open size, from CSS
+    var R_BIG = parseFloat(style.getPropertyValue('--r-big')) || 140; // over a hotspot
     var note = document.querySelector('.lens-note');
     var shownText = '';
 
