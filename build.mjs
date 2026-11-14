@@ -260,6 +260,11 @@ function render(file, root) {
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
   html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);
   html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
+  // Look closer has no menu, so there the copyright line also leads home
+  // (it replaced the old "Back" link, alona 2026-11-14).
+  if (basename(file, '.html') === 'lens') html = html
+    .replace('<p class="h2-signature">@2027 Hamza Shah Mian. All rights reserved.</p>', `<p class="h2-signature"><a href="${root}">@2027 Hamza Shah Mian. All rights reserved.</a></p>`)
+    .replace('<a class="h2-look" href=', '<a class="h2-look" aria-current="page" href=');
   // Underline the menu item of the page you're on (alona, 2026-11-14).
   const navKey = navFor[basename(file, '.html')];
   if (navKey) html = html.replace(`data-nav="${navKey}"`, `data-nav="${navKey}" aria-current="page"`);
