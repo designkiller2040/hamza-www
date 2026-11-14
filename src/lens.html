@@ -43,6 +43,8 @@
     }
     /* The blurred photo shows first; the sharp one stays hidden until the
        blurred one is on screen (script below). */
+    .lens-hero { opacity: 0; transition: opacity 0.4s; }
+    .lens-hero.shown { opacity: 1; }
     .lens-bottom { visibility: hidden; }
     .lens-hero.ready .lens-bottom { visibility: visible; }
     .lens-top {
@@ -135,17 +137,34 @@
     var hero = document.getElementById('lens');
     // Blurred first: only once it has loaded do we fetch and show the sharp
     // one, then load the night photos so switching is instant.
-    function start() {
-      bottom.src = bottom.dataset.src;
-      hero.classList.add('ready');
-      [modes.night.blur, modes.night.sharp].forEach(function (u) { new Image().src = u; });
+    // decode() waits until a photo is ready to paint (also on reload, when
+    // both come from the cache at once).
+    function ready(img) {
+      return img.decode ? img.decode().catch(function () {}) :
+        new Promise(function (res) { if (img.complete) res(); else img.onload = img.onerror = res; });
     }
-    if (top.complete && top.naturalWidth) start();
-    else { top.addEventListener('load', start, { once: true }); top.addEventListener('error', start, { once: true }); }
+    var started = false;
+    function start() {
+      if (started) return; started = true;
+      hero.classList.add('shown');                 // blurred photo fades in
+      bottom.src = bottom.dataset.src;             // only now ask for the sharp one
+      ready(bottom).then(function () {
+        hero.classList.add('ready');
+        [modes.night.blur, modes.night.sharp].forEach(function (u) { new Image().src = u; });
+      });
+    }
+    ready(top).then(start);
+    setTimeout(start, 4000); // never stay black if something goes wrong
     function setMode(name) {
       var m = modes[name];
-      top.src = m.blur;
-      bottom.src = m.sharp; bottom.alt = m.alt;
+      // Swap only when the new blurred photo is ready, so the sharp one
+      // never shows on its own.
+      var nextTop = new Image(), nextBottom = new Image();
+      nextTop.src = m.blur; nextBottom.src = m.sharp;
+      Promise.all([ready(nextTop), ready(nextBottom)]).then(function () {
+        top.src = m.blur;
+        bottom.src = m.sharp; bottom.alt = m.alt;
+      });
       buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mode === name)); });
     }
     buttons.forEach(function (b) {
