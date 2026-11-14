@@ -171,6 +171,7 @@
       var nextTop = new Image(), nextBottom = new Image();
       nextTop.src = m.blur; nextBottom.src = m.sharp;
       Promise.all([ready(nextTop), ready(nextBottom)]).then(function () {
+        hero.dataset.mode = name;
         top.src = m.blur;
         bottom.src = m.sharp; bottom.alt = m.alt;
       });
@@ -197,6 +198,8 @@
     var IMG_W = 2263, IMG_H = 1049;
     var PILES = 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals';
     var HOTSPOTS = [
+      // Night only: the performer (listed first so she wins over the stone near her hand).
+      { box: [1030, 500, 1150, 900], mode: 'night', text: 'Performer and dear friend of Hamza - Kristina Faleeva' },
       { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' },
       // Every coffee pile shows the same note.
       { box: [300, 780, 820, 970], text: PILES, diff: true },
@@ -215,6 +218,7 @@
       var ox = (w - IMG_W * k) / 2, oy = (h - IMG_H * k) / 2;
       for (var i = 0; i < HOTSPOTS.length; i++) {
         var s = HOTSPOTS[i];
+        if (s.mode && s.mode !== (hero.dataset.mode || 'day')) continue;
         if (s.box) {
           if (px > ox + s.box[0] * k && px < ox + s.box[2] * k &&
               py > oy + s.box[1] * k && py < oy + s.box[3] * k) return s;
