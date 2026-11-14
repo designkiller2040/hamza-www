@@ -33,7 +33,29 @@
     }
   ],
   "mediaLabel": "Media",
-  "mediaCount": 3,
+  "media": [
+    {
+      "image": "images/media/le-courrier.jpg",
+      "alt": "Le Courrier",
+      "title": "In the Dim Light of the\nFormer Eldorado",
+      "linkText": "Read full article",
+      "href": "#"
+    },
+    {
+      "image": "images/media/rts.jpg",
+      "alt": "RTS",
+      "title": "La question: Hamza Shah Mian draws inspiration from his mother for his paintings. Why?",
+      "linkText": "Listen full interview",
+      "href": "#"
+    },
+    {
+      "image": "images/media/24-heures.jpg",
+      "alt": "24 heures",
+      "title": "He paints with coffee and tea as\na tribute to his Afghan mother",
+      "linkText": "Read full article",
+      "href": "#"
+    }
+  ],
   "pagePortrait": {
     "src": "images/portrait.jpg",
     "width": 1600,

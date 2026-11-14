@@ -160,8 +160,19 @@ const aboutList = (items) => (items || []).map((t) => `          <p>${esc(t)}</p
 const aboutLinks = (about.links || []).map((l) =>
   `          <a href="${esc(l.href || '#')}"${/^https?:/.test(l.href || '') ? ' target="_blank" rel="noopener"' : ''}><span>${esc(l.text)}</span><span>${esc(l.label)}</span></a>`
 ).join('\n');
-const aboutMedia = Array.from({ length: Number(about.mediaCount) || 0 }, () =>
-  '        <div class="abt-media-item placeholder" aria-hidden="true"></div>').join('\n');
+// Media cards (alona 2026-11-14): press image on top, grey panel with the
+// headline (bottom-aligned, own line breaks with \n) and a link below.
+// Four columns on desktop, so a 4th card fits the row.
+const aboutMedia = (about.media || []).map((m) => {
+  const ext = /^https?:/.test(m.href || '') ? ' target="_blank" rel="noopener"' : '';
+  return `        <article class="abt-card">
+          <img src="../${esc(m.image)}" alt="${esc(m.alt)}" loading="lazy">
+          <div class="abt-card-panel">
+            <p class="abt-card-title">${esc(m.title).replace(/\n/g, '<br class="abt-card-br"> ')}</p>
+            <a class="abt-card-link" href="${esc(m.href || '#')}"${ext}>${esc(m.linkText)}</a>
+          </div>
+        </article>`;
+}).join('\n');
 
 const vars = {
   pageTitle: home.pageTitle,

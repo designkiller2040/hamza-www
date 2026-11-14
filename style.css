@@ -1083,14 +1083,68 @@ html:has(.home2) {
 
 .abt-media-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
   margin-top: 24px;
+}
+
+@media (min-width: 576px) {
+  .abt-media-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .abt-media-item.placeholder {
   aspect-ratio: 255 / 309;
   background: #efefef;
+}
+
+/* Media cards (alona 2026-11-14). Everything inside is sized in card
+   widths (cqw) from her 594 px card: image 594x459, grey panel 351,
+   42 side padding, headline 36.8 / 44 bottom-aligned, link 27.3. */
+.abt-card {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+}
+
+.abt-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 594 / 459;
+  object-fit: cover;
+}
+
+.abt-card-panel {
+  position: relative;
+  height: 59.09cqw;
+  background: #efefef;
+  color: #000;
+}
+
+.abt-card-title {
+  position: absolute;
+  left: 7.07cqw;
+  right: 7.07cqw;
+  bottom: var(--title-bottom, 32.4cqw);
+  margin: 0;
+  font-weight: 500;
+  font-size: 6.2cqw;
+  line-height: 7.41cqw;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.abt-card-link {
+  position: absolute;
+  left: 7.07cqw;
+  top: var(--link-top, 39.1cqw);
+  font-size: 4.6cqw;
+  line-height: 1.2;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.75cqw;
 }
 
 @media (min-width: 992px) {
@@ -1162,9 +1216,11 @@ html:has(.home2) {
     margin-top: calc(var(--u) * 125);
   }
 
+  /* alona 2026-11-14: four equal columns across the content width, so
+     a 4th card fits the row; with three the right quarter stays empty. */
   .abt-media-grid {
-    grid-template-columns: repeat(3, calc(var(--u) * 255));
-    column-gap: calc(var(--u) * 46);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: calc(var(--u) * 40);
     margin-top: calc(var(--u) * 24);
   }
 }
