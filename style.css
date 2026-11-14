@@ -754,6 +754,12 @@ html:has(.home2) {
   line-height: 1;
 }
 
+/* Logo + "digital imprint by" link to Vilna's Instagram (alona 2026-11-14).
+   display: contents keeps the column layout of .h2-studio unchanged. */
+.h2-studio-link {
+  display: contents;
+}
+
 .h2-studio img {
   width: calc(var(--u) * 56);
   height: auto;
