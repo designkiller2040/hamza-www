@@ -2061,3 +2061,12 @@ body:has(.h2-credits) .site-footer {
     transform: translateY(calc(var(--u) * var(--lift) * -1));
   }
 }
+
+/* A row with "align": "top" in home2.json (alona 2026-11-14: The moon's Red
+   Tide / jungle / can't stop melting) lines up the top edges of its photos
+   instead of the bottoms; each caption stays 28 design px under its photo. */
+@media (min-width: 992px) {
+  .w2-row.w2-row-top {
+    align-items: start;
+  }
+}

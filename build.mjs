@@ -134,7 +134,7 @@ function home2Figure(p, first) {
           ${inner}
         </figure>`;
 }
-const home2WorksHTML = home2.rows.map((r, ri) => `      <div class="w2-row" style="--h:${r.height}">
+const home2WorksHTML = home2.rows.map((r, ri) => `      <div class="w2-row${r.align === 'top' ? ' w2-row-top' : ''}" style="--h:${r.height}">
 ${r.works.map((p) => home2Figure(p, ri === 0)).filter(Boolean).join('\n')}
       </div>`).join('\n');
 
