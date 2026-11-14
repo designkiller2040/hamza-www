@@ -2051,3 +2051,13 @@ body:has(.h2-credits) .site-footer {
     justify-self: start;
   }
 }
+
+/* Works (alona 2026-11-14): a work with "lift" in home2.json has its photo
+   raised by that many design px, so the round paintings beside Shadowdance
+   are centred on it vertically. Captions stay where they are. */
+@media (min-width: 992px) {
+  .w2-lift .w2-pic,
+  .w2-lift .placeholder {
+    transform: translateY(calc(var(--u) * var(--lift) * -1));
+  }
+}

@@ -126,11 +126,11 @@ function home2Figure(p, first) {
     caption = `<figcaption class="w2-cap-hover">${inquire}<span class="w2-text">${first}${second ? '<br>' + second : ''}</span></figcaption>`;
   }
   // "h" crops the photo to the height drawn in the canvas; "above" puts the caption over the photo.
-  const size = `--x:${p.x};--y:${p.y};--w:${p.w}` + (p.h ? `;--ih:${p.h}` : '');
+  const size = `--x:${p.x};--y:${p.y};--w:${p.w}` + (p.h ? `;--ih:${p.h}` : '') + (p.lift ? `;--lift:${p.lift}` : '');
   const inner = p.caption === 'above' ? `${caption}
           ${img}` : `${img}
           ${caption}`;
-  return `        <figure class="w2${p.h ? ' w2-fixed' : ''}${p.caption === 'below' ? ' w2-below' : ''}" id="work-${esc(w.slug)}" style="${size}">
+  return `        <figure class="w2${p.h ? ' w2-fixed' : ''}${p.caption === 'below' ? ' w2-below' : ''}${p.lift ? ' w2-lift' : ''}" id="work-${esc(w.slug)}" style="${size}">
           ${inner}
         </figure>`;
 }
