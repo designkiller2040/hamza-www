@@ -1089,8 +1089,8 @@ html:has(.home2) {
   .abt {
     --u: calc((100vw - 176px) / 1380);
     padding: calc(var(--u) * 143) 88px calc(var(--u) * 166);
-    font-size: calc(var(--u) * 15);
-    line-height: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 16); /* main text 16 (alona 2026-11-14) */
+    line-height: calc(var(--u) * 21);
   }
 
   .abt-top {
@@ -1262,8 +1262,8 @@ html:has(.home2) {
   .home2 .about .bio {
     width: calc(var(--u) * 473);
     margin: 0;
-    /* Main text size, same as the About and Legal pages (alona 2026-11-12) */
-    font-size: calc(var(--u) * 15);
+    /* Main text size, same as the About and Legal pages (alona 2026-11-14: 16) */
+    font-size: calc(var(--u) * 16);
     line-height: 1.3;
   }
 
@@ -1286,8 +1286,8 @@ html:has(.home2) {
   margin: 0 auto;
   padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
   font-family: var(--serif);
-  font-size: calc(var(--u) * 15);
-  line-height: calc(var(--u) * 18);
+  font-size: calc(var(--u) * 16);
+  line-height: calc(var(--u) * 19);
   letter-spacing: -0.01em;
   color: var(--ink);
 }
@@ -1639,12 +1639,12 @@ body:has(.h2-credits) .site-footer {
 }
 
 /* Main text size on desktop: exhibition page paragraphs match the About,
-   Legal and Home texts at 15 px on a 1512 px wide window (alona 2026-11-12). */
+   Legal and Home texts at 16 px on a 1512 px wide window (alona 2026-11-14, was 15). */
 @media (min-width: 992px) {
   .ex-p,
   .rc-credit {
-    font-size: calc(100vw / 1512 * 15);
-    line-height: calc(100vw / 1512 * 18);
+    font-size: calc(100vw / 1512 * 16);
+    line-height: calc(100vw / 1512 * 19);
   }
 }
 
@@ -1729,8 +1729,8 @@ body:has(.h2-credits) .site-footer {
 
   .ex-abs .ex-p,
   .ex-abs .rc-credit {
-    font-size: calc(var(--U) * 15);
-    line-height: calc(var(--U) * 18);
+    font-size: calc(var(--U) * 16);
+    line-height: calc(var(--U) * 19);
   }
 
   .ex-abs .ex-slot.pos {
