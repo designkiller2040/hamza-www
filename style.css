@@ -1920,6 +1920,9 @@ body:has(.h2-credits) .site-footer {
   html.intro .h2-credits,
   html.intro .lens-hero {
     animation: intro-fade 900ms ease-out both;
+  }
+}
+
 /* Works rows on desktop (alona 2026-11-14): works with the caption below
    are bottom-aligned inside their row, so the "Inquire to Purchase" lines
    of a row sit on one line and shorter paintings sit lower. The photo to
