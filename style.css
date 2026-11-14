@@ -1753,12 +1753,12 @@ body:has(.h2-credits) .site-footer {
 }
 
 /* Homepage hero from alona's canvas (2026-11-14): on a 1512 x 982 screen the
-   photo is 1072 x 599, centred, 160 px from the top, captions 8 px under it
+   photo is 1200 x 599 (was 1072 x 599), centred, 160 px from the top, captions 8 px under it
    and aligned with its edges. On shorter screens the photo shrinks so it
    still fits above the credits. */
 @media (min-width: 992px) {
   .home-page .h2-slides .hero {
-    --hw: min(100vw * 1072 / 1512, (100svh - 100vw * 383 / 1512) * 1072 / 599);
+    --hw: min(100vw * 1200 / 1512, (100svh - 100vw * 383 / 1512) * 1200 / 599);
     width: var(--hw);
     margin: 0 auto;
     padding: calc(100vw * 160 / 1512) 0 0;
@@ -1769,7 +1769,7 @@ body:has(.h2-credits) .site-footer {
   .home-page .hero-frame {
     width: 100%;
     max-height: none;
-    aspect-ratio: 1072 / 599;
+    aspect-ratio: 1200 / 599;
   }
 
   .home-page .hero-captions {
