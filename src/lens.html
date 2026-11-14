@@ -101,8 +101,8 @@
 </head>
 <body class="home2 lens-page">
   <div class="lens-hero" id="lens">
-    <img class="lens-bottom" data-src="{{root}}images/lens/sharp.jpg" alt="What We Venerate: piles of earth in an old hall, a blue stone hanging from chains" width="2263" height="1051">
-    <img class="lens-top" src="{{root}}images/lens/blur.jpg" alt="" aria-hidden="true" fetchpriority="high" width="2263" height="1051">
+    <img class="lens-bottom" data-src="{{root}}images/lens/sharp.jpg" alt="What We Venerate: piles of earth in an old hall, a blue stone hanging from chains" width="2263" height="1049">
+    <img class="lens-top" src="{{root}}images/lens/blur.jpg" alt="" aria-hidden="true" fetchpriority="high" width="2263" height="1049">
   </div>
 
   <p class="lens-note" aria-live="polite"></p>
@@ -160,13 +160,13 @@
     var note = document.querySelector('.lens-note');
     var shownText = '';
 
-    // Hotspots, in pixels of the photo (2263 x 1051; the night photo is
+    // Hotspots, in pixels of the photo (2263 x 1049; the night photo is
     // framed the same). x, y = centre, size = how close counts as "on it".
     // Add more parts here: { x, y, size, text }.
-    var IMG_W = 2263, IMG_H = 1051;
+    var IMG_W = 2263, IMG_H = 1049;
     var HOTSPOTS = [
       { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' },
-      { x: 790, y: 760, size: 150, text: 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals' }
+      { x: 790, y: 790, size: 150, text: 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals' }
     ];
     // Photo pixels -> screen pixels (the photo covers the screen).
     function hit(px, py) {
