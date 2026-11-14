@@ -79,14 +79,27 @@ ${items.map(workFigure).join('\n')}
 // Every number is in design pixels; the CSS turns them into --u units.
 const home2 = existsSync(join(ROOT, 'content/home2.json')) ? readJSON('content/home2.json') : { rows: [] };
 const worksBySlug = new Map(works.map((w) => [w.slug, w]));
-// Smaller copies made by tools/resize-artworks.py (images/artworks/640/, /1200/).
+// Smaller copies made by tools/resize-artworks.py (images/artworks/900/, /1400/).
 // The browser picks the smallest one that is still sharp; the original is the largest.
 function artworkSrcset(img) {
   const m = /^(images\/artworks\/)([^/]+)$/.exec(img.src || '');
   if (!m) return '';
-  const set = [640, 1200].filter((s) => s < img.width && existsSync(join(ROOT, m[1], String(s), m[2])))
+  const set = [900, 1400].filter((s) => s < img.width && existsSync(join(ROOT, m[1], String(s), m[2])))
     .map((s) => `${m[1]}${s}/${m[2]} ${s}w`);
   return set.length ? set.concat(`${img.src} ${img.width}w`).join(', ') : '';
+}
+// Tiny blurred previews (images/artworks/blur.json, also made by the tool above):
+// shown at once under each painting, which fades in over it once it has loaded.
+const blurFile = join(ROOT, 'images/artworks/blur.json');
+const blurs = existsSync(blurFile) ? JSON.parse(readFileSync(blurFile, 'utf8')) : {};
+function blurPreview(img) {
+  const b = blurs[(img.src || '').split('/').pop()];
+  if (!b) return '';
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${b.w} ${b.h}' preserveAspectRatio='none'>`
+    + `<filter id='b' color-interpolation-filters='sRGB'><feGaussianBlur stdDeviation='1.2'/>`
+    + `<feComponentTransfer><feFuncA type='discrete' tableValues='1 1'/></feComponentTransfer></filter>`
+    + `<image filter='url(%23b)' width='${b.w}' height='${b.h}' preserveAspectRatio='none' href='data:image/jpeg;base64,${b.jpg}'/></svg>`;
+  return `background-image:url(&quot;data:image/svg+xml;charset=utf-8,${svg}&quot;)`;
 }
 function home2Figure(p, first) {
   const w = worksBySlug.get(p.slug);
@@ -97,7 +110,7 @@ function home2Figure(p, first) {
   const sizes = `(min-width: 992px) ${num(p.w / 15.12)}vw, (min-width: 576px) 50vw, 100vw`;
   const load = first ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"';
   const img = w.image && w.image.src
-    ? `<img src="${esc(w.image.src)}"${srcset ? ` srcset="${esc(srcset)}" sizes="${sizes}"` : ''} alt="${esc(w.image.alt || w.title)}" width="${w.image.width}" height="${w.image.height}" ${load}>`
+    ? `<span class="w2-pic${blurPreview(w.image) ? ' wait' : ''}" style="${blurPreview(w.image)}"><img src="${esc(w.image.src)}"${srcset ? ` srcset="${esc(srcset)}" sizes="${sizes}"` : ''} alt="${esc(w.image.alt || w.title)}" width="${w.image.width}" height="${w.image.height}" ${load}></span>`
     : `<div class="placeholder" style="aspect-ratio:${num(ratio, 3)}"></div>`;
   const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=Inquiry%20${encodeURIComponent(w.slug)}`;
   const inquire = `<a class="w2-inquire" href="${mail}">Inquire to Purchase</a>`;

@@ -19,6 +19,15 @@
 {{{home2.worksPage}}}
     </section>
   </main>
+  <noscript><style>.w2-pic.wait img { opacity: 1; }</style></noscript>
+  <script>
+    // Each painting starts as its tiny blurred preview and fades in once loaded.
+    document.querySelectorAll('.w2-pic.wait img').forEach(function (img) {
+      var done = function () { img.parentNode.classList.remove('wait'); };
+      if (img.complete && img.naturalWidth) { img.style.transition = 'none'; done(); }
+      else { img.addEventListener('load', done); img.addEventListener('error', done); }
+    });
+  </script>
 
 {{> credits}}
 </body>
