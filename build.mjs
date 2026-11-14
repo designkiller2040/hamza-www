@@ -79,12 +79,25 @@ ${items.map(workFigure).join('\n')}
 // Every number is in design pixels; the CSS turns them into --u units.
 const home2 = existsSync(join(ROOT, 'content/home2.json')) ? readJSON('content/home2.json') : { rows: [] };
 const worksBySlug = new Map(works.map((w) => [w.slug, w]));
-function home2Figure(p) {
+// Smaller copies made by tools/resize-artworks.py (images/artworks/640/, /1200/).
+// The browser picks the smallest one that is still sharp; the original is the largest.
+function artworkSrcset(img) {
+  const m = /^(images\/artworks\/)([^/]+)$/.exec(img.src || '');
+  if (!m) return '';
+  const set = [640, 1200].filter((s) => s < img.width && existsSync(join(ROOT, m[1], String(s), m[2])))
+    .map((s) => `${m[1]}${s}/${m[2]} ${s}w`);
+  return set.length ? set.concat(`${img.src} ${img.width}w`).join(', ') : '';
+}
+function home2Figure(p, first) {
   const w = worksBySlug.get(p.slug);
   if (!w || w.hidden) return '';
   const ratio = w.image && w.image.width ? w.image.width / w.image.height : (w.layout?.ratio || 1);
+  // The first row loads straight away and first in line; the rest load as you scroll.
+  const srcset = w.image && w.image.src ? artworkSrcset(w.image) : '';
+  const sizes = `(min-width: 992px) ${num(p.w / 15.12)}vw, (min-width: 576px) 50vw, 100vw`;
+  const load = first ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"';
   const img = w.image && w.image.src
-    ? `<img src="${esc(w.image.src)}" alt="${esc(w.image.alt || w.title)}" width="${w.image.width}" height="${w.image.height}" loading="lazy">`
+    ? `<img src="${esc(w.image.src)}"${srcset ? ` srcset="${esc(srcset)}" sizes="${sizes}"` : ''} alt="${esc(w.image.alt || w.title)}" width="${w.image.width}" height="${w.image.height}" ${load}>`
     : `<div class="placeholder" style="aspect-ratio:${num(ratio, 3)}"></div>`;
   const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=Inquiry%20${encodeURIComponent(w.slug)}`;
   const inquire = `<a class="w2-inquire" href="${mail}">Inquire to Purchase</a>`;
@@ -108,8 +121,8 @@ function home2Figure(p) {
           ${inner}
         </figure>`;
 }
-const home2WorksHTML = home2.rows.map((r) => `      <div class="w2-row" style="--h:${r.height}">
-${r.works.map(home2Figure).filter(Boolean).join('\n')}
+const home2WorksHTML = home2.rows.map((r, ri) => `      <div class="w2-row" style="--h:${r.height}">
+${r.works.map((p) => home2Figure(p, ri === 0)).filter(Boolean).join('\n')}
       </div>`).join('\n');
 
 // ---- Exhibitions ---------------------------------------------------------
@@ -196,7 +209,8 @@ const vars = {
   works: worksHTML,
   'home2.works': home2WorksHTML,
   // The /works/ page lives one folder down, so its image paths start with ../
-  'home2.worksPage': home2WorksHTML.replace(/src="(?!https?:|\/|data:)/g, 'src="../'),
+  'home2.worksPage': home2WorksHTML.replace(/src="(?!https?:|\/|data:)/g, 'src="../')
+    .replace(/srcset="([^"]*)"/g, (_, v) => `srcset="${v.replace(/(^|, )images\//g, '$1../images/')}"`),
   'home2.exhibitions': exhibitionRowsHTML,
   'hero.left': heroSideHTML('left'),
   'hero.right': heroSideHTML('right'),
