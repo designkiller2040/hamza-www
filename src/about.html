@@ -15,7 +15,7 @@
 
   <!-- About page, alona's design 2026-11-13: the About section that was on
        the homepage (quote top left, bio bottom left, portrait right), then
-       Solo shows / Studies / Contacts in a row, then Media. -->
+       Studies / Solo shows, then Media. Contacts sit under the portrait. -->
   <main class="abt">
     <h1 class="visually-hidden">About {{name}}</h1>
     <div class="abt-top">
@@ -25,9 +25,18 @@
 {{{about.bio}}}
         </div>
       </div>
-      <figure class="abt-photo">
-        <img src="{{root}}{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
-      </figure>
+      <div class="abt-right">
+        <figure class="abt-photo">
+          <img src="{{root}}{{portrait.src}}" alt="{{portrait.alt}}" width="{{portrait.width}}" height="{{portrait.height}}">
+        </figure>
+        <!-- Contacts sit under the portrait, as wide as it (alona 2026-11-14) -->
+        <div class="abt-contacts">
+          <h2 class="abt-label">{{about.contactsLabel}}</h2>
+          <div class="abt-list abt-links">
+  {{{about.links}}}
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="abt-cv">
@@ -41,12 +50,6 @@
         <h2 class="abt-label">{{about.studiesLabel}}</h2>
         <div class="abt-list abt-justify">
 {{{about.studies}}}
-        </div>
-      </div>
-      <div class="abt-contacts">
-        <h2 class="abt-label">{{about.contactsLabel}}</h2>
-        <div class="abt-list abt-links">
-{{{about.links}}}
         </div>
       </div>
     </div>

@@ -1093,10 +1093,11 @@ html:has(.home2) {
   color: inherit;
 }
 
-/* @hamzashah and the email are underlined (alona 2026-11-12) */
-.abt-links a span:first-child {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+/* No underline on @hamzashah / the email since 2026-11-14 (alona's
+   screenshot); was underlined from 2026-11-12. */
+
+.abt-contacts {
+  margin-top: 48px;
 }
 
 .abt-media {
@@ -1228,7 +1229,20 @@ html:has(.home2) {
      portrait's left edge (start of the middle column), 253 px wide. */
   .abt-studies { grid-column: 1; grid-row: 1; }
   .abt-solo { grid-column: 1; grid-row: 2; margin-top: calc(var(--u) * 48); }
-  .abt-contacts { grid-column: 2; grid-row: 1; width: calc(var(--u) * 253); }
+
+  /* alona 2026-11-14: Contacts hang under the portrait, exactly its
+     width: label and handles start at the photo's left edge, (ig) and
+     (email) end at its right edge. 74 px from photo to label, 20 px
+     from label to the lines (her screenshot). Absolute, so the Studies
+     row below keeps its place. */
+  .abt-right { position: relative; }
+  .abt-contacts {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: calc(var(--u) * 74);
+  }
 
   .abt-list {
     margin-top: calc(var(--u) * 20);
