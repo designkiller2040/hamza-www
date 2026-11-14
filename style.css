@@ -1897,3 +1897,28 @@ body:has(.h2-credits) .site-footer {
 .exd-js .exd-cursor.is-on {
   opacity: 1;
 }
+
+/* ---- First-open slide-in (alona, 2026-11-14) ----------------------------
+   build.mjs adds <html class="intro"> only the first time a page is opened in
+   a visit. Content rises 14px while fading in; the fixed menu and credits only
+   fade. fill-mode "backwards" leaves nothing behind once it has played. */
+@keyframes intro-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes intro-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.intro body > main,
+  html.intro body > .hero-scroll {
+    animation: intro-rise 1000ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  html.intro body > .hero-scroll ~ main { animation-delay: 120ms; }
+  html.intro .h2-header,
+  html.intro .h2-credits,
+  html.intro .lens-hero {
+    animation: intro-fade 900ms ease-out both;
+  }
+}

@@ -210,9 +210,14 @@ const vars = {
 // style.css gets ?v=<content hash>, so a browser never pairs a new page with
 // an old cached stylesheet (GitHub Pages lets browsers cache it for 10 minutes).
 const cssVersion = createHash('sha1').update(read('style.css')).digest('hex').slice(0, 8);
+// Marks <html class="intro"> on the first open of each page per browser session;
+// style.css then plays the slide-in. Back/forward and reloads skip it.
+const introScript = "try{var k='intro:'+location.pathname,s=sessionStorage;if(!s.getItem(k)){s.setItem(k,'1');var d=document.documentElement;d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},2000)}}catch(e){}";
 function render(file, root) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
   html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
+  // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
+  html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);
   html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
   const all = { ...vars, root };
   return html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
