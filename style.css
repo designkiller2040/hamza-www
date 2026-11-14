@@ -982,7 +982,7 @@ html:has(.home2) {
    About page (/about/), alona's design 2026-11-13.
    Top: the About section from the homepage (quote top left, bio bottom
    left, portrait on the right). Then Solo shows / Studies / Contacts in
-   one row; since 2026-11-14 Studies sits under Solo shows), then Media.
+   one row; since 2026-11-14 Studies, then Solo shows, sit in the left column), then Media.
    Drawn on a 1512 px page with 66 px side margins; --u is one design px.
    The previous About page is kept at /about-1/.
    --------------------------------------------------------------- */
@@ -1139,11 +1139,12 @@ html:has(.home2) {
     width: calc(var(--u) * 315);
   }
 
-  /* alona 2026-11-14: Studies sits in the left column under Solo shows;
-     the middle column stays empty, Contacts keeps its place. */
-  .abt-solo { grid-column: 1; grid-row: 1; }
-  .abt-studies { grid-column: 1; grid-row: 2; margin-top: calc(var(--u) * 48); }
-  .abt-contacts { grid-column: 3; grid-row: 1; }
+  /* alona 2026-11-14: left column is Studies, then Solo shows below it.
+     Contacts stays on the first row, its left edge lined up with the
+     portrait's left edge (start of the middle column), 253 px wide. */
+  .abt-studies { grid-column: 1; grid-row: 1; }
+  .abt-solo { grid-column: 1; grid-row: 2; margin-top: calc(var(--u) * 48); }
+  .abt-contacts { grid-column: 2; grid-row: 1; width: calc(var(--u) * 253); }
 
   .abt-list {
     margin-top: calc(var(--u) * 20);
