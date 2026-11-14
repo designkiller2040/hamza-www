@@ -63,12 +63,12 @@
       font-size: 14px;
       line-height: 1.2;
       white-space: pre; /* keeps alona's line breaks */
-      mix-blend-mode: difference;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s;
     }
     .lens-note.on { opacity: 1; }
+    .lens-note.diff { mix-blend-mode: difference; } /* coffee piles only */
 
     /* Day / night switch: alona's two icons, 40 x 40, top centre
        (where she circled it, 2026-11-14) */
@@ -171,12 +171,12 @@
     var HOTSPOTS = [
       { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' },
       // Every coffee pile shows the same note.
-      { box: [300, 780, 820, 970], text: PILES },
-      { box: [620, 680, 960, 870], text: PILES },
-      { box: [870, 740, 1050, 850], text: PILES },
-      { box: [1020, 730, 1320, 845], text: PILES },
-      { box: [1360, 745, 1540, 840], text: PILES },
-      { box: [1390, 760, 1770, 880], text: PILES },
+      { box: [300, 780, 820, 970], text: PILES, diff: true },
+      { box: [620, 680, 960, 870], text: PILES, diff: true },
+      { box: [870, 740, 1050, 850], text: PILES, diff: true },
+      { box: [1020, 730, 1320, 845], text: PILES, diff: true },
+      { box: [1360, 745, 1540, 840], text: PILES, diff: true },
+      { box: [1390, 760, 1770, 880], text: PILES, diff: true },
       // The rust painting on the right wall: anywhere on it counts (box = left, top, right, bottom).
       { box: [1805, 295, 1928, 880], side: 'left', text: 'Artwork "Name" 2024' }
     ];
@@ -267,7 +267,7 @@
       var text = spot ? spot.text : '';
       if (text !== shownText) {
         shownText = text;
-        if (text) note.textContent = text;
+        if (text) { note.textContent = text; note.classList.toggle('diff', !!spot.diff); }
         note.classList.toggle('on', !!text);
       }
       if (shownText) {
