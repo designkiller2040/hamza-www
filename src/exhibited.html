@@ -37,6 +37,23 @@
     </a>
   </main>
 
+  <!-- Over an exhibition the cursor becomes a small "See more" tag (alona 2026-11-14). Mouse/trackpad only. -->
+  <span class="exd-cursor" aria-hidden="true">See more</span>
+  <script>
+    (function () {
+      if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      var tag = document.querySelector('.exd-cursor');
+      document.documentElement.classList.add('exd-js');
+      document.querySelectorAll('.exd-item').forEach(function (card) {
+        card.addEventListener('mousemove', function (e) {
+          tag.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px) translate(-50%,-50%)';
+          tag.classList.add('is-on');
+        });
+        card.addEventListener('mouseleave', function () { tag.classList.remove('is-on'); });
+      });
+    })();
+  </script>
+
 {{> credits}}
 </body>
 </html>

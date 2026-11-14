@@ -1857,3 +1857,38 @@ body:has(.h2-credits) .site-footer {
     line-height: 18px;
   }
 }
+
+/* Exhibited: over a card the cursor turns into a "See more" tag
+   (white box, black text), only with a mouse or trackpad. */
+.exd-cursor {
+  display: none;
+}
+
+.exd-js .exd-item {
+  cursor: none;
+}
+
+.exd-js .exd-item:hover .exd-cap span:first-child {
+  text-decoration: none;
+}
+
+.exd-js .exd-cursor {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  padding: 4px 8px 5px;
+  background: #fff;
+  color: #000;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.exd-js .exd-cursor.is-on {
+  opacity: 1;
+}
