@@ -2074,3 +2074,96 @@ body:has(.h2-credits) .site-footer {
     align-items: start;
   }
 }
+
+/* Homepage on phones (alona's mock, 2026-11-15): one tall photo from under
+   the menu to near the bottom of the screen, cropped to the subject, with
+   the credits centred on top of it at the bottom: Vilna logo, "digital
+   imprint by", the copyright line, and under it a small row with Look
+   closer and Legal & Privacy. No caption under the photo (the mock has
+   none; the alt text still describes each photo). The script in
+   src/index.html moves the credits into the photo frame. Scrolling still
+   changes the photo one step at a time. */
+@media (max-width: 767.98px) {
+  .home-page .h2-slides .hero {
+    padding: 72px 24px 0;
+  }
+
+  .hero-js .home-page .hero-frame,
+  .home-page.hero-js .hero-frame,
+  .home-page .hero-frame {
+    aspect-ratio: auto;
+    height: calc(100svh - 72px - 20px);
+    max-height: none;
+  }
+
+  .home-page .hero-captions {
+    display: none;
+  }
+
+  /* Crop each photo around its subject */
+  .home-page .hero-frame img { object-position: 50% 50%; }
+  .home-page .hero-frame img:nth-child(3) { object-position: 30% 50%; }
+
+  .home-page .hero-frame .h2-credits {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 18px;
+    text-align: center;
+  }
+
+  .home-page .hero-frame .h2-studio {
+    order: 1;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .home-page .hero-frame .h2-studio img {
+    position: static;
+    width: 52px;
+    height: auto;
+    margin-bottom: 2px;
+    opacity: 1;
+    object-fit: contain;
+    filter: invert(1);
+  }
+
+  /* Plain colour on the photo (no difference blend, which turned grey over
+     mid-tones): white with a soft shadow, dark over a light photo bottom */
+  .home-page .hero-frame .h2-credits {
+    color: #fff;
+    mix-blend-mode: normal;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .home-page .hero-frame.tone-light .h2-credits {
+    color: #111;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+  }
+
+  .home-page .hero-frame.tone-light .h2-studio img {
+    filter: none;
+  }
+
+  .home-page .hero-frame .h2-signature {
+    order: 2;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .home-page .hero-frame .h2-fun {
+    order: 3;
+    justify-self: auto;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .home-page .hero-frame .h2-fun .h2-look {
+    margin-right: 20px;
+  }
+}
