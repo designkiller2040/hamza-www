@@ -779,7 +779,7 @@ html:has(.home2) {
 }
 
 .h2-fun .h2-look {
-  /* "Look closer", homepage only, left of Legal & Privacy (alona 2026-11-14) */
+  /* "Look closer", on every page, left of Legal & Privacy (alona 2026-11-14) */
   margin-right: calc(var(--u) * 24);
 }
 

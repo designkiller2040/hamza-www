@@ -20,7 +20,8 @@
       background: #000;
     }
     .lens-hero {
-      --r: 90px;        /* lens radius */
+      --r: 140px;       /* lens radius */
+      --r-big: 240px;   /* lens radius over a hotspot (the stone) */
       --feather: 30px;  /* soft edge of the lens */
       --x: 50%;
       --y: 50%;
@@ -50,18 +51,39 @@
       mask-image: radial-gradient(circle var(--r) at var(--x) var(--y),
         transparent 0, transparent calc(var(--r) - var(--feather)), #000 var(--r), #000 100%);
     }
-    /* Day / night switch: alona's two icons, 80 x 80, top-right corner */
+    /* Small note that appears next to the lens over a hotspot */
+    .lens-note {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 5;
+      margin: 0;
+      color: #fff;
+      font-family: var(--garamond);
+      font-size: 14px;
+      line-height: 1.2;
+      white-space: nowrap;
+      mix-blend-mode: difference; /* like the credits: readable on light and dark */
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .lens-note.on { opacity: 1; }
+
+    /* Day / night switch: alona's two icons, 40 x 40, top centre
+       (where she circled it, 2026-11-14) */
     .lens-modes {
       position: fixed;
-      top: calc(var(--u) * 44);
-      right: calc(var(--u) * 80);
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 11;
       display: flex;
-      gap: 16px;
+      gap: 12px;
     }
     .lens-modes button {
-      width: 80px;
-      height: 80px;
+      width: 40px;
+      height: 40px;
       padding: 0;
       border: 0;
       background: none;
@@ -72,11 +94,9 @@
     .lens-modes button[aria-pressed="true"],
     .lens-modes button:hover { opacity: 1; }
     .lens-modes img { display: block; width: 100%; height: 100%; }
-    @media (max-width: 991.98px) {
-      .lens-modes { top: 24px; right: var(--gutter, 24px); }
-    }
     @media (max-width: 575.98px) {
-      .lens-modes button { width: 56px; height: 56px; }
+      .lens-modes { top: 32px; }
+      .lens-modes button { width: 28px; height: 28px; }
     }
   </style>
 </head>
@@ -86,9 +106,11 @@
     <img class="lens-top" src="{{root}}images/lens/blur.jpg" alt="" aria-hidden="true" fetchpriority="high" width="2263" height="1051">
   </div>
 
+  <p class="lens-note" aria-live="polite"></p>
+
   <div class="lens-modes" role="group" aria-label="Day or night">
-    <button type="button" data-mode="day" aria-pressed="true"><img src="{{root}}images/lens/day.png" alt="Day" width="80" height="80"></button>
-    <button type="button" data-mode="night" aria-pressed="false"><img src="{{root}}images/lens/night.png" alt="Night" width="80" height="80"></button>
+    <button type="button" data-mode="day" aria-pressed="true"><img src="{{root}}images/lens/day.png" alt="Day" width="40" height="40"></button>
+    <button type="button" data-mode="night" aria-pressed="false"><img src="{{root}}images/lens/night.png" alt="Night" width="40" height="40"></button>
   </div>
 
   <div class="h2-credits">
@@ -134,7 +156,30 @@
   (function () {
     var hero = document.getElementById('lens');
     var style = getComputedStyle(hero);
-    var R = parseFloat(style.getPropertyValue('--r')) || 90; // open size, from CSS
+    var R = parseFloat(style.getPropertyValue('--r')) || 140;        // open size, from CSS
+    var R_BIG = parseFloat(style.getPropertyValue('--r-big')) || 240; // over a hotspot
+    var note = document.querySelector('.lens-note');
+    var shownText = '';
+
+    // Hotspots, in pixels of the photo (2263 x 1051; the night photo is
+    // framed the same). x, y = centre, size = how close counts as "on it".
+    // Add more parts here: { x, y, size, text }.
+    var IMG_W = 2263, IMG_H = 1051;
+    var HOTSPOTS = [
+      { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' }
+    ];
+    // Photo pixels -> screen pixels (the photo covers the screen).
+    function hit(px, py) {
+      var w = hero.clientWidth, h = hero.clientHeight;
+      var k = Math.max(w / IMG_W, h / IMG_H);
+      var ox = (w - IMG_W * k) / 2, oy = (h - IMG_H * k) / 2;
+      for (var i = 0; i < HOTSPOTS.length; i++) {
+        var s = HOTSPOTS[i];
+        var dx = px - (ox + s.x * k), dy = py - (oy + s.y * k);
+        if (dx * dx + dy * dy < Math.pow(Math.max(s.size * k, 50), 2)) return s;
+      }
+      return null;
+    }
     var EASE = 0.15;
 
     var tx = hero.clientWidth / 2, ty = hero.clientHeight / 2; // target
@@ -188,6 +233,7 @@
 
     function frame(now) {
       // Idle drift: with no input for a while, the lens wanders slowly.
+      var spot;
       if (!reduce && tr === 0 && now - lastInput > IDLE_AFTER) {
         if (!idle) { idle = true; t0 = now; }
         var w = hero.clientWidth, h = hero.clientHeight, t = (now - t0) / 1000;
@@ -195,8 +241,21 @@
         ty = h / 2 + Math.sin(t * 0.31 + 1) * h * 0.25;
         if (r < 1) { x = tx; y = ty; }
         r += (R - r) * 0.03;
+        spot = null;
       } else {
-        r += (tr - r) * EASE;
+        // Over a hotspot the lens opens wider and its note appears.
+        var spot = tr > 0 ? hit(tx, ty) : null;
+        r += ((spot ? R_BIG : tr) - r) * EASE;
+      }
+      var text = spot ? spot.text : '';
+      if (text !== shownText) {
+        shownText = text;
+        if (text) note.textContent = text;
+        note.classList.toggle('on', !!text);
+      }
+      if (shownText) {
+        // Just outside the lens, to its upper right.
+        note.style.transform = 'translate(' + (x + r * 0.72 + 12).toFixed(1) + 'px,' + (y - r * 0.72 - 8).toFixed(1) + 'px)';
       }
       x += (tx - x) * EASE;
       y += (ty - y) * EASE;
