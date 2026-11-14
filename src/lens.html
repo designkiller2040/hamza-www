@@ -162,14 +162,15 @@
 
     // Hotspots, in pixels of the photo (2263 x 1049; the night photo is
     // framed the same). x, y = centre, size = how close counts as "on it".
-    // Add more parts here: { x, y, size, text } for a round spot,
+    // Add more parts here: { x, y, size, text } for a round spot
+    // (add side: 'left' to put the note left of the lens),
     // or { box: [left, top, right, bottom], text } for a whole object.
     var IMG_W = 2263, IMG_H = 1049;
     var HOTSPOTS = [
       { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' },
       { x: 790, y: 790, size: 150, text: 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals' },
       // The rust painting on the right wall: anywhere on it counts (box = left, top, right, bottom).
-      { box: [1805, 295, 1928, 880], text: 'Artwork "Name" 2024' }
+      { box: [1805, 295, 1928, 880], side: 'left', text: 'Artwork "Name" 2024' }
     ];
     // Photo pixels -> screen pixels (the photo covers the screen).
     function hit(px, py) {
@@ -266,7 +267,7 @@
         // Flips to the upper left when it would run off the right edge.
         var nw = note.offsetWidth, nh = note.offsetHeight;
         var nx = x + r * 0.72 + 12;
-        if (nx + nw > innerWidth - 16) nx = x - r * 0.72 - 12 - nw;
+        if ((spot && spot.side === 'left') || nx + nw > innerWidth - 16) nx = x - r * 0.72 - 12 - nw;
         var ny = Math.max(16, y - r * 0.72 - nh);
         note.style.transform = 'translate(' + nx.toFixed(1) + 'px,' + ny.toFixed(1) + 'px)';
       }
