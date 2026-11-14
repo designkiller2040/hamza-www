@@ -104,7 +104,7 @@ function home2Figure(p) {
   const inner = p.caption === 'above' ? `${caption}
           ${img}` : `${img}
           ${caption}`;
-  return `        <figure class="w2${p.h ? ' w2-fixed' : ''}" id="work-${esc(w.slug)}" style="${size}">
+  return `        <figure class="w2${p.h ? ' w2-fixed' : ''}${p.caption === 'below' ? ' w2-below' : ''}" id="work-${esc(w.slug)}" style="${size}">
           ${inner}
         </figure>`;
 }
