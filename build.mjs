@@ -4,7 +4,7 @@
 // Plain Node, no packages: `node build.mjs`.
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, cpSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, basename } from 'node:path';
 import { createHash } from 'node:crypto';
 
 const ROOT = new URL('.', import.meta.url).pathname;
@@ -213,12 +213,18 @@ const cssVersion = createHash('sha1').update(read('style.css')).digest('hex').sl
 // Marks <html class="intro"> on the first open of each page per browser session;
 // style.css then plays the slide-in. Back/forward and reloads skip it.
 const introScript = "try{var k='intro:'+location.pathname,s=sessionStorage;if(!s.getItem(k)){s.setItem(k,'1');var d=document.documentElement;d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},2000)}}catch(e){}";
+// Which top-menu item is underlined on each page; exhibition pages count as Exhibitions.
+const navFor = { index: 'home', works: 'works', exhibited: 'exhibited', abimal: 'exhibited',
+  coldrush: 'exhibited', 'regards-croises': 'exhibited', venerate: 'exhibited', about: 'about' };
 function render(file, root) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
   html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
   html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);
   html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
+  // Underline the menu item of the page you're on (alona, 2026-11-14).
+  const navKey = navFor[basename(file, '.html')];
+  if (navKey) html = html.replace(`data-nav="${navKey}"`, `data-nav="${navKey}" aria-current="page"`);
   const all = { ...vars, root };
   return html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
     const key = raw || plain;

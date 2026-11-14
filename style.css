@@ -668,16 +668,24 @@ html:has(.home2) {
 .h2-nav {
   display: flex;
   justify-content: center;
-  gap: calc(var(--u) * 80);
+  /* alona's menu design (2026-11-14): wide, even gaps (145 design px) */
+  gap: calc(var(--u) * 145);
   margin: 0 auto;
   font-family: var(--garamond);
   font-size: 15px; /* desktop: 15px (alona 2026-11-12, was 17); phones: see end of file */
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1;
   text-transform: uppercase;
 }
 
-.h2-nav a:hover,
+/* The page you're on is underlined: thin line a little below the text */
+.h2-nav a[aria-current="page"],
+.h2-nav a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
 .h2-inquire:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
