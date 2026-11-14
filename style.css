@@ -1153,6 +1153,7 @@ html:has(.home2) {
 
 .abt-card-title {
   margin: 0;
+  max-width: 86cqw; /* text box stops short of the image edge (alona 2026-11-15) */
   /* alona 2026-11-15: same look as the About quote (34 / 1.2, -1.38) */
   font-family: var(--serif);
   font-weight: 400;
