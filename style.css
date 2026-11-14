@@ -731,8 +731,8 @@ html:has(.home2) {
   /* Name sits on the same bottom line as "digital art direction" */
   align-items: end;
   bottom: 0;
-  /* sides: 88 px like the page content (alona 2026-11-13); bottom 24 (was 44, alona 2026-11-14: lower) */
-  padding: 0 88px calc(var(--u) * 24);
+  /* sides: 88 px like the page content (alona 2026-11-13); bottom 32 (44 -> 24 -> 32, alona 2026-11-14: "a lil higher") */
+  padding: 0 88px calc(var(--u) * 32);
 }
 
 .h2-signature {
