@@ -1758,10 +1758,15 @@ body:has(.h2-credits) .site-footer {
    still fits above the credits. */
 @media (min-width: 992px) {
   .home-page .h2-slides .hero {
-    --hw: min(100vw * 1200 / 1512, (100svh - 100vw * 383 / 1512) * 1200 / 599);
+    /* Same scale as the exhibition pages (--U), so the photo matches their
+       first photo at every width. On short windows the gap above the photo
+       shrinks first (160 -> 110 px); the photo only gets smaller when even
+       that is not enough to keep the captions above the credits. */
+    --U: calc((100vw - 176px) / 1336);
+    --hw: min(var(--U) * 1200, (100svh - 251px) * 1200 / 599);
     width: var(--hw);
     margin: 0 auto;
-    padding: calc(100vw * 160 / 1512) 0 0;
+    padding: clamp(110px, 100svh - 141px - var(--hw) * 599 / 1200, var(--U) * 160) 0 0;
   }
 
   .hero-js .home-page .hero-frame,
@@ -1773,7 +1778,7 @@ body:has(.h2-credits) .site-footer {
   }
 
   .home-page .hero-captions {
-    margin-top: calc(100vw * 8 / 1512);
+    margin-top: calc(var(--U, 1px) * 8);
   }
 
   .home-page .hero-captions figcaption {
