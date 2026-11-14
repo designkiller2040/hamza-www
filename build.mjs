@@ -260,6 +260,8 @@ function render(file, root) {
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
   html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);
   html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
+  // "Look closer" sits in the credits, left of Legal & Privacy, on the homepage only (alona 2026-11-14).
+  if (basename(file, '.html') === 'index') html = html.replace('<p class="h2-fun">', '<p class="h2-fun"><a class="h2-look" href="lens/">Look closer</a>');
   // Underline the menu item of the page you're on (alona, 2026-11-14).
   const navKey = navFor[basename(file, '.html')];
   if (navKey) html = html.replace(`data-nav="${navKey}"`, `data-nav="${navKey}" aria-current="page"`);
