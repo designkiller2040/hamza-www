@@ -803,6 +803,23 @@ html:has(.home2) {
   width: 100%;
 }
 
+/* Tiny blurred preview under each painting; the sharp image fades in over it. */
+.w2-pic {
+  display: block;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.w2-pic img {
+  display: block;
+  transition: opacity 0.6s ease;
+}
+
+.w2-pic.wait img {
+  opacity: 0;
+}
+
 /* Photos cropped to the size drawn in the canvas */
 .w2-fixed img,
 .w2-fixed .placeholder {
