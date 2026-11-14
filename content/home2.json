@@ -9,7 +9,7 @@
           "x": 66,
           "y": 0,
           "w": 318,
-          "h": 318,
+          "h": 314,
           "caption": "below"
         },
         {
@@ -17,7 +17,7 @@
           "x": 597,
           "y": 0,
           "w": 318,
-          "h": 318,
+          "h": 317,
           "caption": "below"
         },
         {
@@ -25,13 +25,13 @@
           "x": 1128,
           "y": 0,
           "w": 318,
-          "h": 318,
+          "h": 311,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 582,
+      "height": 587,
       "works": [
         {
           "slug": "trust-2025",
@@ -43,68 +43,68 @@
         },
         {
           "slug": "at-the-beginning-2026",
-          "x": 1133,
+          "x": 1128,
           "y": 0,
-          "w": 313,
-          "h": 314,
+          "w": 318,
+          "h": 319,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 604,
+      "height": 658,
       "works": [
         {
           "slug": "freedom-2026",
           "x": 66,
           "y": 0,
-          "w": 273,
-          "h": 336,
+          "w": 318,
+          "h": 388,
           "caption": "below"
         },
         {
           "slug": "helvetica-2026",
-          "x": 620,
+          "x": 597,
           "y": 0,
-          "w": 272,
-          "h": 335,
+          "w": 318,
+          "h": 384,
           "caption": "below"
         },
         {
           "slug": "deux-2026",
-          "x": 1173,
+          "x": 1128,
           "y": 0,
-          "w": 273,
-          "h": 335,
+          "w": 318,
+          "h": 390,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 608,
+      "height": 657,
       "works": [
         {
           "slug": "un-2026",
           "x": 66,
           "y": 0,
-          "w": 323,
-          "h": 325,
+          "w": 318,
+          "h": 320,
           "caption": "below"
         },
         {
           "slug": "shadowdance-2026",
-          "x": 617,
+          "x": 597,
           "y": 0,
-          "w": 278,
-          "h": 340,
+          "w": 318,
+          "h": 389,
           "caption": "below"
         },
         {
           "slug": "cinq-2026",
-          "x": 1119,
+          "x": 1128,
           "y": 0,
-          "w": 327,
-          "h": 327,
+          "w": 318,
+          "h": 319,
           "caption": "below"
         }
       ]
@@ -131,36 +131,36 @@
       ]
     },
     {
-      "height": 631,
+      "height": 691,
       "works": [
         {
           "slug": "trois-2026",
           "x": 66,
           "y": 0,
-          "w": 273,
-          "h": 327,
+          "w": 318,
+          "h": 381,
           "caption": "below"
         },
         {
           "slug": "burning-steps-2026",
-          "x": 620,
+          "x": 597,
           "y": 0,
-          "w": 273,
-          "h": 333,
+          "w": 318,
+          "h": 388,
           "caption": "below"
         },
         {
           "slug": "16-august-2025",
-          "x": 1173,
+          "x": 1128,
           "y": 0,
-          "w": 273,
-          "h": 363,
+          "w": 318,
+          "h": 423,
           "caption": "below"
         }
       ]
     },
     {
-      "height": 702,
+      "height": 774,
       "works": [
         {
           "slug": "seperation-s-grace-2024",
@@ -172,10 +172,10 @@
         },
         {
           "slug": "chambre-des-r-ves-2024",
-          "x": 1173,
+          "x": 1128,
           "y": 0,
-          "w": 273,
-          "h": 434,
+          "w": 318,
+          "h": 506,
           "caption": "below"
         }
       ]
@@ -187,8 +187,8 @@
           "slug": "cold-rush-2024",
           "x": 66,
           "y": 0,
-          "w": 316,
-          "h": 312,
+          "w": 318,
+          "h": 314,
           "caption": "above"
         },
         {
@@ -206,10 +206,10 @@
       "works": [
         {
           "slug": "your-night-ii-2024",
-          "x": 1130,
+          "x": 1128,
           "y": 0,
-          "w": 316,
-          "h": 312,
+          "w": 318,
+          "h": 314,
           "caption": "above"
         },
         {
