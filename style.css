@@ -1750,3 +1750,41 @@ body:has(.h2-credits) .site-footer {
     padding-bottom: 160px;
   }
 }
+
+/* Homepage hero from alona's canvas (2026-11-14): on a 1512 x 982 screen the
+   photo is 1072 x 599, centred, 160 px from the top, captions 8 px under it
+   and aligned with its edges. On shorter screens the photo shrinks so it
+   still fits above the credits. */
+@media (min-width: 992px) {
+  .home-page .h2-slides .hero {
+    --hw: min(100vw * 1072 / 1512, (100svh - 100vw * 383 / 1512) * 1072 / 599);
+    width: var(--hw);
+    margin: 0 auto;
+    padding: calc(100vw * 160 / 1512) 0 0;
+  }
+
+  .hero-js .home-page .hero-frame,
+  .home-page.hero-js .hero-frame,
+  .home-page .hero-frame {
+    width: 100%;
+    max-height: none;
+    aspect-ratio: 1072 / 599;
+  }
+
+  .home-page .hero-captions {
+    margin-top: calc(100vw * 8 / 1512);
+  }
+
+  .home-page .hero-captions figcaption {
+    margin-top: 0;
+  }
+}
+
+/* Each scroll step swaps the photo and caption instantly, no fade
+   (alona 2026-11-14). */
+.hero-js .home-page .hero-frame img,
+.hero-js .home-page .hero-captions figcaption,
+.hero-js .home-page .hero-captions figcaption.is-active {
+  transition: none;
+  transition-delay: 0s;
+}
