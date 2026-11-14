@@ -162,11 +162,14 @@
 
     // Hotspots, in pixels of the photo (2263 x 1049; the night photo is
     // framed the same). x, y = centre, size = how close counts as "on it".
-    // Add more parts here: { x, y, size, text }.
+    // Add more parts here: { x, y, size, text } for a round spot,
+    // or { box: [left, top, right, bottom], text } for a whole object.
     var IMG_W = 2263, IMG_H = 1049;
     var HOTSPOTS = [
       { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' },
-      { x: 790, y: 790, size: 150, text: 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals' }
+      { x: 790, y: 790, size: 150, text: 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals' },
+      // The rust painting on the right wall: anywhere on it counts (box = left, top, right, bottom).
+      { box: [1805, 295, 1928, 880], text: 'Artwork "Name" 2024' }
     ];
     // Photo pixels -> screen pixels (the photo covers the screen).
     function hit(px, py) {
@@ -175,6 +178,11 @@
       var ox = (w - IMG_W * k) / 2, oy = (h - IMG_H * k) / 2;
       for (var i = 0; i < HOTSPOTS.length; i++) {
         var s = HOTSPOTS[i];
+        if (s.box) {
+          if (px > ox + s.box[0] * k && px < ox + s.box[2] * k &&
+              py > oy + s.box[1] * k && py < oy + s.box[3] * k) return s;
+          continue;
+        }
         var dx = px - (ox + s.x * k), dy = py - (oy + s.y * k);
         if (dx * dx + dy * dy < Math.pow(Math.max(s.size * k, 50), 2)) return s;
       }
@@ -255,7 +263,12 @@
       }
       if (shownText) {
         // Just outside the lens, to its upper right.
-        note.style.transform = 'translate(' + (x + r * 0.72 + 12).toFixed(1) + 'px,' + (y - r * 0.72 - 8).toFixed(1) + 'px)';
+        // Flips to the upper left when it would run off the right edge.
+        var nw = note.offsetWidth, nh = note.offsetHeight;
+        var nx = x + r * 0.72 + 12;
+        if (nx + nw > innerWidth - 16) nx = x - r * 0.72 - 12 - nw;
+        var ny = Math.max(16, y - r * 0.72 - nh);
+        note.style.transform = 'translate(' + nx.toFixed(1) + 'px,' + ny.toFixed(1) + 'px)';
       }
       x += (tx - x) * EASE;
       y += (ty - y) * EASE;
