@@ -62,7 +62,7 @@
       font-family: var(--garamond);
       font-size: 14px;
       line-height: 1.2;
-      white-space: nowrap;
+      white-space: pre; /* keeps alona's line breaks */
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s;
@@ -165,7 +165,8 @@
     // Add more parts here: { x, y, size, text }.
     var IMG_W = 2263, IMG_H = 1051;
     var HOTSPOTS = [
-      { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' }
+      { x: 1142, y: 452, size: 110, text: 'inherited stone lapis lazuli' },
+      { x: 790, y: 760, size: 150, text: 'Piles of coffee and tea as\na tribute to his mother\u2019s morning rituals' }
     ];
     // Photo pixels -> screen pixels (the photo covers the screen).
     function hit(px, py) {
