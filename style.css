@@ -1123,8 +1123,10 @@ html:has(.home2) {
 }
 
 /* Media cards (alona 2026-11-14). Everything inside is sized in card
-   widths (cqw) from her 594 px card: image 594x459, grey panel 351,
-   42 side padding, headline 36.8 / 44 bottom-aligned, link 27.3. */
+   widths (cqw) from her 594 px card: image 594x459, headline 36.8 / 44,
+   link 27.3. Since 00:22 15 Nov: no grey panel, text starts at the
+   image's left edge, headlines top-aligned across cards, link the same
+   distance under the headline as before. */
 .abt-card {
   container-type: inline-size;
   display: flex;
@@ -1139,17 +1141,11 @@ html:has(.home2) {
 }
 
 .abt-card-panel {
-  position: relative;
-  height: 59.09cqw;
-  background: #efefef;
+  padding-top: calc(var(--u, 1px) * 24 - 1.31cqw); /* letters start 24 under the image */
   color: #000;
 }
 
 .abt-card-title {
-  position: absolute;
-  left: 7.07cqw;
-  right: 7.07cqw;
-  bottom: var(--title-bottom, 32.4cqw);
   margin: 0;
   font-weight: 500;
   font-size: 6.2cqw;
@@ -1159,9 +1155,8 @@ html:has(.home2) {
 }
 
 .abt-card-link {
-  position: absolute;
-  left: 7.07cqw;
-  top: var(--link-top, 39.1cqw);
+  display: inline-block;
+  margin-top: 12.41cqw;
   font-size: 4.6cqw;
   line-height: 1.2;
   color: inherit;
