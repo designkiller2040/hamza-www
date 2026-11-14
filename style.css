@@ -1789,3 +1789,71 @@ body:has(.h2-credits) .site-footer {
   transition: none;
   transition-delay: 0s;
 }
+
+/* Exhibited page (/exhibited/, alona's mockup 2026-11-14): every exhibition
+   one under the other. Photo 1200 x 599 at 1512 like the homepage hero,
+   centred, 160 px from the top; caption 8 px under it, title left and
+   venue + year right; 96 px to the next photo. */
+.exd {
+  padding: calc(var(--u) * 160) 0 calc(var(--u) * 200);
+}
+
+.exd-item {
+  display: block;
+  width: calc(var(--u) * 1200);
+  margin: 0 auto calc(var(--u) * 96);
+  color: inherit;
+  text-decoration: none;
+}
+
+.exd-item:last-child {
+  margin-bottom: 0;
+}
+
+.exd-item img {
+  display: block;
+  width: 100%;
+  height: calc(var(--u) * 599);
+  max-width: none;
+  object-fit: cover;
+}
+
+.exd-cap {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: calc(var(--u) * 8);
+  font-family: var(--garamond);
+  font-size: calc(var(--u) * 16);
+  line-height: calc(var(--u) * 19);
+}
+
+.exd-item:hover .exd-cap span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Tablets and phones: photo full width inside the side margins, 3:2 */
+@media (max-width: 991.98px) {
+  .exd {
+    padding: 96px 24px 140px;
+  }
+
+  .exd-item {
+    width: 100%;
+    margin-bottom: 56px;
+  }
+
+  .exd-item img {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  .exd-cap {
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 18px;
+  }
+}
