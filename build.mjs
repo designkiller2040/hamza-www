@@ -52,7 +52,7 @@ function workFigure(w) {
   const img = w.image && w.image.src
     ? `<img src="${esc(w.image.src)}" alt="${esc(w.image.alt || t)}" width="${w.image.width}" height="${w.image.height}" loading="lazy" style="aspect-ratio:${num(w.layout.ratio, 3)}">`
     : `<div class="placeholder" style="aspect-ratio:${num(w.layout.ratio, 3)}"></div>`;
-  const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=Inquiry%20${encodeURIComponent(w.slug)}`;
+  const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=${encodeURIComponent(`Inquiry: ${w.year ? `${w.title}, ${w.year}` : w.title}`)}`;
   return `        <figure id="work-${esc(w.slug)}" style="left:${num(w.layout.left)}%;width:${num(w.layout.width)}%">
           ${img}
           <figcaption>${lines.join('<br>')}</figcaption>
@@ -112,7 +112,7 @@ function home2Figure(p, first) {
   const img = w.image && w.image.src
     ? `<span class="w2-pic${blurPreview(w.image) ? ' wait' : ''}" style="${blurPreview(w.image)}"><img src="${esc(w.image.src)}"${srcset ? ` srcset="${esc(srcset)}" sizes="${sizes}"` : ''} alt="${esc(w.image.alt || w.title)}" width="${w.image.width}" height="${w.image.height}" ${load}></span>`
     : `<div class="placeholder" style="aspect-ratio:${num(ratio, 3)}"></div>`;
-  const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=Inquiry%20${encodeURIComponent(w.slug)}`;
+  const mail = `mailto:${esc(contact.inquiryEmail || '')}?subject=${encodeURIComponent(`Inquiry: ${w.year ? `${w.title}, ${w.year}` : w.title}`)}`;
   const inquire = `<a class="w2-inquire" href="${mail}">Inquire to Purchase</a>`;
   let caption;
   if (p.caption === 'below' || p.caption === 'above') {
