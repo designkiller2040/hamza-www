@@ -34,18 +34,19 @@
   </main>
 
   <script>
-  // Phones (alona 2026-11-15): the credits sit on top of the photo, at its
-  // bottom, so they move into the photo frame there and back out on wider
-  // screens. Without JavaScript they stay fixed at the bottom of the screen.
+  // Phones (alona 2026-11-15): the Vilna logo and "digital imprint by" sit
+  // on the photo, at its bottom, so they move into the photo frame there and
+  // back into the credits on wider screens. The copyright line and the links
+  // stay in the credits, which follow the photo at the end of the page.
   (function () {
-    var credits = document.querySelector('.h2-credits');
+    var studio = document.querySelector('.h2-studio');
     var frame = document.querySelector('.hero-frame');
-    if (!credits || !frame || !window.matchMedia) return;
+    if (!studio || !frame || !window.matchMedia) return;
     var mq = window.matchMedia('(max-width: 767.98px)');
-    var home = credits.parentNode, next = credits.nextSibling;
+    var home = studio.parentNode, next = studio.nextSibling;
     function place() {
-      if (mq.matches) frame.appendChild(credits);
-      else home.insertBefore(credits, next);
+      if (mq.matches) frame.appendChild(studio);
+      else home.insertBefore(studio, next);
     }
     if (mq.addEventListener) mq.addEventListener('change', place);
     else if (mq.addListener) mq.addListener(place);
@@ -106,7 +107,25 @@
     }
     for (var t = 0; t < n; t++) imgs[t].addEventListener('load', setTone);
 
+    // Phones (alona 2026-11-15): the photos change by themselves every few
+    // seconds instead of on scroll; scrolling just moves down the page.
+    var phone = window.matchMedia && window.matchMedia('(max-width: 767.98px)');
+    var timer = null;
+    function auto() {
+      if (phone && phone.matches) {
+        if (!timer) timer = setInterval(function () { show((idx + 1) % n); }, 4000);
+      } else if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+    if (phone) {
+      if (phone.addEventListener) phone.addEventListener('change', function () { auto(); update(); });
+      else if (phone.addListener) phone.addListener(function () { auto(); update(); });
+    }
+
     function update() {
+      if (phone && phone.matches) { if (idx < 0) show(0); return; }
       // One photo per stretch of scrolling (--step, half a screen).
       var step = window.innerHeight * 0.5;
       var into = -wrap.getBoundingClientRect().top;
@@ -116,6 +135,7 @@
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
     update();
+    auto();
   })();
   </script>
 </body>

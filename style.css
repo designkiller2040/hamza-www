@@ -2075,17 +2075,50 @@ body:has(.h2-credits) .site-footer {
   }
 }
 
+/* Phones (alona 2026-11-15): the credits are no longer fixed to the
+   screen. They sit at the end of each page and scroll with it (the /lens/
+   page keeps its own fixed credits on the full-screen photo). */
+@media (max-width: 767.98px) {
+  body:not(.lens-page) .h2-credits {
+    position: static;
+    color: inherit;
+    mix-blend-mode: normal;
+    padding: 48px var(--gutter, 24px) 24px;
+  }
+
+  body:not(.lens-page) .h2-studio img {
+    filter: none;
+  }
+
+  /* The big bottom padding only made room for the fixed credits */
+  body:has(.h2-credits) .site-footer,
+  .exhibition-body .ex,
+  .h2-legal {
+    padding-bottom: 0;
+  }
+}
+
 /* Homepage on phones (alona's mock, 2026-11-15): one tall photo from under
    the menu to near the bottom of the screen, cropped to the subject, with
-   the credits centred on top of it at the bottom: Vilna logo, "digital
-   imprint by", the copyright line, and under it a small row with Look
-   closer and Legal & Privacy. No caption under the photo (the mock has
-   none; the alt text still describes each photo). The script in
-   src/index.html moves the credits into the photo frame. Scrolling still
-   changes the photo one step at a time. */
+   the Vilna logo and "digital imprint by" centred on it at the bottom (the
+   script in src/index.html moves them into the photo frame). The copyright
+   line and, under it, Look closer and Legal & Privacy come after the photo,
+   so they show only once you scroll past the last slide. No caption under
+   the photo (the mock has none; the alt text still describes each photo).
+   Scrolling still changes the photo one step at a time. */
 @media (max-width: 767.98px) {
   .home-page .h2-slides .hero {
     padding: 72px 24px 0;
+  }
+
+  /* Photos change by themselves here (script), so no long scroll stretch
+     and no pinning: the page is just the photo, then the credits. */
+  .hero-js .home2 .h2-slides {
+    height: auto;
+  }
+
+  .hero-js .home2 .h2-slides .hero {
+    position: relative;
   }
 
   .hero-js .home-page .hero-frame,
@@ -2104,22 +2137,25 @@ body:has(.h2-credits) .site-footer {
   .home-page .hero-frame img { object-position: 50% 50%; }
   .home-page .hero-frame img:nth-child(3) { object-position: 30% 50%; }
 
-  .home-page .hero-frame .h2-credits {
+  /* Logo + "digital imprint by" on the photo. Plain colour (no difference
+     blend, which turned grey over mid-tones): white with a soft shadow, dark
+     when the photo's bottom is light (tone-light, set by the script). */
+  .home-page .hero-frame .h2-studio {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 16px 18px;
-    text-align: center;
+    bottom: 18px;
+    z-index: 2;
+    margin: 0;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
 
-  .home-page .hero-frame .h2-studio {
-    order: 1;
-    margin: 0;
-    font-size: 12px;
+  .home-page .hero-frame .h2-studio a {
+    pointer-events: auto;
   }
 
   .home-page .hero-frame .h2-studio img {
@@ -2132,15 +2168,7 @@ body:has(.h2-credits) .site-footer {
     filter: invert(1);
   }
 
-  /* Plain colour on the photo (no difference blend, which turned grey over
-     mid-tones): white with a soft shadow, dark over a light photo bottom */
-  .home-page .hero-frame .h2-credits {
-    color: #fff;
-    mix-blend-mode: normal;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
-  }
-
-  .home-page .hero-frame.tone-light .h2-credits {
+  .home-page .hero-frame.tone-light .h2-studio {
     color: #111;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
   }
@@ -2149,21 +2177,27 @@ body:has(.h2-credits) .site-footer {
     filter: none;
   }
 
-  .home-page .hero-frame .h2-signature {
-    order: 2;
-    margin-top: 12px;
+  /* Under the photo: copyright, then Look closer and Legal & Privacy */
+  .home-page:not(.works-page) .h2-credits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 24px 32px;
+    text-align: center;
+  }
+
+  .home-page:not(.works-page) .h2-signature {
     font-size: 14px;
     font-weight: 500;
   }
 
-  .home-page .hero-frame .h2-fun {
-    order: 3;
+  .home-page:not(.works-page) .h2-fun {
     justify-self: auto;
     margin-top: 10px;
     font-size: 12px;
   }
 
-  .home-page .hero-frame .h2-fun .h2-look {
+  .home-page:not(.works-page) .h2-fun .h2-look {
     margin-right: 20px;
   }
 }
