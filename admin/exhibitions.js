@@ -51,9 +51,14 @@ A.start(function () {
       var i = items.indexOf(it);
       if (b.dataset.act === 'del') {
         var name = clean(el.querySelector('[data-k=title]').value) || 'this exhibition';
-        if (!confirm('Remove “' + name + '” from the Exhibited page? It goes once you press Save.')) return;
-        items.splice(i, 1);
-        if (it.x) removed.push(it.x);
+        A.confirm('Remove “' + name + '” from the Exhibited page' + (it.auto && it.x ? ' and its page' : '') + '? It goes once you press Save.').then(function (yes) {
+          if (!yes) return;
+          items.splice(items.indexOf(it), 1);
+          if (it.x) removed.push(it.x);
+          render();
+          ed.update();
+        });
+        return;
       }
       if (b.dataset.act === 'up' && i > 0) { items.splice(i, 1); items.splice(i - 1, 0, it); }
       if (b.dataset.act === 'down' && i < items.length - 1) { items.splice(i, 1); items.splice(i + 1, 0, it); }

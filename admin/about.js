@@ -39,7 +39,15 @@
         var b = e.target.closest('button[data-act]');
         if (!b || !el.contains(b) || b.closest('.image-meta')) return;
         var i = items.indexOf(it);
-        if (b.dataset.act === 'del') items.splice(i, 1);
+        if (b.dataset.act === 'del') {
+          A.confirm(spec.zone ? 'Remove this press card from the About page?' : 'Remove this contact from the About page?').then(function (yes) {
+            if (!yes) return;
+            items.splice(items.indexOf(it), 1);
+            render();
+            onChange();
+          });
+          return;
+        }
         if (b.dataset.act === 'up' && i > 0) { items.splice(i, 1); items.splice(i - 1, 0, it); }
         if (b.dataset.act === 'down' && i < items.length - 1) { items.splice(i, 1); items.splice(i + 1, 0, it); }
         render();

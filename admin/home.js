@@ -1,126 +1,121 @@
-/* Extra homepage photos (hero.moreSlides): add, remove, reorder, show/hide.
-   Each one has its own image drop zone and description. */
-var homeSlides = (function () {
-  var list = [], box, onChange, uid = 0;
-  var I = {
-    up: '<path d="M12 19V5M6 11l6-6 6 6"></path>',
-    down: '<path d="M12 5v14M6 13l6 6 6-6"></path>',
-    del: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path>',
-  };
-  function icon(p) { return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
-  function add(s) {
-    var id = 'sl' + (++uid);
+/* Home tab (alona's layout, 2026-11-16): a Slideshow on/off switch.
+   Off: one big photo (the first one). On: every photo as a numbered card,
+   drag to reorder, "Add image" at the end. Photos stay saved either way;
+   the site shows only the first photo when the slideshow is off, and
+   changes photo every 5 seconds when it is on (home.json "slideshow"). */
+A.start(function () {
+  var PATH = 'content/home.json';
+  var $ = function (id) { return document.getElementById(id); };
+  var data = null, items = [], ed = null;
+  var box = $('slides');
+  var I = { plus: '<path d="M12 5v14M5 12h14"></path>' };
+  function icon(p, s) { return '<svg width="' + (s || 14) + '" height="' + (s || 14) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+
+  function on() { return $('slideshow').checked; }
+
+  function make(slide) {
     var el = document.createElement('div');
-    el.className = 'slide';
-    el.innerHTML =
-      '<div class="slide-head"><h3></h3><div class="slide-tools">' +
-      '<label class="slide-show"><input type="checkbox" data-show> Show on the homepage</label>' +
-      '<button class="btn icon ghost" type="button" data-act="up" aria-label="Move up">' + icon(I.up) + '</button>' +
-      '<button class="btn icon ghost" type="button" data-act="down" aria-label="Move down">' + icon(I.down) + '</button>' +
-      '<button class="btn danger" type="button" data-act="del">' + icon(I.del) + 'Remove photo</button>' +
-      '</div></div>' +
-      '<div class="drop"></div><div class="image-meta"></div>' +
-      '<div style="max-width:640px"><label class="lbl" for="' + id + '">Image description for screen readers</label>' +
-      '<input class="field" id="' + id + '" type="text" autocomplete="off" data-alt></div>';
-    var item = { el: el, orig: s || null };
-    el.querySelector('[data-show]').checked = !(s && s.hidden);
-    el.querySelector('[data-alt]').value = (s && s.image && s.image.alt) || '';
-    item.zone = A.dropZone({ el: el.querySelector('.drop'), metaEl: el.querySelector('.image-meta'), value: s && s.image, onChange: function () { onChange(); } });
-    el.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-act]');
-      if (!b || !el.contains(b)) return;
-      var i = list.indexOf(item);
-      if (b.dataset.act === 'del') list.splice(i, 1);
-      if (b.dataset.act === 'up' && i > 0) { list.splice(i, 1); list.splice(i - 1, 0, item); }
-      if (b.dataset.act === 'down' && i < list.length - 1) { list.splice(i, 1); list.splice(i + 1, 0, item); }
-      render();
-      onChange();
-    });
-    list.push(item);
-    return item;
+    el.className = 'home-card';
+    el.innerHTML = '<span class="badge"></span><div class="drop"></div><div class="image-meta"></div>';
+    var it = { el: el, orig: slide || null };
+    it.zone = A.dropZone({ el: el.querySelector('.drop'), metaEl: el.querySelector('.image-meta'),
+      value: slide && slide.image, hint: 'Landscape works best: shown at about 2 : 1. JPG, PNG or WebP up to 20 MB.',
+      onChange: function () {
+        // Remove takes the card away (the first one too: the next becomes the first).
+        if (!it.zone.value()) { items.splice(items.indexOf(it), 1); render(); }
+        ed && ed.update();
+      } });
+    return it;
   }
   function render() {
+    var single = !on();
+    box.classList.toggle('single', single);
     box.innerHTML = '';
-    if (!list.length) box.innerHTML = '<p class="slide-empty">No extra photos. The homepage shows only the hero image.</p>';
-    list.forEach(function (it, i) {
-      it.el.querySelector('h3').textContent = 'Photo ' + (i + 2);
-      it.el.querySelector('[data-act="up"]').disabled = i === 0;
-      it.el.querySelector('[data-act="down"]').disabled = i === list.length - 1;
+    items.forEach(function (it, i) {
+      it.el.querySelector('.badge').textContent = i + 1;
+      it.el.hidden = single && i > 0;
       box.appendChild(it.el);
     });
-  }
-  // Only files the admin uploaded itself are deleted with a slide.
-  function own(src) { return A.ownImage(src); }
-  return {
-    init: function (data, $, change) {
-      box = $('slides'); onChange = change;
-      ((data.hero && data.hero.moreSlides) || []).forEach(add);
-      render();
-      $('add-slide').addEventListener('click', function () {
-        var it = add(null);
+    if (!single || !items.length) {
+      var t = document.createElement('button');
+      t.type = 'button';
+      t.className = 'home-add';
+      t.innerHTML = '<span class="badge">' + (items.length + 1) + '</span>' + icon(I.plus, 28) +
+        '<span class="home-add-big">Add image</span><span class="home-add-small">Landscape, about 2 : 1 (shown 1200 × 599 on a laptop). JPG, PNG or WebP, up to 20 MB.</span>';
+      t.addEventListener('click', function () {
+        var it = make(null);
+        items.push(it);
         render();
-        onChange();
-        it.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        it.el.querySelector('input[type=file]').click();
       });
-    },
-    state: function () {
-      return list.map(function (it) {
-        return [it.zone.signature(), it.el.querySelector('[data-alt]').value, it.el.querySelector('[data-show]').checked];
-      });
-    },
-    store: function (next, data) {
-      var changes = [], kept = {};
-      next.hero = next.hero || {};
-      next.hero.moreSlides = [];
-      list.forEach(function (it) {
-        var alt = it.el.querySelector('[data-alt]').value.trim();
-        var old = it.orig && it.orig.image;
-        var r = A.imageChanges(it.zone, null, 'site', 'home-slide', alt);
-        if (!r.image) return; // no photo chosen yet: skip
-        r.changes.forEach(function (c) { changes.push(c); });
-        if (old && old.src !== r.image.src && own(old.src)) changes.push({ path: old.src, remove: true });
-        kept[r.image.src] = true;
-        var s = JSON.parse(JSON.stringify(it.orig || {}));
-        s.image = r.image;
-        if (it.el.querySelector('[data-show]').checked) delete s.hidden; else s.hidden = true;
-        next.hero.moreSlides.push(s);
-      });
-      ((data.hero && data.hero.moreSlides) || []).forEach(function (s) {
-        var src = s.image && s.image.src;
-        if (own(src) && !kept[src] && !changes.some(function (c) { return c.path === src; })) changes.push({ path: src, remove: true });
-      });
-      return changes;
-    },
-    saved: function (data) {
-      list = [];
-      box.innerHTML = '';
-      ((data.hero && data.hero.moreSlides) || []).forEach(add);
-      render();
-    },
-  };
-})();
+      box.appendChild(t);
+    }
+    $('slideshow-label').textContent = on() ? 'Slideshow on' : 'Slideshow off';
+    $('slideshow-hint').textContent = on()
+      ? 'The homepage changes photo every 5 seconds, in this order. Drag a photo to move it.'
+      : 'The homepage shows this photo. Your other photos stay saved; switch the slideshow on to show them.';
+  }
+  A.sortable(box, { items: '.home-card', handle: '.pic', disabled: function () { return !on(); }, onEnd: function () {
+    var els = A.$$('.home-card', box);
+    items.sort(function (a, b) { return els.indexOf(a.el) - els.indexOf(b.el); });
+    render();
+    ed.update();
+  } });
 
-A.single({
-  name: 'home page',
-  path: 'content/home.json',
-  view: '../',
-  fields: ['heroAlt', 'pageTitle', 'description'],
-  extra: homeSlides,
-  load: function (d, $) {
-    var h = d.hero || {};
-    $('heroAlt').value = (h.image && h.image.alt) || '';
-    $('pageTitle').value = d.pageTitle || '';
-    $('description').value = d.description || '';
-  },
-  store: function (d, $) {
-    d.hero = d.hero || {};
-    d.pageTitle = $('pageTitle').value.trim();
-    d.description = $('description').value.trim();
-  },
-  image: {
-    base: 'hero',
-    get: function (d) { return d.hero && d.hero.image; },
-    set: function (d, img) { d.hero.image = img; },
-    alt: function ($) { return $('heroAlt').value.trim(); },
-  },
+  function state() {
+    return [on(), $('pageTitle').value, $('description').value, items.map(function (it) { return it.zone.signature(); })];
+  }
+  function save() {
+    var next = JSON.parse(JSON.stringify(data));
+    var changes = [], kept = {};
+    var slides = [];
+    items.forEach(function (it) {
+      var old = it.orig && it.orig.image;
+      var r = A.imageChanges(it.zone, null, 'site', 'home-slide', (old && old.alt) || '');
+      if (!r.image) return; // card without a photo yet
+      r.changes.forEach(function (c) { changes.push(c); });
+      kept[r.image.src] = true;
+      var s = it.orig ? JSON.parse(JSON.stringify(it.orig)) : {};
+      delete s.moreSlides; delete s.hidden;
+      s.image = r.image;
+      slides.push(s);
+    });
+    if (!slides.length) return Promise.reject(new Error('The homepage needs at least one photo.'));
+    var first = slides[0];
+    next.hero = { image: first.image, captionLeft: first.captionLeft || '', captionRight: first.captionRight || '', moreSlides: slides.slice(1) };
+    next.slideshow = on();
+    next.pageTitle = $('pageTitle').value.trim();
+    next.description = $('description').value.trim();
+    // Photos the admin uploaded that are gone now.
+    var old = [data.hero].concat((data.hero && data.hero.moreSlides) || []);
+    old.forEach(function (s) {
+      var src = s && s.image && s.image.src;
+      if (A.ownImage(src) && !kept[src]) changes.push({ path: src, remove: true });
+    });
+    changes.push({ path: PATH, text: A.json(next) });
+    return A.commit('Update home page', changes).then(function () {
+      data = next;
+      load();
+    });
+  }
+  function load() {
+    var h = data.hero || {};
+    var more = h.moreSlides || [];
+    // Before the switch existed, extra photos were each shown or hidden.
+    var show = data.slideshow != null ? !!data.slideshow : more.some(function (s) { return s && !s.hidden; });
+    $('slideshow').checked = show;
+    items = [make({ image: h.image, captionLeft: h.captionLeft, captionRight: h.captionRight })].concat(more.map(make))
+      .filter(function (it) { return it.zone.value(); });
+    $('pageTitle').value = data.pageTitle || '';
+    $('description').value = data.description || '';
+    render();
+  }
+
+  $('slideshow').addEventListener('change', function () { render(); ed.update(); });
+  return A.readJSON(PATH).then(function (d) {
+    data = d || {};
+    load();
+    ed = A.editor({ state: state, save: save });
+    ed.start();
+  });
 });

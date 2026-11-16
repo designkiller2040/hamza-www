@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="admin.css">
 <script src="gh.js"></script>
 <script src="admin.js" defer></script>
-<script src="single.js" defer></script>
 <script src="home.js" defer></script>
 </head>
 <body>
@@ -32,17 +31,12 @@
   </div>
 </div></header>
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
-<main class="page" id="main">
+<main class="page home-edit" id="main">
+  <!-- alona's layout (2026-11-16): Slideshow on/off, then the photos. -->
   <section>
-    <div class="section-head"><h2>Main photo</h2><p>The photo on the homepage (the first one when more photos are shown).</p></div>
-    <div class="drop" id="drop"></div>
-    <div class="image-meta" id="drop-meta"></div>
-    <div style="max-width:640px"><label class="lbl" for="heroAlt">Photo description for screen readers</label><input class="field" id="heroAlt" type="text" placeholder="e.g. What We Venerate, coffee, lapis lazuli and chain, installation view, 2025" autocomplete="off"></div>
-  </section>
-  <section>
-    <div class="section-head"><h2>More photos</h2><p>Extra photos for the homepage. With two or more photos shown, the homepage changes photo by itself every 5 seconds. Untick “Show on the homepage” to keep a photo here without showing it.</p></div>
-    <div class="slides" id="slides"></div>
-    <button class="btn" type="button" id="add-slide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add photo</button>
+    <label class="switch"><input type="checkbox" id="slideshow"><span class="switch-track" aria-hidden="true"></span><span id="slideshow-label">Slideshow off</span></label>
+    <p class="hint" id="slideshow-hint"></p>
+    <div class="home-slides" id="slides"></div>
   </section>
   <section>
     <div class="section-head"><h2>Browser and search</h2><p>What shows in the browser tab, in Google results and in link previews.</p></div>

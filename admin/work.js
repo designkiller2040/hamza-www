@@ -172,7 +172,9 @@ A.start(function () {
 
   function del() {
     if (!me) return;
-    if (!confirm('Delete “' + (me.data.title || me.slug) + '”? It will disappear from the website. This can’t be undone here.')) return;
+    A.confirm('Delete “' + (me.data.title || me.slug) + '”? It will disappear from the website straight away.', 'Delete').then(function (yes) { if (yes) reallyDelete(); });
+  }
+  function reallyDelete() {
     var btn = $('delete');
     btn.disabled = true;
     btn.lastChild.textContent = 'Deleting…';

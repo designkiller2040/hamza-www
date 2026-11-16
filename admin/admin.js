@@ -431,10 +431,13 @@
       if (!b) return;
       if (b.dataset.act === 'replace') input.click();
       if (b.dataset.act === 'remove') {
-        state.upload = null;
-        state.removed = true;
-        render();
-        opts.onChange && opts.onChange(null);
+        A.confirm('Remove this photo?').then(function (yes) {
+          if (!yes) return;
+          state.upload = null;
+          state.removed = true;
+          render();
+          opts.onChange && opts.onChange(null);
+        });
       }
     });
     render();
@@ -454,6 +457,39 @@
   // put on the site by hand (exhibition pages, artworks, the first hero photos)
   // may be used on other pages too, so replacing them here leaves the file alone.
   A.ownImage = function (src) { return !!src && /^images\/(site|works|exhibitions|press)\//.test(src); };
+  // "Are you sure?" before anything is removed (alona 2026-11-16), in the
+  // admin's own style. Resolves true for the red button, false otherwise.
+  A.confirm = function (message, okLabel) {
+    return new Promise(function (resolve) {
+      var back = document.createElement('div');
+      back.className = 'confirm-back';
+      back.innerHTML = '<div class="confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-t">' +
+        '<p class="confirm-title" id="confirm-t">Are you sure?</p>' +
+        '<p class="confirm-text"></p>' +
+        '<div class="confirm-actions"><button class="btn" type="button" data-no>Cancel</button>' +
+        '<button class="btn dark confirm-yes" type="button" data-yes></button></div></div>';
+      back.querySelector('.confirm-text').textContent = message || '';
+      back.querySelector('[data-yes]').textContent = okLabel || 'Remove';
+      var prev = document.activeElement;
+      function done(v) {
+        back.remove();
+        document.removeEventListener('keydown', key, true);
+        if (prev && prev.focus) prev.focus();
+        resolve(v);
+      }
+      function key(e) {
+        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(false); }
+      }
+      back.addEventListener('click', function (e) {
+        if (e.target === back || e.target.closest('[data-no]')) done(false);
+        else if (e.target.closest('[data-yes]')) done(true);
+      });
+      document.addEventListener('keydown', key, true);
+      document.body.appendChild(back);
+      back.querySelector('[data-no]').focus();
+    });
+  };
+
   A.imageChanges = function (zone, oldImage, folder, base, alt) {
     var cur = zone.value();
     var changes = [];

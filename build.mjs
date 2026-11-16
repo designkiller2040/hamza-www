@@ -190,7 +190,10 @@ const exhibitedHTML = exhibitions.map((e, i) => {
 // The first slide is home.hero itself (edited in the admin); home.hero.moreSlides
 // follow in order. On scroll, each photo crossfades into the next.
 // Extra slides marked "hidden" (admin: "Show on the homepage" unticked) are kept but not shown.
-const slides = [home.hero, ...(home.hero.moreSlides || []).filter((s) => s && !s.hidden)].filter((s) => s && s.image && s.image.src);
+// Admin Home tab "Slideshow" switch (alona 2026-11-16): off = only the first photo,
+// on = all photos. Without the switch saved yet, extra photos marked "hidden" stay out.
+const moreSlides = home.slideshow === false ? [] : (home.hero.moreSlides || []).filter((s) => s && (home.slideshow === true || !s.hidden));
+const slides = [home.hero, ...moreSlides].filter((s) => s && s.image && s.image.src);
 const heroImagesHTML = slides.map((s, i) =>
   // Blurred preview (image.blur, made by the admin on upload) shows until the photo has loaded.
   `      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}"${i ? ' aria-hidden="true"' : ''}${s.image.blur ? ` style="${blurStyle(s.image.blur)};background-size:cover;background-position:center"` : ''}>`
