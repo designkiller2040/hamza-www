@@ -3,8 +3,8 @@
   var $ = function (id) { return document.getElementById(id); };
   var mode = 'password';
   var params = new URLSearchParams(location.search);
-  var next = params.get('next') || 'works.html';
-  if (!/^[\w./?=&%-]*$/.test(next) || /^\/|\/\/|:/.test(next)) next = 'works.html';
+  var next = params.get('next') || 'home.html';
+  if (!/^[\w./?=&%-]*$/.test(next) || /^\/|\/\/|:/.test(next)) next = 'home.html';
 
   // Already signed in: go straight on.
   if (GH.readAuth()) { location.replace(next); return; }

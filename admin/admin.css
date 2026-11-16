@@ -205,3 +205,11 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .press-card .panel-in a { color: #000; text-decoration: underline; text-underline-offset: 3px; }
 .color-field { display: flex; gap: 8px; align-items: center; }
 .color-field input[type=color] { width: 40px; height: 40px; border: 1px solid var(--field); border-radius: 8px; padding: 2px; background: #fff; cursor: pointer; }
+
+/* Works tab: inquiry email (content/contact.json) */
+.inquiry-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.inquiry-row .btn { margin-top: 22px; }
+
+/* Works tab: inquiry email (content/contact.json) */
+.inquiry-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.inquiry-row .btn { margin-top: 22px; }

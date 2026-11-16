@@ -28,7 +28,7 @@
   var here = location.pathname.replace(/^.*\/admin\//, '') + location.search;
 
   function toLogin(reason) {
-    var q = '?next=' + encodeURIComponent(here || 'works.html') + (reason ? '&reason=' + reason : '');
+    var q = '?next=' + encodeURIComponent(here || 'home.html') + (reason ? '&reason=' + reason : '');
     location.replace(new URL('login.html' + q, location.href.replace(/[^/]*$/, '')).href);
   }
 
