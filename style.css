@@ -2343,3 +2343,22 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
     font-size: 12px;
   }
 }
+
+/* Homepage photo spans the grid (alona 2026-11-16): same left/right edges as
+   the credits (88 px), 1200:599 like before. On shorter windows the photo
+   keeps the full width and is cropped top/bottom so it stays above the
+   credits. */
+@media (min-width: 992px) {
+  .home-page:not(.works-page) .h2-slides .hero {
+    --hw: calc(100vw - 176px);
+    width: var(--hw);
+    padding-top: clamp(100px, var(--U) * 150, 150px);
+  }
+
+  .hero-js .home-page:not(.works-page) .hero-frame,
+  .home-page:not(.works-page).hero-js .hero-frame,
+  .home-page:not(.works-page) .hero-frame {
+    aspect-ratio: auto;
+    height: min(var(--hw) * 599 / 1200, 100svh - clamp(100px, var(--U) * 150, 150px) - 110px);
+  }
+}
