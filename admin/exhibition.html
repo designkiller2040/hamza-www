@@ -33,28 +33,25 @@
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
 <main class="page" id="main">
     <div class="note-banner" id="note-banner" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"></path><circle cx="12" cy="12" r="9"></circle></svg><span></span></div>
-  <section>
-    <div class="section-head"><h2>Photo</h2><p>The photo for this exhibition on the Exhibited page.</p></div>
-    <div class="drop" id="drop"></div>
-    <div class="image-meta" id="drop-meta"></div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Info</h2><p>Shown under the photo on the Exhibited page.</p></div>
-    <div class="info-cols">
-      <div class="fields">
-        <div><label class="lbl" for="title">Title</label><input class="field" id="title" type="text" placeholder="e.g. Abimal" autocomplete="off"><p class="hint">The „quotes“ are added on the site.</p></div>
-        <div><label class="lbl" for="place">Place and year</label><input class="field" id="place" type="text" placeholder="e.g. St. Elisabeth, Berlin 2026" autocomplete="off"></div>
-        <div><label class="lbl" for="link">Opens the page</label><select class="field" id="link"></select><p class="hint">Each exhibition page is designed by hand. A new exhibition shows on the Exhibited page without a link until its page is made.</p></div>
-        <div><label class="lbl" for="alt">Image description for screen readers</label><input class="field" id="alt" type="text" placeholder="e.g. Installation view of paintings in a church" autocomplete="off"><p class="hint">Optional. Leave empty to use the title.</p></div>
-        <div id="slug-wrap"><div><label class="lbl" for="slug">Page address</label><input class="field" id="slug" type="text" placeholder="e.g. abimal-berlin-2026" autocomplete="off"><p class="hint">Filled in from the title. Locked after the first save.</p></div></div>
-        <div class="lock" id="slug-lock" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span></span></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><h3>On the site</h3><p>How it looks on the Exhibited page.</p></div>
-        <div class="site-preview" id="preview"></div>
-      </div>
+  <!-- Layout from alona's wireframe (2026-11-16): photo left, Title and Place right. -->
+  <div class="ex-grid">
+    <div class="ex-photo">
+      <div class="drop" id="drop"></div>
+      <div class="image-meta" id="drop-meta"></div>
     </div>
-  </section>
+    <div class="fields">
+      <div><label class="lbl" for="title">Title</label><input class="field" id="title" type="text" placeholder="e.g. Abimal" autocomplete="off"><p class="hint">The „quotes“ are added on the site.</p></div>
+      <div><label class="lbl" for="place">Place and year</label><input class="field" id="place" type="text" placeholder="e.g. St. Elisabeth, Berlin 2026" autocomplete="off"></div>
+    </div>
+  </div>
+  <!-- Kept for the script, not shown: page link, description, file name, preview. -->
+  <div hidden>
+    <select class="field" id="link"></select>
+    <input class="field" id="alt" type="text">
+    <div id="slug-wrap"><input class="field" id="slug" type="text"></div>
+    <div class="lock" id="slug-lock" hidden><span></span></div>
+    <div id="preview"></div>
+  </div>
   <section class="bottom">
     <div class="note-field"><div><label class="lbl" for="note">Private note (shows a yellow reminder in the admin until cleared)</label><input class="field" id="note" type="text" placeholder="e.g. waiting for the final photo" autocomplete="off"></div></div>
     <button class="btn danger" id="delete" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Delete exhibition</button>
