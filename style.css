@@ -2301,3 +2301,16 @@ body:not(.lens-page) > .h2-credits {
 body:has(.h2-credits) .site-footer {
   padding-bottom: 0;
 }
+
+/* Homepage: credits hidden until the visitor scrolls (alona 2026-11-16,
+   script in src/partials/credits-on-scroll.html), then they fade in.
+   Set on the children because the page-intro animation drives the
+   opacity of .h2-credits itself. */
+.home-page .h2-credits > * {
+  transition: opacity 0.6s ease, visibility 0s;
+}
+
+html.credits-wait .home-page .h2-credits > * {
+  opacity: 0;
+  visibility: hidden;
+}
