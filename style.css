@@ -1134,26 +1134,58 @@ html:has(.home2) {
    image's left edge, headlines top-aligned across cards, link the same
    distance under the headline as before. */
 .abt-card {
+  --bg: #3b3734; /* replaced per card by the colour of its image's bottom edge (script in about.html) */
   container-type: inline-size;
   display: flex;
   flex-direction: column;
+  background: var(--bg);
+  color: #fff;
 }
 
-.abt-card img {
+.abt-card.is-light {
+  color: #000;
+}
+
+/* alona 2026-11-16: the bottom of each photo blurs and fades into the
+   card colour, which is taken from the photo's bottom pixels. */
+.abt-card-media {
+  position: relative;
+}
+
+.abt-card-media img {
   display: block;
   width: 100%;
   aspect-ratio: 594 / 459;
   object-fit: cover;
 }
 
-/* alona 2026-11-16: grey panel back; text 24 from the panel's top
-   (to the letters) and 24 from its left edge, 24 kept free on the
-   right and under the link. Panels stretch to the tallest card. */
+.abt-card-blur {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 55%;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 55%);
+  mask-image: linear-gradient(to bottom, transparent, #000 55%);
+}
+
+.abt-card-media::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 55%;
+  background: linear-gradient(to bottom, transparent, var(--bg) 92%);
+  pointer-events: none;
+}
+
 .abt-card-panel {
   flex: 1;
-  padding: calc(var(--u, 1px) * 24 - 1.31cqw) calc(var(--u, 1px) * 24) calc(var(--u, 1px) * 24);
-  background: #efefef;
-  color: #000;
+  min-height: 52cqw;
+  padding: 13.9cqw calc(var(--u, 1px) * 24) 11cqw;
 }
 
 .abt-card-title {

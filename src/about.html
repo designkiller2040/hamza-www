@@ -63,5 +63,32 @@
   </main>
 
 {{> credits-about}}
+  <script>
+  /* Media cards: each card takes the average colour of the bottom strip of
+     its photo, so the blurred fade runs into a matching background. Works
+     for any card added later; dark text on very light photos. */
+  (function () {
+    function tint(card) {
+      var img = card.querySelector('img');
+      if (!img) return;
+      function run() {
+        try {
+          var w = 48, h = Math.max(1, Math.round(w * img.naturalHeight / img.naturalWidth));
+          var c = document.createElement('canvas'); c.width = w; c.height = h;
+          var x = c.getContext('2d', { willReadFrequently: true });
+          x.drawImage(img, 0, 0, w, h);
+          var rows = Math.max(1, Math.round(h * 0.08));
+          var d = x.getImageData(0, h - rows, w, rows).data, r = 0, g = 0, b = 0, n = d.length / 4;
+          for (var i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+          r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+          card.style.setProperty('--bg', 'rgb(' + r + ',' + g + ',' + b + ')');
+          card.classList.toggle('is-light', (0.299 * r + 0.587 * g + 0.114 * b) > 170);
+        } catch (e) {}
+      }
+      if (img.complete && img.naturalWidth) run(); else img.addEventListener('load', run);
+    }
+    document.querySelectorAll('.abt-card').forEach(tint);
+  })();
+  </script>
 </body>
 </html>
