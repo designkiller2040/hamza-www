@@ -713,6 +713,63 @@
     home2.rows = home2.rows.filter(function (r) { return r.works.length; });
     return home2;
   };
+  /* Works page rows by shape (alona 2026-11-16): square or vertical paintings
+     sit 3 to a row; a horizontal one shares its row with one other painting.
+     A work's "shape" (chosen when adding it) wins; otherwise its photo decides. */
+  H2.SHAPES = {
+    square: { label: 'Square', w: 318, ratio: 1 },
+    horizontal: { label: 'Horizontal', w: 626, ratio: 626 / 324 },
+    vertical: { label: 'Vertical', w: 318, ratio: 318 / 388 },
+  };
+  H2.isWide = function (w) {
+    var d = w && (w.data || w);
+    if (!d) return false;
+    if (d.shape) return d.shape === 'horizontal';
+    var im = d.image;
+    return !!(im && im.width && im.height && im.width / im.height > 1.25);
+  };
+  H2.split = function (items) {
+    var out = [], cur = [];
+    items.forEach(function (w) {
+      // A horizontal painting can't join a row that already has two.
+      if (cur.length === 2 && H2.isWide(w)) { out.push(cur); cur = []; }
+      cur.push(w);
+      if (cur.length === 3 || (cur.length === 2 && cur.some(H2.isWide))) { out.push(cur); cur = []; }
+    });
+    if (cur.length) out.push(cur);
+    return out;
+  };
+  // A row's places from left to right (the reading order on the page).
+  H2.slots = function (r) { return r.works.slice().sort(function (a, b) { return a.x - b.x; }); };
+  H2.order = function (data) { return data.rows.reduce(function (a, r) { return a.concat(H2.slots(r).map(function (p) { return p.slug; })); }, []); };
+  // Rebuild data.rows from an order of slugs. workOf(slug) gives the work
+  // (for its shape); extra[slug] = {w, h} sizes a painting not placed yet.
+  // Each painting keeps its size; a row with the same paintings in the same
+  // order stays exactly as it was; the same paintings in another order keep
+  // the row's top alignment and lifts.
+  H2.reflow = function (data, order, workOf, extra) {
+    var entries = {}, old = {};
+    data.rows.forEach(function (r) {
+      old[H2.slots(r).map(function (p) { entries[p.slug] = p; return p.slug; }).join(',')] = r;
+    });
+    Object.keys(extra || {}).forEach(function (s) { entries[s] = extra[s]; });
+    order = order.filter(function (s) { return entries[s]; });
+    var sorted = function (a) { return a.slice().sort().join(','); };
+    data.rows = H2.split(order.map(function (s) { return workOf(s) || { slug: s }; })).map(function (items) {
+      var slugs = items.map(function (w) { return w.slug; });
+      if (old[slugs.join(',')]) return old[slugs.join(',')];
+      var same = data.rows.filter(function (r) { return sorted(r.works.map(function (p) { return p.slug; })) === sorted(slugs); })[0];
+      var row = H2.place({ height: 0, works: slugs.map(function (slug) {
+        var e = entries[slug];
+        var p = { slug: slug, x: 0, y: 0, w: e.w, h: e.h, caption: e.caption || 'below' };
+        if (same && e.lift) p.lift = e.lift;
+        return p;
+      }) });
+      if (same && same.align) row.align = same.align;
+      return row;
+    });
+    return data;
+  };
   // An update for home2.json that re-reads the latest version before changing it.
   H2.update = function (fn) {
     return {

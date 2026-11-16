@@ -2,7 +2,7 @@
 A.start(function () {
   var slugParam = A.param('slug');
   var isNew = !slugParam || A.param('new') === '1';
-  var works = [], home2 = { rows: [] }, me = null, ed = null, zone = null, slugTouched = false;
+  var works = [], home2 = { rows: [] }, me = null, ed = null, zone = null, slugTouched = false, shape = '';
   var $ = function (id) { return document.getElementById(id); };
   var F = ['title', 'year', 'captionTitle', 'materials', 'size', 'alt', 'note', 'row', 'slug'];
 
@@ -23,7 +23,20 @@ A.start(function () {
     var s = {};
     F.forEach(function (k) { s[k] = $(k).value; });
     s.image = zone ? zone.signature() : '';
+    s.shape = shape;
     return s;
+  }
+
+  // New work: the shape is chosen first (alona 2026-11-16). It sets the photo
+  // box and how the painting sits in the Works rows (A.H2.split).
+  function setShape(sh) {
+    shape = sh;
+    A.$$('[data-shape]', $('shape-row')).forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.shape === sh)); });
+    var r = A.H2.SHAPES[sh].ratio;
+    $('drop').style.aspectRatio = String(r);
+    $('shape-step').hidden = true;
+    $('wk-grid').hidden = false;
+    if (ed) ed.update();
   }
 
   // Info (one box, as under the painting) <-> the separate year / materials / size fields.
@@ -71,6 +84,7 @@ A.start(function () {
   }
 
   function validate() {
+    if (isNew && !shape) return 'Please choose the shape.';
     if (!$('title').value.trim()) return 'Please add a title.';
     if (isNew) {
       var s = A.slugify($('slug').value);
@@ -85,6 +99,7 @@ A.start(function () {
     var old = me ? me.data : null;
     var data = old ? JSON.parse(JSON.stringify(old)) : {};
     ['title', 'year', 'materials', 'size', 'note'].forEach(function (k) { data[k] = $(k).value.trim(); });
+    if (isNew) data.shape = shape;
     if ($('captionTitle').value.trim()) data.captionTitle = $('captionTitle').value.trim(); else delete data.captionTitle;
     var alt = $('alt').value.trim();
     var img = A.imageChanges(zone, old && old.image, 'works', slug, alt);
@@ -96,10 +111,23 @@ A.start(function () {
     var was = currentRow();
     var pick = $('row').value;
     var size = A.H2.size(data);
+    var adding = isNew;
     var moved = isNew || pick !== rowValue();
     var reshaped = !moved && zone.hasUpload() && was >= 0;
     function place(h2) {
-      if (moved) {
+      if (adding) {
+        // A new painting goes first on the Works page; rows are rebuilt by shape.
+        var sh = A.H2.SHAPES[shape] || A.H2.SHAPES.square;
+        var ratio = data.image && data.image.width ? data.image.width / data.image.height : sh.ratio;
+        var extra = {};
+        extra[slug] = { w: sh.w, h: Math.round(sh.w / ratio) };
+        A.H2.remove(h2, slug);
+        var order = [slug].concat(A.H2.order(h2));
+        A.H2.reflow(h2, order, function (s) {
+          if (s === slug) return { slug: slug, data: data };
+          return works.filter(function (w) { return w.slug === s; })[0];
+        }, extra);
+      } else if (moved) {
         var target = pick === 'new' || pick === 'none' ? null : h2.rows[Number(pick)];
         A.H2.remove(h2, slug);
         if (pick === 'new') {
@@ -177,6 +205,12 @@ A.start(function () {
     $('info').addEventListener('input', function () { fieldsFromInfo(); autoSlug(); });
     fillRows();
     $('row').value = rowValue();
+    if (isNew) {
+      $('shape-step').hidden = false;
+      $('wk-grid').hidden = true;
+      $('shape-row').hidden = false;
+      A.$$('[data-shape]').forEach(function (b) { b.addEventListener('click', function () { setShape(b.dataset.shape); }); });
+    }
     if (me) { $('slug').value = me.slug; lockSlug(me.slug); }
     else { $('delete').hidden = true; $('view').setAttribute('aria-disabled', 'true'); }
     noteBanner(d.note);

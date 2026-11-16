@@ -25,25 +25,8 @@ A.start(function () {
   // A row's frames from left to right (the reading order on the page).
   function slotsOf(r) { return r.works.slice().sort(function (a, b) { return a.x - b.x; }); }
   function flat() { return rows.filter(function (r) { return r.row !== 'none'; }).reduce(function (a, r) { return a.concat(r.items); }, []); }
-  // Horizontal = clearly wider than tall; square and vertical count the same.
-  function isWide(w) {
-    var im = w && w.data && w.data.image;
-    return !!(im && im.width && im.height && im.width / im.height > 1.25);
-  }
-  // Split an order (works) into rows by the shape rules.
-  function split(order) {
-    var out = [], cur = [];
-    order.forEach(function (w) {
-      var wide = isWide(w);
-      // A horizontal painting can't join a row that already has two.
-      if (cur.length === 2 && wide) { out.push(cur); cur = []; }
-      cur.push(w);
-      var full = cur.length === 3 || (cur.length === 2 && cur.some(isWide));
-      if (full) { out.push(cur); cur = []; }
-    });
-    if (cur.length) out.push(cur);
-    return out;
-  }
+  // Rows by shape: see A.H2.split in admin.js.
+  var split = A.H2.split;
   // Put a flat order back into rows (the preview in this list).
   function chunk(order) {
     var none = rows.filter(function (r) { return r.row === 'none'; });
@@ -135,33 +118,11 @@ A.start(function () {
   A.$('#search').addEventListener('input', function (e) { search(e.target.value); });
   A.$('#search-phone').addEventListener('input', function (e) { search(e.target.value); });
 
-  // Write an order into home2.json: rows by the shape rules, each painting with
-  // its own size. A row with the same paintings as before stays untouched.
+  // Write an order into home2.json (rows by shape, see A.H2.reflow).
   function fill(data, order) {
-    var entries = {}, old = {};
-    data.rows.forEach(function (r) {
-      var key = slotsOf(r).map(function (p) { entries[p.slug] = p; return p.slug; }).join(',');
-      old[key] = r;
-    });
-    var have = Object.keys(entries).sort().join(',');
+    var have = A.H2.order(data).sort().join(',');
     if (have !== order.slice().sort().join(',')) throw new Error('the works changed meanwhile. Reload the page and try again');
-    data.rows = split(order.map(bySlug)).map(function (items) {
-      var slugs = items.map(function (w) { return w.slug; });
-      if (old[slugs.join(',')]) return old[slugs.join(',')];
-      // Same paintings in another order: keep the row's top alignment and the
-      // lifts (round paintings centred on a taller neighbour).
-      var same = data.rows.filter(function (r) {
-        return slotsOf(r).map(function (p) { return p.slug; }).sort().join(',') === slugs.slice().sort().join(',');
-      })[0];
-      var row = A.H2.place({ height: 0, works: slugs.map(function (slug) {
-        var e = entries[slug];
-        var p = { slug: slug, x: 0, y: 0, w: e.w, h: e.h, caption: e.caption || 'below' };
-        if (same && e.lift) p.lift = e.lift;
-        return p;
-      }) });
-      if (same && same.align) row.align = same.align;
-      return row;
-    });
+    A.H2.reflow(data, order, bySlug);
   }
   function saveOrder(order, message, toast) {
     saveBtn.disabled = true;
