@@ -14,7 +14,7 @@
   <!-- Home #2 (alona's design, 2026-11-06). Home #1 is kept at /home-1/. -->
 {{> menu}}
 
-  <!-- Hero: one scroll changes the photo and its caption underneath -->
+  <!-- Hero: the photos change on their own every 5 seconds (no captions shown) -->
   <div class="hero-scroll h2-slides" style="--slides:{{hero.count}}">
     <figure class="hero">
       <div class="hero-frame">
@@ -52,23 +52,32 @@
     place();
   })();
 
-  // Hero slideshow, driven by normal page scrolling (nothing is blocked, so
-  // it can never get stuck): the photo stays pinned while you scroll through
-  // a short stretch of page, and each stretch fades in the next photo and
-  // caption. After the last photo the page ends.
+  // Hero slideshow (alona 2026-11-16): the photos change on their own every
+  // 5 seconds with a gentle fade, scrolling does nothing. It pauses while the
+  // tab is in the background. No captions on the homepage.
   (function () {
     var wrap = document.querySelector('.hero-scroll');
     if (!wrap) return;
     var imgs = wrap.querySelectorAll('.hero-frame > img');
     var frame = wrap.querySelector('.hero-frame');
-    var caps = wrap.querySelectorAll('[data-slide]');
     var n = imgs.length;
     if (n < 2) return;
     document.documentElement.classList.add('hero-js');
     var idx = -1;
+    var DELAY = 5000;
 
     function show(k) {
       if (k === idx) return;
+      // Back to the first photo: the ones in between are hidden at once
+      // (they sit under the last photo anyway), so only the last one fades.
+      if (k === 0 && idx > 0) {
+        for (var j = 1; j < idx; j++) {
+          imgs[j].style.transition = 'none';
+          imgs[j].style.opacity = 0;
+          void imgs[j].offsetWidth;
+          imgs[j].style.transition = '';
+        }
+      }
       idx = k;
       for (var i = 0; i < n; i++) {
         // Photos up to the current one stay visible underneath, so a fade
@@ -77,11 +86,6 @@
         imgs[i].setAttribute('aria-hidden', i === idx ? 'false' : 'true');
       }
       setTone();
-      for (var c = 0; c < caps.length; c++) {
-        var on = Number(caps[c].getAttribute('data-slide')) === idx;
-        caps[c].classList.toggle('is-active', on);
-        caps[c].setAttribute('aria-hidden', on ? 'false' : 'true');
-      }
     }
     // Phones: the credits on the photo turn dark over a light photo bottom
     // and stay white over a dark one. Measured from each photo's bottom strip.
@@ -106,16 +110,17 @@
     }
     for (var t = 0; t < n; t++) imgs[t].addEventListener('load', setTone);
 
-    function update() {
-      // One photo per stretch of scrolling (--step, half a screen).
-      var step = window.innerHeight * 0.5;
-      var into = -wrap.getBoundingClientRect().top;
-      var k = Math.floor((into + step * 0.5) / step);
-      show(Math.max(0, Math.min(n - 1, k)));
+    var timer = null;
+    function start() {
+      if (timer || document.hidden) return;
+      timer = setInterval(function () { show((idx + 1) % n); }, DELAY);
     }
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    function stop() { clearInterval(timer); timer = null; }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+    show(0);
+    start();
   })();
   </script>
 </body>

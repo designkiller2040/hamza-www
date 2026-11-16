@@ -2167,3 +2167,24 @@ body:has(.h2-credits) .site-footer {
     margin-right: 20px;
   }
 }
+
+/* Homepage slideshow plays on its own (alona 2026-11-16): no tall scroll
+   stretch any more, so the page is one screen; captions hidden everywhere
+   (the alt text still describes each photo); a gentle 1.2 s fade between
+   photos. The newest photo fades in over the previous one, so it never
+   passes through white. */
+.hero-js .home-page .h2-slides {
+  height: auto;
+}
+
+.home-page .hero-captions {
+  display: none;
+}
+
+.hero-js .home-page .hero-frame img {
+  transition: opacity 1.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-js .home-page .hero-frame img { transition: none; }
+}
