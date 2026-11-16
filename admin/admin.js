@@ -349,6 +349,15 @@
      The zone's value is {src, width, height, alt} (saved) or a prepared upload. */
   A.dropZone = function (opts) {
     var el = opts.el, meta = opts.metaEl;
+    // File info, Replace and Remove sit over the photo and show on hover
+    // (alona 2026-11-16): the zone and its info share one wrapper.
+    if (meta && el.parentNode && !el.parentNode.classList.contains('pic')) {
+      var wrap = document.createElement('div');
+      wrap.className = 'pic';
+      el.parentNode.insertBefore(wrap, el);
+      wrap.appendChild(el);
+      wrap.appendChild(meta);
+    }
     var input = document.createElement('input');
     input.type = 'file';
     input.accept = A.ACCEPT.join(',');

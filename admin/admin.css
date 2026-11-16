@@ -213,3 +213,56 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 /* Works tab: inquiry email (content/contact.json) */
 .inquiry-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
 .inquiry-row .btn { margin-top: 22px; }
+
+/* Photo info (file, size, dimensions, Replace, Remove) over the photo,
+   shown on hover (alona 2026-11-16). Always shown on touch screens. */
+.pic { position: relative; min-width: 0; }
+.pic > .image-meta {
+  position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2;
+  padding: 12px 14px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+}
+.pic:hover > .image-meta, .pic:focus-within > .image-meta { opacity: 1; pointer-events: auto; }
+@media (hover: none) { .pic > .image-meta { opacity: 1; pointer-events: auto; } }
+.pic:has(> .drop:not(.has-image)) > .image-meta { display: none; }
+.pic > .image-meta:has([data-err]:not([hidden])) { display: flex; opacity: 1; pointer-events: auto; }
+.pic > .image-meta dl { grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); flex: 1 1 240px; }
+.pic > .image-meta .actions { flex-wrap: wrap; }
+
+/* About tab: laid out like the About page (alona 2026-11-16) */
+.lbl-main { display: block; font-size: 15px; color: var(--ink); margin: 0 0 8px; }
+.about-edit { gap: 72px; }
+.ab-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.23fr); gap: 48px 40px; align-items: start; }
+.ab-left { display: flex; flex-direction: column; gap: 28px; }
+.ab-photo { align-self: stretch; display: flex; flex-direction: column; }
+.ab-photo > .pic { flex: 1; display: flex; flex-direction: column; }
+.ab-photo .drop { min-height: 360px; flex: 1; }
+.ab-photo .drop.has-image img { max-height: 100%; }
+.contacts-box { background: #f6f6f6; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.contacts { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.contact-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.7fr) minmax(0, 1.6fr) 36px; gap: 10px; align-items: end; }
+.contact-row .btn { margin-bottom: 2px; }
+.add-contact { padding-left: 4px; }
+.ab-press { display: flex; flex-direction: column; gap: 0; }
+.press-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; align-items: start; }
+.press-item { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.press-item .drop { min-height: 0; aspect-ratio: 225 / 247; padding: 14px; }
+.press-item .drop.has-image { padding: 14px; }
+.press-item .drop.has-image img { max-height: 100%; }
+.press-item .drop .small { display: none; }
+.press-tools { display: flex; gap: 4px; align-items: center; margin-top: -8px; }
+.press-tools .btn.danger { margin-left: auto; padding: 0 6px; }
+.press-new { aspect-ratio: 225 / 247; width: 100%; }
+@media (max-width: 1100px) { .press-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 860px) {
+  .ab-grid { grid-template-columns: minmax(0, 1fr); }
+  .press-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+  .contact-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px; }
+  .contact-row > div:nth-child(3) { grid-column: 1 / 3; grid-row: 2; }
+}
+@media (max-width: 480px) { .press-grid { grid-template-columns: minmax(0, 1fr); } }
+/* The portrait box is as tall as Title + Biography; the photo fits inside. */
+.ab-photo .drop.has-image img { position: absolute; inset: 24px; width: calc(100% - 48px); height: calc(100% - 48px); max-height: none; object-fit: contain; }
+.pic > .image-meta dl { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.pic > .image-meta dl > div { min-width: 0; max-width: 100%; }

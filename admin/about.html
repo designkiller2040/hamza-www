@@ -32,49 +32,32 @@
   </div>
 </div></header>
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
-<main class="page" id="main">
-  <section>
-    <div class="section-head"><h2>Portrait</h2><p>The photo on the right of the About page.</p></div>
-    <div class="drop" id="drop"></div>
-    <div class="image-meta" id="drop-meta"></div>
-    <div style="max-width:640px"><label class="lbl" for="alt">Portrait description for screen readers</label><input class="field" id="alt" type="text" placeholder="e.g. Portrait of Hamza Shah Mian" autocomplete="off"></div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Quote and Biography</h2><p>The big quote at the top, then the text under “Biography”.</p></div>
-    <div class="info-cols">
-      <div class="fields">
-        <div><label class="lbl" for="quote">Quote</label><textarea class="field" id="quote" rows="4" placeholder="e.g. “What you see is your truth.”"></textarea><p class="hint">A new line starts a new line on the site (on computers).</p></div>
-        <div><label class="lbl" for="bio">Biography</label><textarea class="field" id="bio" rows="12" placeholder="Hamza Shah Mian (b. 1999) is…"></textarea><p class="hint">Leave an empty line between paragraphs.</p></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><h3>On the site</h3><p>How it reads on the About page.</p></div>
-        <div class="site-preview" id="bio-preview"></div>
+<main class="page about-edit" id="main">
+  <div class="ab-grid">
+    <div class="ab-left">
+      <div><label class="lbl-main" for="quote">Title</label><textarea class="field" id="quote" rows="5" placeholder="e.g. “What you see is your truth.”"></textarea><p class="hint">The quote at the top of the About page. A new line starts a new line on the site.</p></div>
+      <div><label class="lbl-main" for="bio">Biography</label><textarea class="field" id="bio" rows="11" placeholder="Hamza Shah Mian (b. 1999) is…"></textarea><p class="hint">Leave an empty line between paragraphs.</p></div>
+    </div>
+    <div class="ab-photo">
+      <div class="drop" id="drop"></div>
+      <div class="image-meta" id="drop-meta"></div>
+    </div>
+    <div class="ab-left">
+      <div><label class="lbl-main" for="studies">Studies</label><textarea class="field" id="studies" rows="4" placeholder="e.g. 2022 Sound Design &amp; Electronic Music Production, Catalyst, Berlin. Germany"></textarea><p class="hint">One line per entry.</p></div>
+      <div><label class="lbl-main" for="soloShows">Solo shows</label><textarea class="field" id="soloShows" rows="5" placeholder="e.g. 2026 Abimal, Painting as a Language of Gratitude, St. Elisabeth, Berlin. Germany"></textarea><p class="hint">One line per entry, newest first.</p></div>
+    </div>
+    <div>
+      <span class="lbl-main">Contacts</span>
+      <div class="contacts-box">
+        <div class="contacts" id="links"></div>
+        <button class="btn ghost add-contact" type="button" id="add-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add contact</button>
       </div>
     </div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Studies and Solo shows</h2><p>One line per entry, newest first.</p></div>
-    <div class="info-cols">
-      <div class="fields">
-        <div><label class="lbl" for="studies">Studies</label><textarea class="field" id="studies" rows="3" placeholder="e.g. 2022 Sound Design &amp; Electronic Music Production, Catalyst, Berlin. Germany"></textarea></div>
-        <div><label class="lbl" for="soloShows">Solo shows</label><textarea class="field" id="soloShows" rows="6" placeholder="e.g. 2026 Abimal, Painting as a Language of Gratitude, St. Elisabeth, Berlin. Germany"></textarea></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><h3>On the site</h3><p>Grey labels, one entry per line.</p></div>
-        <div class="site-preview" id="cv-preview"></div>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Contacts</h2><p>Under the portrait: the name of the link on the left, a small label in brackets on the right.</p></div>
-    <div class="items" id="links"></div>
-    <div><button class="btn" type="button" id="add-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add contact</button></div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Press</h2><p>The cards at the bottom of the About page. The whole card opens the link.</p></div>
-    <div class="items" id="press"></div>
-    <div><button class="btn" type="button" id="add-press"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add press card</button></div>
-  </section>
+  </div>
+  <div class="ab-press">
+    <span class="lbl-main">Press</span>
+    <div class="press-grid" id="press"></div>
+  </div>
 </main>
 <footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
 </body>
