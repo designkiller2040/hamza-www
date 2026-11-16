@@ -2478,3 +2478,12 @@ body.home-page:not(.works-page) > .h2-credits {
     margin-top: 76px; /* + 24 padding = 100 */
   }
 }
+
+/* Top menu as wide as the photo cards on /exhibited/ (alona 2026-11-16):
+   880 design px, centred. Desktop only; phones keep their own edges. */
+@media (min-width: 992px) {
+  .h2-header {
+    padding-left: calc((100vw - var(--u) * 880) / 2);
+    padding-right: calc((100vw - var(--u) * 880) / 2);
+  }
+}
