@@ -106,32 +106,10 @@ function blurStyle(b) {
     + `<image filter='url(%23b)' width='${b.w}' height='${b.h}' preserveAspectRatio='none' href='data:image/jpeg;base64,${b.jpg}'/></svg>`;
   return `background-image:url(&quot;data:image/svg+xml;charset=utf-8,${svg}&quot;)`;
 }
-// Works page "frames" (2026-11-16): each entry in home2.json rows is a fixed
-// slot (x, y, w, h, lift); reordering in the admin only swaps which painting
-// sits in which slot. A painting whose shape matches its slot fills it exactly
-// (as designed; "orig" is the slot's original painting, which may be trimmed a
-// little more). Any other painting is fitted inside the slot at its own
-// proportions (no crop, no stretch): left slots keep it on the left edge,
-// right slots on the right edge, middle slots centred. Rows stay bottom- or
-// top-aligned by the CSS.
-const SLOT_LEFT = 66, SLOT_RIGHT = 1446;
-function fitSlot(p, ratio) {
-  if (!p.h || !ratio) return p;
-  const off = Math.abs(ratio / (p.w / p.h) - 1);
-  if (off <= 0.02 || (p.slug === p.orig && off <= 0.06)) return p;
-  let w = p.w, h = p.h;
-  if (ratio > p.w / p.h) h = Math.round(p.w / ratio); else w = Math.round(p.h * ratio);
-  let x = p.x;
-  if (p.x <= SLOT_LEFT + 1) x = p.x;
-  else if (p.x + p.w >= SLOT_RIGHT - 1) x = p.x + p.w - w;
-  else x = Math.round(p.x + (p.w - w) / 2);
-  return { ...p, x, w, h };
-}
-function home2Figure(slot, first) {
-  const w = worksBySlug.get(slot.slug);
+function home2Figure(p, first) {
+  const w = worksBySlug.get(p.slug);
   if (!w || w.hidden) return '';
   const ratio = w.image && w.image.width ? w.image.width / w.image.height : (w.layout?.ratio || 1);
-  const p = fitSlot(slot, ratio);
   // The first row loads straight away and first in line; the rest load as you scroll.
   const srcset = w.image && w.image.src ? artworkSrcset(w.image) : '';
   const sizes = `(min-width: 992px) ${num(p.w / 15.12)}vw, (min-width: 576px) 50vw, 100vw`;

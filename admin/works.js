@@ -1,7 +1,9 @@
 /* Works list: cards grouped by Works-page row, search, drag (or arrows) to
-   reorder, Save order. The layout is fixed "frames" (slots in home2.json):
-   reordering only changes which painting sits in which frame, so sizes and
-   positions never move. Paintings can move across rows. */
+   reorder, Save order. Rows are rebuilt from the order by shape (alona
+   2026-11-16): square or vertical paintings sit 3 to a row; a horizontal one
+   shares its row with one other painting (square, vertical or horizontal).
+   Each painting keeps its own size; a row that comes out the same as before
+   is kept exactly as it was (positions, lift, top alignment). */
 A.start(function () {
   var list = A.$('#list');
   var saveBtn = A.$('#save-order');
@@ -23,14 +25,29 @@ A.start(function () {
   // A row's frames from left to right (the reading order on the page).
   function slotsOf(r) { return r.works.slice().sort(function (a, b) { return a.x - b.x; }); }
   function flat() { return rows.filter(function (r) { return r.row !== 'none'; }).reduce(function (a, r) { return a.concat(r.items); }, []); }
-  // Put a flat order back into the rows, each row keeping its number of frames.
-  function chunk(order) {
-    var i = 0;
-    rows.forEach(function (r) {
-      if (r.row === 'none') return;
-      var n = r.items.length;
-      r.items = order.slice(i, i + n); i += n;
+  // Horizontal = clearly wider than tall; square and vertical count the same.
+  function isWide(w) {
+    var im = w && w.data && w.data.image;
+    return !!(im && im.width && im.height && im.width / im.height > 1.25);
+  }
+  // Split an order (works) into rows by the shape rules.
+  function split(order) {
+    var out = [], cur = [];
+    order.forEach(function (w) {
+      var wide = isWide(w);
+      // A horizontal painting can't join a row that already has two.
+      if (cur.length === 2 && wide) { out.push(cur); cur = []; }
+      cur.push(w);
+      var full = cur.length === 3 || (cur.length === 2 && cur.some(isWide));
+      if (full) { out.push(cur); cur = []; }
     });
+    if (cur.length) out.push(cur);
+    return out;
+  }
+  // Put a flat order back into rows (the preview in this list).
+  function chunk(order) {
+    var none = rows.filter(function (r) { return r.row === 'none'; });
+    rows = split(order).map(function (items, i) { return { row: 'r' + i, items: items }; }).concat(none);
   }
   function orderKey() { return rows.map(function (r) { return r.items.map(function (w) { return w.slug; }).join(','); }).join('|'); }
 
@@ -118,15 +135,32 @@ A.start(function () {
   A.$('#search').addEventListener('input', function (e) { search(e.target.value); });
   A.$('#search-phone').addEventListener('input', function (e) { search(e.target.value); });
 
-  // Write an order into the frames: the n-th painting goes into the n-th frame
-  // (rows top to bottom, frames left to right). Frame sizes stay as they are.
+  // Write an order into home2.json: rows by the shape rules, each painting with
+  // its own size. A row with the same paintings as before stays untouched.
   function fill(data, order) {
-    var slots = data.rows.reduce(function (a, r) { return a.concat(slotsOf(r)); }, []);
-    var have = slots.map(function (p) { return p.slug; }).sort().join(',');
+    var entries = {}, old = {};
+    data.rows.forEach(function (r) {
+      var key = slotsOf(r).map(function (p) { entries[p.slug] = p; return p.slug; }).join(',');
+      old[key] = r;
+    });
+    var have = Object.keys(entries).sort().join(',');
     if (have !== order.slice().sort().join(',')) throw new Error('the works changed meanwhile. Reload the page and try again');
-    slots.forEach(function (p, i) {
-      if (!p.orig) p.orig = p.slug; // remember the frame's first painting
-      p.slug = order[i];
+    data.rows = split(order.map(bySlug)).map(function (items) {
+      var slugs = items.map(function (w) { return w.slug; });
+      if (old[slugs.join(',')]) return old[slugs.join(',')];
+      // Same paintings in another order: keep the row's top alignment and the
+      // lifts (round paintings centred on a taller neighbour).
+      var same = data.rows.filter(function (r) {
+        return slotsOf(r).map(function (p) { return p.slug; }).sort().join(',') === slugs.slice().sort().join(',');
+      })[0];
+      var row = A.H2.place({ height: 0, works: slugs.map(function (slug) {
+        var e = entries[slug];
+        var p = { slug: slug, x: 0, y: 0, w: e.w, h: e.h, caption: e.caption || 'below' };
+        if (same && e.lift) p.lift = e.lift;
+        return p;
+      }) });
+      if (same && same.align) row.align = same.align;
+      return row;
     });
   }
   function saveOrder(order, message, toast) {
@@ -149,23 +183,39 @@ A.start(function () {
     saveOrder(flat().map(function (w) { return w.slug; }), 'Reorder works on the Works page', 'Order saved. The site updates in about a minute.');
   });
 
-  // TEMPORARY (alona 2026-11-16): "Return how it was" puts every painting back
-  // in its original frame ("orig" of each frame in home2.json) and saves.
-  // To remove: delete this block and the #restore-order button in works.html.
+  // TEMPORARY (alona 2026-11-16): "Return how it was" puts the Works page back
+  // exactly as it was on 2026-11-16 (originalRows in home2.json) and saves.
+  // To remove: delete this block, the #restore-order button in works.html and
+  // "originalRows" in content/home2.json.
   var restoreBtn = A.$('#restore-order');
   if (restoreBtn) restoreBtn.addEventListener('click', function () {
-    var slots = home2.rows.reduce(function (a, r) { return a.concat(slotsOf(r)); }, []);
-    var now = slots.map(function (p) { return p.slug; });
-    var order = slots.map(function (p) { return p.orig && now.indexOf(p.orig) >= 0 ? p.orig : null; });
-    order = order.map(function (s, i) { return order.indexOf(s) === i ? s : null; });
-    var rest = now.filter(function (s) { return order.indexOf(s) < 0; });
-    order = order.map(function (s) { return s || rest.shift(); });
-    if (order.join(',') === now.join(',')) {
+    if (!home2.originalRows) { A.toast('No saved original order.', true); return; }
+    function slugsOf(rs) { return rs.reduce(function (a, r) { return a.concat(slotsOf(r).map(function (p) { return p.slug; })); }, []); }
+    if (JSON.stringify(home2.rows) === JSON.stringify(home2.originalRows)) {
       if (!saveBtn.hidden) { group(); render(); if (query) search(query); saveBtn.hidden = true; }
       A.toast('The works are already in their original order.');
       return;
     }
-    saveOrder(order, 'Works page: return the original order', 'Original order is back. The site updates in about a minute.');
+    function restore(data) {
+      var orig = data.originalRows;
+      if (!orig) throw new Error('no saved original order');
+      var a = slugsOf(orig).slice().sort().join(','), b = slugsOf(data.rows).slice().sort().join(',');
+      if (a === b) { data.rows = JSON.parse(JSON.stringify(orig)); return; }
+      // Works were added or removed since: original order first, new ones after.
+      var cur = slugsOf(data.rows);
+      var order = slugsOf(orig).filter(function (s) { return cur.indexOf(s) >= 0; })
+        .concat(cur.filter(function (s) { return slugsOf(orig).indexOf(s) < 0; }));
+      fill(data, order);
+    }
+    saveBtn.disabled = true;
+    A.commit('Works page: return the original order', [A.H2.update(restore)]).then(function () {
+      restore(home2);
+      group(); before = orderKey(); render(); if (query) search(query);
+      saveBtn.hidden = true;
+      A.toast('Original order is back. The site updates in about a minute.');
+    }).catch(function (e) {
+      A.toast('Couldn’t restore the order: ' + e.message, true);
+    }).then(function () { saveBtn.disabled = false; });
   });
 
   window.addEventListener('beforeunload', function (e) {
