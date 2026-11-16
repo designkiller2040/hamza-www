@@ -48,8 +48,8 @@ const num = (n, d = 2) => Number(n).toFixed(d);
 
 function workFigure(w) {
   const t = w.year ? `${w.title}, ${w.year}` : w.title;
-  const lines = [`<span class="title">${esc(t)}</span>`];
-  if (w.materials) lines.push(esc(w.materials));
+  const lines = [`<span class="title">${esc(w.captionTitle || t)}</span>`];
+  if (w.materials) lines.push(...w.materials.split('\n').map(esc));
   if (w.size) lines.push(esc(w.size));
   const img = w.image && w.image.src
     ? `<img src="${esc(w.image.src)}" alt="${esc(w.image.alt || t)}" width="${w.image.width}" height="${w.image.height}" loading="lazy" style="aspect-ratio:${num(w.layout.ratio, 3)}">`
@@ -121,13 +121,14 @@ function home2Figure(p, first) {
   const inquire = `<a class="w2-inquire" href="${mail}">Inquire to Purchase</a>`;
   let caption;
   if (p.caption === 'below' || p.caption === 'above') {
-    const lines = [esc(w.year ? `${w.title}, ${w.year}` : w.title)];
-    if (w.materials) lines.push(esc(w.materials));
+    // captionTitle overrides the first line; a line break in materials starts a new caption line.
+    const lines = [esc(w.captionTitle || (w.year ? `${w.title}, ${w.year}` : w.title))];
+    if (w.materials) lines.push(...w.materials.split('\n').map(esc));
     if (w.size) lines.push(esc(w.size));
     caption = `<figcaption class="w2-cap-${p.caption}"><span class="w2-text">${lines.join('<br>')}</span>${inquire}</figcaption>`;
   } else {
     const first = esc(`"${w.title}"`) + (w.year ? ' ' + esc(w.year) : '');
-    const second = esc([w.materials, w.size].filter(Boolean).join('. '));
+    const second = esc([w.materials && w.materials.replace(/\n/g, ' '), w.size].filter(Boolean).join('. '));
     caption = `<figcaption class="w2-cap-hover">${inquire}<span class="w2-text">${first}${second ? '<br>' + second : ''}</span></figcaption>`;
   }
   // "h" crops the photo to the height drawn in the canvas; "above" puts the caption over the photo.

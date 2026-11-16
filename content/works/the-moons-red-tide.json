@@ -1,13 +1,13 @@
 {
-  "title": "The moon's Red Tide",
-  "year": "",
-  "materials": "",
-  "size": "",
+  "title": "the moon’s red tide",
+  "year": "2026",
+  "materials": "lac extract, blood, café, thé\non French 20th century table cloth.",
+  "size": "100x100cm",
   "image": {
     "src": "images/artworks/the-moons-red-tide.jpg",
     "width": 1570,
     "height": 1574,
-    "alt": "The moon's Red Tide"
+    "alt": "the moon’s red tide, 2026"
   },
   "layout": {
     "row": 1,
@@ -15,5 +15,6 @@
     "width": 23.83,
     "ratio": 1.013
   },
-  "note": ""
+  "note": "",
+  "captionTitle": "‘the moon’s red tide’ 2026."
 }

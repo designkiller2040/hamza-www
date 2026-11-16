@@ -30,7 +30,7 @@ A.start(function () {
     var t = $('title').value.trim(), y = $('year').value.trim();
     var lines = [];
     lines.push(t ? A.esc(y ? t + ', ' + y : t) : '<span class="empty">Title</span>');
-    if ($('materials').value.trim()) lines.push(A.esc($('materials').value.trim()));
+    if ($('materials').value.trim()) lines.push(A.esc($('materials').value.trim()).replace(/\n/g, '<br>'));
     if ($('size').value.trim()) lines.push(A.esc($('size').value.trim()));
     $('preview').innerHTML = lines.join('<br>') + '<br><span class="muted">Inquire to Purchase</span>';
     $('item-name').textContent = t || (isNew ? 'New work' : 'Untitled');
