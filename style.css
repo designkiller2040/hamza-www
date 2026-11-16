@@ -2549,6 +2549,9 @@ body.home-page:not(.works-page) > .h2-credits {
 
   .exd-cap {
     flex-direction: column;
+    /* right-aligned to the grid edge (alona 2026-11-16 22:04) */
+    align-items: flex-end;
+    text-align: right;
     justify-content: flex-start;
     gap: calc(var(--u) * 4);
     margin-top: 0;
