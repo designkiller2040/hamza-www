@@ -2567,3 +2567,19 @@ body.home-page:not(.works-page) > .h2-credits {
     width: calc(var(--w) * 100vw / 1512);
   }
 }
+
+/* No sideways scrolling (alona 2026-11-16 22:09). The full-width centred
+   headings on the exhibition pages (--x:0, --w:1512) came out a few px wider
+   than the window when the browser shows a scrollbar; they now span the
+   page exactly. overflow-x: clip on body is a safety net (unlike hidden it
+   doesn't make body a scroll box, so page scrolling is untouched). */
+@media (min-width: 992px) {
+  .ex-abs .pos[style*="--x:0;"] {
+    left: 0;
+    width: 100%;
+  }
+}
+
+body {
+  overflow-x: clip;
+}
