@@ -2195,3 +2195,32 @@ body:has(.h2-credits) .site-footer {
 @media (prefers-reduced-motion: reduce) {
   .hero-js .home-page .hero-frame img { transition: none; }
 }
+
+/* Credits, 2026-11-16 (alona): the Vilna logo is only on /about/, at the very
+   bottom of the page in normal flow (not fixed). Every other page shows the
+   text "digital imprint made by Vil'na" with only "Vil'na" as an underlined
+   link, in the credits text style. */
+.h2-imprint {
+  flex-direction: row;
+  font-size: calc(var(--u) * 12);
+  font-weight: 400;
+  line-height: 1.07;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.h2-imprint .h2-vilna {
+  margin-left: 0.25em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.h2-credits.h2-credits-end {
+  position: static;
+}
+
+@media (max-width: 767.98px) {
+  .h2-imprint { font-size: 12px; }
+  .home-page .hero-frame .h2-imprint { font-size: 12px; }
+}
