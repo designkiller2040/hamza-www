@@ -320,7 +320,7 @@ const iconLinks = (r) => [
   `<link rel="icon" type="image/png" sizes="16x16" href="${r}icons/favicon-16.png">`,
   `<link rel="apple-touch-icon" href="${r}icons/apple-touch-icon.png">`,
 ].join('\n  ');
-function render(file, root) {
+function render(file, root, extra = {}) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
   html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
@@ -334,10 +334,10 @@ function render(file, root) {
     .replace('<p class="h2-signature">@2027 Hamza Shah Mian. All rights reserved.</p>', `<p class="h2-signature"><a href="${root}">@2027 Hamza Shah Mian. All rights reserved.</a></p>`)
     .replace('<a class="h2-look" href=', '<a class="h2-look" aria-current="page" href=');
   // Underline the menu item of the page you're on (alona, 2026-11-14).
-  const navKey = navFor[basename(file, '.html')];
+  const navKey = extra.navKey || navFor[basename(file, '.html')];
   if (navKey) html = html.replace(`data-nav="${navKey}"`, `data-nav="${navKey}" aria-current="page"`);
   // Address and share tags for the live domain (hamzashah.ch since 2026-11-16).
-  const slug = basename(file, '.html');
+  const slug = extra.slug || basename(file, '.html');
   const url = SITE + (slug === 'index' ? '' : slug + '/');
   const shareImage = SITE + String(slides[0] ? slides[0].image.src : '').replace(/^\.?\//, '');
   html = html.replace(/(<meta name="description" content="[^"]*">)/, (m) => {
@@ -353,7 +353,7 @@ function render(file, root) {
   <meta property="og:image" content="${shareImage}">
   <meta name="twitter:card" content="summary_large_image">`;
   });
-  const all = { ...vars, root };
+  const all = { ...vars, ...extra.vars, root };
   return html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
     const key = raw || plain;
     if (!(key in all)) throw new Error(`Unknown template field {{${key}}} in ${file}`);
@@ -362,7 +362,29 @@ function render(file, root) {
 }
 
 // Every other src/*.html becomes its own page: src/abimal.html -> /abimal/
-const pages = readdirSync(join(ROOT, 'src')).filter((f) => f.endsWith('.html') && f !== 'index.html');
+const pages = readdirSync(join(ROOT, 'src')).filter((f) => f.endsWith('.html') && f !== 'index.html' && !f.startsWith('_'));
+
+// Exhibition pages made from the admin ("page": "auto" in content/exhibitions/*.json),
+// built from src/_exhibition.html to /<slug>/. Photos: the exhibition's own photo
+// first (full grid width), then "photos" (menu width; portraits side by side).
+const autoExhibitions = exhibitions.filter((e) => e.page === 'auto' && !existsSync(join(ROOT, 'src', e.slug + '.html')));
+function exhibitionPageBody(e) {
+  const title = String(e.title || '').trim().replace(/^[„“"']+|[“”"']+$/g, '');
+  const pic = (img, cls, lazy) => img && img.src
+    ? `    <figure class="${cls}"><img src="../${esc(String(img.src).replace(/^\.?\//, ''))}" alt="${esc(img.alt || title)}" width="${img.width}" height="${img.height}"${lazy ? ' loading="lazy"' : ''}></figure>`
+    : '';
+  const text = String(e.text || '').split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean)
+    .map((t) => `      <p class="ex-p">${esc(t).replace(/\n/g, '<br>')}</p>`).join('\n');
+  const photos = (e.photos || []).filter((p) => p && p.src)
+    .map((p) => pic(p, p.height > p.width ? 'tall' : 'wide', true)).join('\n');
+  return [
+    `    <p class="exg-label">Exhibition</p>`,
+    `    <h1 class="exg-title">${esc(title)}${e.place ? ' - ' + esc(e.place) : ''}</h1>`,
+    pic(e.image, 'exg-first', false),
+    text ? `    <div class="exg-text">\n${text}\n    </div>` : '',
+    photos ? `    <div class="exg-photos">\n${photos.replace(/^/gm, '  ')}\n    </div>` : '',
+  ].filter(Boolean).join('\n');
+}
 
 // ---- Write dist/ ---------------------------------------------------------
 rmSync(OUT, { recursive: true, force: true });
@@ -373,6 +395,20 @@ for (const f of pages) {
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, 'index.html'), render(join('src', f), '../'));
 }
+for (const e of autoExhibitions) {
+  const dir = join(OUT, e.slug);
+  mkdirSync(dir, { recursive: true });
+  const title = String(e.title || '').trim().replace(/^[„“"']+|[“”"']+$/g, '');
+  writeFileSync(join(dir, 'index.html'), render('src/_exhibition.html', '../', {
+    slug: e.slug,
+    navKey: 'exhibited',
+    vars: {
+      'exg.title': [title, e.place].filter(Boolean).join(', '),
+      'exg.description': String(e.text || '').trim().split(/\n/)[0] || [title, e.place].filter(Boolean).join(', '),
+      'exg.body': exhibitionPageBody(e),
+    },
+  }));
+}
 // Saved homepage versions (snapshots/home-1/ -> /home-1/) are frozen copies,
 // copied as they are without filling in any content.
 if (existsSync(join(ROOT, 'snapshots'))) cpSync(join(ROOT, 'snapshots'), OUT, { recursive: true });
@@ -381,7 +417,7 @@ for (const p of ['style.css', 'fonts', 'images', 'admin', 'icons', 'favicon.ico'
 }
 // Search engines: a sitemap of the public pages (not legal, not the frozen
 // old versions) and a robots.txt that points to it and keeps the admin and the frozen old versions out.
-const sitemapPages = ['', ...pages.map((f) => f.replace(/\.html$/, '') + '/').filter((p) => p !== 'legal/')];
+const sitemapPages = ['', ...pages.map((f) => f.replace(/\.html$/, '') + '/').filter((p) => p !== 'legal/'), ...autoExhibitions.map((e) => e.slug + '/')];
 writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemapPages.map((p) => `  <url><loc>${SITE}${p}</loc></url>`).join('\n')}

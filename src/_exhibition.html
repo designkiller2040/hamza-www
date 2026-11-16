@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- Template: an exhibition page made from the admin (Exhibited tab, "Add exhibition"),
+     built to /<slug>/ for every content/exhibitions/*.json with "page": "auto".
+     Same look as the hand-made exhibition pages: label, title, first photo across the
+     full grid, text, then the other photos at the top menu's width (landscape 880 x 480,
+     portraits two side by side at 424 x 636). Menu and credits come from src/partials/. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>{{exg.title}} — {{name}}</title>
+  <meta name="description" content="{{exg.description}}">
+  <link rel="stylesheet" href="{{root}}fonts/fonts.css">
+  <link rel="stylesheet" href="{{root}}style.css">
+</head>
+<body class="home2 exhibited-page exg-body">
+{{> menu}}
+
+  <main class="exg">
+{{{exg.body}}}
+  </main>
+
+{{> credits}}
+</body>
+</html>

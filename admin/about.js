@@ -74,6 +74,13 @@
       }
     }
     if (spec.addBtn) spec.addBtn.addEventListener('click', add);
+    // Drag a card by its photo to reorder (alona 2026-11-16).
+    if (spec.drag) A.sortable(spec.box, { items: '.' + spec.cls, handle: '.pic', onEnd: function () {
+      var els = A.$$('.' + spec.cls, spec.box);
+      items.sort(function (a, b) { return els.indexOf(a.el) - els.indexOf(b.el); });
+      render();
+      onChange();
+    } });
     return {
       items: function () { return items; },
       load: function (arr, change) { items = []; if (change) onChange = change; (arr || []).forEach(make); render(); },
@@ -113,6 +120,7 @@
     box: document.getElementById('press'),
     cls: 'press-item',
     zone: true,
+    drag: true,
     addTile: icon(I.plus) + 'Add press card',
     html: function () {
       return '<div class="drop"></div><div class="image-meta"></div>' +
@@ -120,8 +128,6 @@
         field('Link text', 'linkText', 'e.g. Read full article', 'lbl-main') +
         field('Link URL', 'href', 'https://…', 'lbl-main') +
         '<div class="press-tools">' +
-        '<button class="btn icon ghost" type="button" data-act="up" aria-label="Move left">' + icon(I.left) + '</button>' +
-        '<button class="btn icon ghost" type="button" data-act="down" aria-label="Move right">' + icon(I.right) + '</button>' +
         '<button class="btn danger" type="button" data-act="del">' + icon(I.del) + 'Remove</button>' +
         '</div>';
     },

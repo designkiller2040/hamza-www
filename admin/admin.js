@@ -535,6 +535,8 @@
       if (e.button !== 0 || (opts.disabled && opts.disabled())) return;
       var item = e.target.closest(itemSel);
       if (!item || !container.contains(item)) return;
+      // opts.handle: only that part picks the item up (fields stay typeable).
+      if (opts.handle && (!e.target.closest(opts.handle) || e.target.closest('button, input, textarea, select, a'))) return;
       var start = { x: e.clientX, y: e.clientY, id: e.pointerId, item: item, touch: e.pointerType === 'touch', ready: e.pointerType !== 'touch', active: false, timer: null };
       if (start.touch) start.timer = setTimeout(function () { start.ready = true; begin(start, start.x, start.y); }, 300);
       drag = start;

@@ -2567,3 +2567,69 @@ body {
 .abt .abt-label {
   color: rgba(0, 0, 0, 0.44);
 }
+
+/* Exhibition pages made from the admin (src/_exhibition.html, alona
+   2026-11-16): label, title, first photo across the full grid (88 px
+   margins), text, then the other photos at the top menu's width. */
+.exg {
+  --U: calc((100vw - 176px) / 1336);
+  --M: calc(100vw / 1512);
+  padding: calc(var(--U) * 188) 0 0;
+  color: #000;
+}
+.exg-label {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: calc(var(--U) * 14.6);
+  line-height: calc(var(--U) * 17.5);
+  text-align: center;
+}
+.exg-title {
+  width: calc(var(--U) * 545);
+  max-width: 100%;
+  margin: calc(var(--U) * 27) auto 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: calc(var(--U) * 35);
+  line-height: calc(var(--U) * 35);
+  letter-spacing: calc(var(--U) * -1.3);
+  color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+.exg figure { margin: 0; }
+.exg img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.exg .exg-first { margin: calc(var(--U) * 80) 88px 0; }
+.exg-first img { aspect-ratio: 1336 / 728; }
+.exg-text {
+  width: calc(var(--M) * 880);
+  margin: calc(var(--U) * 100) auto 0;
+  column-count: 2;
+  column-gap: calc(var(--M) * 64);
+}
+.exg-text .ex-p {
+  margin: 0 0 calc(var(--U) * 19);
+  font-size: calc(var(--U) * 16);
+  line-height: calc(var(--U) * 19);
+  break-inside: avoid;
+}
+.exg-photos {
+  width: calc(var(--M) * 880);
+  margin: calc(var(--U) * 100) auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--U) * 32);
+}
+.exg-photos figure { grid-column: 1 / -1; }
+.exg-photos img { aspect-ratio: 880 / 480; }
+.exg-photos figure.tall { grid-column: auto; }
+.exg-photos figure.tall img { aspect-ratio: 424 / 636; }
+@media (max-width: 991.98px) {
+  .exg { padding: 120px 24px 0; }
+  .exg-label { font-size: 13px; line-height: 16px; }
+  .exg-title { width: auto; margin-top: 16px; font-size: 28px; line-height: 30px; letter-spacing: -0.03em; }
+  .exg .exg-first { margin: 40px 0 0; }
+  .exg-text, .exg-photos { width: 100%; margin-top: 48px; }
+  .exg-text { column-count: 1; }
+  .exg-text .ex-p { font-size: 16px; line-height: 20px; margin-bottom: 16px; }
+  .exg-photos { gap: 16px; }
+}

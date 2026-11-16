@@ -286,3 +286,21 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .move-btn { width: 26px; height: 26px; padding: 0; border: 0; border-radius: 6px; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .move-btn:hover { background: #fff; }
 .move-btn[hidden] { display: none; }
+/* Press cards: drag by the photo to reorder (alona 2026-11-16) */
+.press-item .pic { cursor: grab; }
+.press-item.dragging { opacity: 0.35; }
+.press-tools { justify-content: flex-end; }
+
+/* Exhibited tab: page text and photos for exhibitions made here */
+#add + .hint { margin-top: 8px; }
+.ex-page { display: flex; flex-direction: column; gap: 20px; padding-top: 8px; }
+.ex-page-link { margin: 0; font-size: 12px; color: var(--grey); }
+.ex-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.ex-ph .drop, .ex-ph-add { min-height: 0; aspect-ratio: 1 / 1; padding: 8px; }
+.ex-ph .drop.has-image { padding: 8px; }
+.ex-ph .drop.has-image img { position: absolute; inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); max-height: none; object-fit: contain; }
+.ex-ph .drop .small, .ex-ph .drop .big { display: none; }
+.ex-ph .pic > .image-meta { left: 4px; right: 4px; bottom: 4px; padding: 6px; }
+.ex-ph .pic > .image-meta dl { display: none; }
+.ex-ph .pic > .image-meta .btn { height: 28px; padding: 0 8px; font-size: 12px; }
+.ex-ph-add { width: 100%; font-size: 12px; }
