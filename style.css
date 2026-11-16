@@ -2320,3 +2320,26 @@ html.credits-wait .home-page .h2-credits > * {
   opacity: 0;
   visibility: hidden;
 }
+
+/* Same space from the last content to the bottom credits on every page
+   as on About (alona 2026-11-16): 201 design px to the credit text, which
+   sits 32 from the bottom edge. Desktop. Exhibition pages: their --H
+   was trimmed instead. */
+@media (min-width: 992px) {
+  body.works-page > .h2-credits { margin-top: calc(var(--u) * (40 - 56)); }
+  body.exhibited-page > .h2-credits { margin-top: calc(var(--u) * (40 - 39)); }
+  body.legal2 > .h2-credits { margin-top: calc(var(--u) * 40 - 69px); }
+}
+
+/* Home doesn't scroll at all (alona 2026-11-16): nothing moves; the
+   credits stay fixed at the bottom and only fade in on a wheel / swipe /
+   key gesture (credits-on-scroll.html). */
+html:has(body.home-page:not(.works-page)) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.home-page:not(.works-page) > .h2-credits {
+  position: fixed;
+  margin-top: 0;
+}
