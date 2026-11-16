@@ -92,8 +92,8 @@ function artworkSrcset(img) {
 // shown at once under each painting, which fades in over it once it has loaded.
 const blurFile = join(ROOT, 'images/artworks/blur.json');
 const blurs = existsSync(blurFile) ? JSON.parse(readFileSync(blurFile, 'utf8')) : {};
-function blurPreview(img) {
-  return blurStyle(blurs[(img.src || '').split('/').pop()]);
+function blurPreview(img, map = blurs) {
+  return blurStyle(map[(img.src || '').split('/').pop()]);
 }
 // b = {w, h, jpg (base64)}: a tiny JPEG, drawn blurred as a CSS background.
 function blurStyle(b) {
@@ -194,10 +194,14 @@ const aboutLinks = (about.links || []).map((l) =>
 // Media cards (alona 2026-11-14): press image on top, grey panel with the
 // headline (bottom-aligned, own line breaks with \n) and a link below.
 // Four columns on desktop, so a 4th card fits the row.
+// Press images get the same tiny blurred preview (images/media/blur.json).
+const mediaBlurFile = join(ROOT, 'images/media/blur.json');
+const mediaBlurs = existsSync(mediaBlurFile) ? JSON.parse(readFileSync(mediaBlurFile, 'utf8')) : {};
 const aboutMedia = (about.media || []).map((m) => {
+  const pre = blurPreview({ src: m.image }, mediaBlurs);
   const ext = /^https?:/.test(m.href || '') ? ' target="_blank" rel="noopener"' : '';
   return `        <article class="abt-card"${m.bg ? ` style="--bg:${esc(m.bg)}" data-bg="fixed"` : ''}>
-          <img src="../${esc(m.image)}" alt="${esc(m.alt)}" loading="lazy">
+          <span class="abt-card-pic${pre ? ' wait' : ''}" style="${pre}"><img src="../${esc(m.image)}" alt="${esc(m.alt)}" loading="lazy"></span>
           <div class="abt-card-panel">
             <p class="abt-card-title">${esc(m.title).replace(/\n/g, '<br class="abt-card-br"> ')}</p>
             <a class="abt-card-link" href="${esc(m.href || '#')}"${ext}>${esc(m.linkText)}</a>

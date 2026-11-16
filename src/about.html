@@ -60,7 +60,16 @@
 {{{about.media}}}
       </div>
     </div>
-  </main>
+    <noscript><style>.abt-card-pic.wait img { opacity: 1; }</style></noscript>
+  <script>
+    // Press photos start as a tiny blurred preview and fade in once loaded.
+    document.querySelectorAll('.abt-card-pic.wait img').forEach(function (img) {
+      var done = function () { img.parentNode.classList.remove('wait'); };
+      if (img.complete && img.naturalWidth) { img.style.transition = 'none'; done(); }
+      else { img.addEventListener('load', done); img.addEventListener('error', done); }
+    });
+  </script>
+</main>
 
 {{> credits}}
 </body>

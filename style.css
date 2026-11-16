@@ -1146,6 +1146,23 @@ html:has(.home2) {
   object-fit: cover;
 }
 
+/* Tiny blurred preview until the photo has loaded, then it fades in
+   (alona 2026-11-16, same as the Works page). */
+.abt-card-pic {
+  display: block;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.abt-card-pic img {
+  transition: opacity 0.6s ease;
+}
+
+.abt-card-pic.wait img {
+  opacity: 0;
+}
+
 /* alona 2026-11-16: grey panel back; text 24 from the panel's top
    (to the letters) and 24 from its left edge, 24 kept free on the
    right and under the link. Panels stretch to the tallest card. */
@@ -2476,5 +2493,14 @@ body.home-page:not(.works-page) > .h2-credits {
   body:not(.lens-page):not(.home-page) > .h2-credits,
   body.works-page > .h2-credits {
     margin-top: 76px; /* + 24 padding = 100 */
+  }
+}
+
+/* Top menu as wide as the photo cards on /exhibited/ (alona 2026-11-16):
+   880 design px, centred. Desktop only; phones keep their own edges. */
+@media (min-width: 992px) {
+  .h2-header {
+    padding-left: calc((100vw - var(--u) * 880) / 2);
+    padding-right: calc((100vw - var(--u) * 880) / 2);
   }
 }
