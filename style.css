@@ -2249,28 +2249,43 @@ body:has(.h2-credits) .site-footer {
 }
 
 .h2-imprint .h2-vilna {
-  margin-left: 0.25em;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
-.vilna-end {
-  display: flex;
-  justify-content: center;
-  /* room under the logo so the fixed credits never cover it */
-  padding: 40px 0 calc(100vw / 1512 * 32 + 10px + 56px);
+/* Vilna logo inside the fixed credits, centred right above "Digital imprint".
+   Hidden until you reach the end of About / Works / Exhibited (script in
+   src/partials/vilna-end.html), then it fades in. Solid, not faded. */
+.h2-imprint {
+  position: relative;
 }
 
-.vilna-end img {
+.h2-imprint .h2-vilna-logo {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+}
+
+.h2-imprint .h2-vilna-logo img {
   display: block;
-  width: calc(100vw / 1512 * 56);
+  width: calc(var(--u) * 56);
   height: auto;
+  max-width: none;
+}
+
+html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease;
 }
 
 @media (max-width: 991.98px) {
-  .vilna-end { padding-bottom: 96px; }
-  .vilna-end img { width: 56px; }
+  .h2-imprint .h2-vilna-logo img { width: 48px; }
 }
 
 @media (max-width: 767.98px) {
@@ -2281,7 +2296,7 @@ body:has(.h2-credits) .site-footer {
 /* Credit texts at 44% opacity (66 -> 44) (alona 2026-11-16): copyright, Digital imprint,
    Look closer, Legal & Privacy. The Vilna logo on /about/ stays solid. */
 .h2-signature,
-.h2-imprint,
+.h2-imprint-text,
 .h2-studio-link span,
 .h2-fun {
   opacity: 0.44;

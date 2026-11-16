@@ -1,6 +1,16 @@
-  <!-- Vilna logo at the very end of the page, in normal flow, so it only
-       shows once you scroll to the bottom (alona 2026-11-16). Used on About,
-       Works and Exhibited; the fixed credits stay as on every page. -->
-  <div class="vilna-end">
-    <a href="https://www.instagram.com/chesskiller2040/" target="_blank" rel="noopener"><img src="{{root}}images/vilna-logo.svg" alt="Vilna" width="90" height="63"></a>
-  </div>
+  <!-- About, Works, Exhibited: the Vilna logo in the fixed credits shows up
+       once you scroll to the very end of the page (alona 2026-11-16). -->
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('vilna-on');
+    function check() {
+      var end = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      root.classList.toggle('vilna-end', end);
+    }
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    window.addEventListener('load', check);
+    check();
+  })();
+  </script>
