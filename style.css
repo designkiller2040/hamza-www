@@ -1430,9 +1430,12 @@ html:has(.home2) {
    Legal notice & Privacy (/legal/), styled like the About page:
    Cormorant Garamond, italic labels, one justified column as wide as the
    About page's two columns (273 + 127 + 273 design px).
+   2026-11-16 (alona): on desktop the column is as wide as the top menu,
+   HOME left edge to ABOUT right edge. The script in src/legal.html
+   measures the menu and sets --menu-w; the calc is the fallback.
    --------------------------------------------------------------- */
 .lg {
-  width: calc(var(--u) * 673);
+  width: var(--menu-w, calc(100vw * 435 / 1512 + 270px));
   margin: 0 auto;
   padding: calc(var(--u) * 258) 0 calc(var(--u) * 166);
   font-family: var(--serif);
@@ -1440,6 +1443,12 @@ html:has(.home2) {
   line-height: calc(var(--u) * 19);
   letter-spacing: -0.01em;
   color: var(--ink);
+}
+
+/* No site side margins inside the column (main section adds them) */
+main.lg .lg-block {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .lg p,
