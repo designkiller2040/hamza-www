@@ -1134,6 +1134,7 @@ html:has(.home2) {
    image's left edge, headlines top-aligned across cards, link the same
    distance under the headline as before. */
 .abt-card {
+  position: relative; /* the link covers the whole card (alona 2026-11-16) */
   container-type: inline-size;
   display: flex;
   flex-direction: column;
@@ -1206,6 +1207,13 @@ html:has(.home2) {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.75cqw;
+}
+
+/* Clicking anywhere on a Press card opens its article */
+.abt-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 @media (min-width: 992px) {
@@ -2525,12 +2533,14 @@ body.home-page:not(.works-page) > .h2-credits {
 @media (min-width: 992px) {
   .exd-item {
     display: grid;
-    grid-template-columns: calc(var(--u) * 880) 1fr;
+    /* 20% bigger (alona 2026-11-16 22:01): 1056 x 527 at 1512 (was 880) */
+    grid-template-columns: calc(var(--u) * 1056) 1fr;
     column-gap: calc(var(--u) * 32);
     /* text centred on the photo's height (alona 2026-11-16 22:00) */
     align-items: center;
     width: auto;
-    margin: 0 88px calc(var(--u) * 96);
+    /* less space between the cards: 48 (was 96) */
+    margin: 0 88px calc(var(--u) * 48);
   }
 
   .exd-item:last-child {
