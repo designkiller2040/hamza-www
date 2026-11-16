@@ -2265,3 +2265,9 @@ body:has(.h2-credits) .site-footer {
 .h2-fun {
   opacity: 0.66;
 }
+
+/* Fixed credits 10px higher on every page (alona 2026-11-16). Not the
+   About credits (in page flow) or the phone home credits on the photo. */
+.h2-credits:not(.h2-credits-end) {
+  bottom: 10px;
+}
