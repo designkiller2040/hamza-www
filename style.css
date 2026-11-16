@@ -2517,3 +2517,29 @@ body.home-page:not(.works-page) > .h2-credits {
     height: calc(100svh - 96px - 20px);
   }
 }
+
+/* Exhibited on desktop (alona 2026-11-16 evening): photo on the left, text on
+   the right. Photo keeps its size (880 x 439 at 1512) and starts at the left
+   grid edge (88 px); the title and the place sit beside it, top-aligned,
+   32 design px to the right, one under the other. */
+@media (min-width: 992px) {
+  .exd-item {
+    display: grid;
+    grid-template-columns: calc(var(--u) * 880) 1fr;
+    column-gap: calc(var(--u) * 32);
+    align-items: start;
+    width: auto;
+    margin: 0 88px calc(var(--u) * 96);
+  }
+
+  .exd-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .exd-cap {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: calc(var(--u) * 4);
+    margin-top: 0;
+  }
+}
