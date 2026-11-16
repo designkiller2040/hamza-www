@@ -26,6 +26,19 @@ A.start(function () {
     return s;
   }
 
+  // Info (one box, as under the painting) <-> the separate year / materials / size fields.
+  function infoFromFields() {
+    return [$('year').value.trim(), $('materials').value.trim(), $('size').value.trim()].filter(Boolean).join('\n');
+  }
+  function fieldsFromInfo() {
+    var lines = $('info').value.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+    var year = '', size = '';
+    if (lines.length && /^\d{4}$/.test(lines[0])) year = lines.shift();
+    if (lines.length && /\d\s*[x×]\s*\d/i.test(lines[lines.length - 1])) size = lines.pop();
+    $('year').value = year;
+    $('size').value = size;
+    $('materials').value = lines.join('\n');
+  }
   function preview() {
     var t = $('title').value.trim(), y = $('year').value.trim();
     var lines = [];
@@ -160,6 +173,8 @@ A.start(function () {
     zone = A.dropZone({ el: $('drop'), metaEl: $('drop-meta'), value: d.image, onChange: function () { ed.update(); } });
     ['title', 'year', 'captionTitle', 'materials', 'size', 'note'].forEach(function (k) { $(k).value = d[k] || ''; });
     $('alt').value = (d.image && d.image.alt) || '';
+    $('info').value = infoFromFields();
+    $('info').addEventListener('input', function () { fieldsFromInfo(); autoSlug(); });
     fillRows();
     $('row').value = rowValue();
     if (me) { $('slug').value = me.slug; lockSlug(me.slug); }
