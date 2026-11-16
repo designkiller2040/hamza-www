@@ -266,11 +266,19 @@ const introScript = "try{var k='intro:'+location.pathname,s=sessionStorage;if(!s
 // Which top-menu item is underlined on each page; exhibition pages count as Exhibitions.
 const navFor = { index: 'home', works: 'works', exhibited: 'exhibited', abimal: 'exhibited',
   coldrush: 'exhibited', 'regards-croises': 'exhibited', venerate: 'exhibited', about: 'about' };
+const iconLinks = (r) => [
+  `<link rel="icon" href="${r}favicon.ico" sizes="48x48">`,
+  `<link rel="icon" type="image/png" sizes="32x32" href="${r}icons/favicon-32.png">`,
+  `<link rel="icon" type="image/png" sizes="16x16" href="${r}icons/favicon-16.png">`,
+  `<link rel="apple-touch-icon" href="${r}icons/apple-touch-icon.png">`,
+].join('\n  ');
 function render(file, root) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
   html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
   html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);
+  // Favicon (alona's round wood circle, 2026-11-16); files in favicon.ico + icons/.
+  html = html.replace(/(<title>)/, `${iconLinks(root)}\n  $1`);
   html = html.replace(/\{\{>\s*([\w-]+)\s*\}\}\n?/g, (m, name) => read(`src/partials/${name}.html`));
   // Look closer has no menu, so there the copyright line also leads home
   // (it replaced the old "Back" link, alona 2026-11-14).
@@ -320,7 +328,7 @@ for (const f of pages) {
 // Saved homepage versions (snapshots/home-1/ -> /home-1/) are frozen copies,
 // copied as they are without filling in any content.
 if (existsSync(join(ROOT, 'snapshots'))) cpSync(join(ROOT, 'snapshots'), OUT, { recursive: true });
-for (const p of ['style.css', 'fonts', 'images', 'admin']) {
+for (const p of ['style.css', 'fonts', 'images', 'admin', 'icons', 'favicon.ico']) {
   if (existsSync(join(ROOT, p))) cpSync(join(ROOT, p), join(OUT, p), { recursive: true });
 }
 // Search engines: a sitemap of the public pages (not legal, not the frozen
