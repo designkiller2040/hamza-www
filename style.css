@@ -2561,3 +2561,9 @@ body.home-page:not(.works-page) > .h2-credits {
 body {
   overflow-x: clip;
 }
+
+/* About section labels (Biography, Studies, Solo shows, Contacts, Press)
+   in grey: same 44% black as the credits (alona 2026-11-16). */
+.abt .abt-label {
+  color: rgba(0, 0, 0, 0.44);
+}
