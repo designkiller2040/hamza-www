@@ -2362,3 +2362,16 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
     height: min(var(--hw) * 599 / 1200, 100svh - clamp(100px, var(--U) * 150, 150px) - 110px);
   }
 }
+
+/* Homepage: credits hidden until the visitor scrolls (alona 2026-11-16,
+   script in src/partials/credits-on-scroll.html), then they fade in. */
+/* (on the inner wrapper-less children, because the page-intro animation
+   already drives the opacity of .h2-credits itself) */
+.home-page .h2-credits > * {
+  transition: opacity 0.6s ease, visibility 0s;
+}
+
+html.credits-wait .home-page .h2-credits > * {
+  opacity: 0;
+  visibility: hidden;
+}
