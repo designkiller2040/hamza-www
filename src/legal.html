@@ -49,21 +49,5 @@
   </main>
 
 {{> credits}}
-  <script>
-    /* Desktop: the text column is exactly as wide as the top menu, from the
-       left edge of HOME to the right edge of ABOUT (alona, 2026-11-16). */
-    (function () {
-      var nav = document.querySelector('.h2-nav'), lg = document.querySelector('.lg');
-      if (!nav || !lg) return;
-      function fit() {
-        var a = nav.querySelectorAll('a');
-        var w = a[a.length - 1].getBoundingClientRect().right - a[0].getBoundingClientRect().left;
-        lg.style.setProperty('--menu-w', w + 'px');
-      }
-      fit();
-      addEventListener('resize', fit);
-      if (document.fonts) document.fonts.ready.then(fit);
-    })();
-  </script>
 </body>
 </html>

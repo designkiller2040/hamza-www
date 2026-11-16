@@ -104,13 +104,20 @@
     .lens-modes button[aria-pressed="true"],
     .lens-modes button:hover { opacity: 1; }
     .lens-modes img { display: block; width: 100%; height: 100%; }
+    /* Same top menu as every page (alona 2026-11-16), plain white on the
+       dark photo; the day/night icons sit centred on the menu line. */
+    .lens-page .h2-header { mix-blend-mode: normal; color: #fff; }
+    @media (min-width: 992px) {
+      .lens-modes { top: calc(100vw * 44 / 1512 - 13px); }
+    }
     @media (max-width: 575.98px) {
-      .lens-modes { top: 16px; }
+      .lens-modes { top: 56px; } /* under the menu line on phones */
       .lens-modes button { width: 28px; height: 28px; }
     }
   </style>
 </head>
 <body class="home2 lens-page">
+{{> menu}}
   <div class="lens-hero" id="lens">
     <div class="lens-ph" aria-hidden="true"></div>
     <img class="lens-bottom" data-src="{{root}}images/lens/sharp.jpg" alt="What We Venerate: piles of earth in an old hall, a blue stone hanging from chains" width="2263" height="1049">
