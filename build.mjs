@@ -9,6 +9,8 @@ import { createHash } from 'node:crypto';
 
 const ROOT = new URL('.', import.meta.url).pathname;
 const OUT = join(ROOT, 'dist');
+// The live address of the site (custom domain on GitHub Pages).
+const SITE = 'https://hamzashah.ch/';
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 const readJSON = (p) => JSON.parse(read(p));
 
@@ -277,6 +279,23 @@ function render(file, root) {
   // Underline the menu item of the page you're on (alona, 2026-11-14).
   const navKey = navFor[basename(file, '.html')];
   if (navKey) html = html.replace(`data-nav="${navKey}"`, `data-nav="${navKey}" aria-current="page"`);
+  // Address and share tags for the live domain (hamzashah.ch since 2026-11-16).
+  const slug = basename(file, '.html');
+  const url = SITE + (slug === 'index' ? '' : slug + '/');
+  const shareImage = SITE + String(slides[0] ? slides[0].image.src : '').replace(/^\.?\//, '');
+  html = html.replace(/(<meta name="description" content="[^"]*">)/, (m) => {
+    const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || '{{name}}';
+    const desc = m.match(/content="([^"]*)"/)[1];
+    return `${m}
+  <link rel="canonical" href="${url}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{name}}">
+  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${desc}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${shareImage}">
+  <meta name="twitter:card" content="summary_large_image">`;
+  });
   const all = { ...vars, root };
   return html.replace(/\{\{\{\s*([\w.]+)\s*\}\}\}|\{\{\s*([\w.]+)\s*\}\}/g, (m, raw, plain) => {
     const key = raw || plain;
@@ -303,6 +322,15 @@ if (existsSync(join(ROOT, 'snapshots'))) cpSync(join(ROOT, 'snapshots'), OUT, { 
 for (const p of ['style.css', 'fonts', 'images', 'admin']) {
   if (existsSync(join(ROOT, p))) cpSync(join(ROOT, p), join(OUT, p), { recursive: true });
 }
+// Search engines: a sitemap of the public pages (not legal, not the frozen
+// old versions) and a robots.txt that points to it and keeps the admin and the frozen old versions out.
+const sitemapPages = ['', ...pages.map((f) => f.replace(/\.html$/, '') + '/').filter((p) => p !== 'legal/')];
+writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapPages.map((p) => `  <url><loc>${SITE}${p}</loc></url>`).join('\n')}
+</urlset>
+`);
+writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nDisallow: /admin/\nSitemap: ${SITE}sitemap.xml\n`);
 mkdirSync(join(OUT, 'admin'), { recursive: true });
 writeFileSync(join(OUT, 'admin', 'version.json'), JSON.stringify({
   commit: process.env.COMMIT_REF || process.env.GITHUB_SHA || null,
