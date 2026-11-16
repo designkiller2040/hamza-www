@@ -2221,39 +2221,6 @@ body:has(.h2-credits) .site-footer {
   text-underline-offset: 2px;
 }
 
-/* Vilna logo inside the fixed credits, centred right above "Digital imprint".
-   Hidden until you reach the end of About / Works / Exhibited (script in
-   src/partials/vilna-end.html), then it fades in. Solid, not faded. */
-.h2-imprint {
-  position: relative;
-}
-
-.h2-imprint .h2-vilna-logo {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  transform: translateX(-50%);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
-}
-
-.h2-imprint .h2-vilna-logo img {
-  display: block;
-  width: calc(var(--u) * 56);
-  height: auto;
-  max-width: none;
-}
-
-html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.4s ease;
-}
-
-@media (max-width: 991.98px) {
-  .h2-imprint .h2-vilna-logo img { width: 48px; }
-}
 
 @media (max-width: 767.98px) {
   .h2-imprint { font-size: 12px; }
@@ -2323,15 +2290,14 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
   }
 }
 
-/* Homepage: credits hidden until the visitor scrolls (alona 2026-11-16,
-   script in src/partials/credits-on-scroll.html), then they fade in. */
-/* (on the inner wrapper-less children, because the page-intro animation
-   already drives the opacity of .h2-credits itself) */
-.home-page .h2-credits > * {
-  transition: opacity 0.6s ease, visibility 0s;
+/* Credits sit at the end of every page in normal flow, not fixed (alona
+   2026-11-16). /lens/ keeps them fixed over its full-screen photo; the
+   phone homepage keeps them on the photo (moved there by its script). */
+body:not(.lens-page) > .h2-credits {
+  position: static;
+  margin-top: calc(var(--u) * 40);
 }
 
-html.credits-wait .home-page .h2-credits > * {
-  opacity: 0;
-  visibility: hidden;
+body:has(.h2-credits) .site-footer {
+  padding-bottom: 0;
 }
