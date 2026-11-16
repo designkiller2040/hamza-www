@@ -2525,12 +2525,14 @@ body.home-page:not(.works-page) > .h2-credits {
 @media (min-width: 992px) {
   .exd-item {
     display: grid;
-    grid-template-columns: calc(var(--u) * 880) 1fr;
+    /* 20% bigger (alona 2026-11-16 22:01): 1056 x 527 at 1512 (was 880) */
+    grid-template-columns: calc(var(--u) * 1056) 1fr;
     column-gap: calc(var(--u) * 32);
     /* text centred on the photo's height (alona 2026-11-16 22:00) */
     align-items: center;
     width: auto;
-    margin: 0 88px calc(var(--u) * 96);
+    /* less space between the cards: 48 (was 96) */
+    margin: 0 88px calc(var(--u) * 48);
   }
 
   .exd-item:last-child {
