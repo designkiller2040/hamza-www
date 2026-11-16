@@ -49,8 +49,8 @@ var homeSlides = (function () {
       box.appendChild(it.el);
     });
   }
-  // Only files the admin uploaded itself (images/site/) are deleted with a slide.
-  function own(src) { return src && /^images\/site\//.test(src); }
+  // Only files the admin uploaded itself are deleted with a slide.
+  function own(src) { return A.ownImage(src); }
   return {
     init: function (data, $, change) {
       box = $('slides'); onChange = change;
@@ -103,25 +103,19 @@ var homeSlides = (function () {
 A.single({
   name: 'home page',
   path: 'content/home.json',
-  view: '/',
-  fields: ['captionLeft', 'captionRight', 'heroAlt', 'pageTitle', 'description', 'footer'],
+  view: '../',
+  fields: ['heroAlt', 'pageTitle', 'description'],
   extra: homeSlides,
   load: function (d, $) {
     var h = d.hero || {};
-    $('captionLeft').value = h.captionLeft || '';
-    $('captionRight').value = h.captionRight || '';
     $('heroAlt').value = (h.image && h.image.alt) || '';
     $('pageTitle').value = d.pageTitle || '';
     $('description').value = d.description || '';
-    $('footer').value = d.footer || '';
   },
   store: function (d, $) {
     d.hero = d.hero || {};
-    d.hero.captionLeft = $('captionLeft').value.trim();
-    d.hero.captionRight = $('captionRight').value.trim();
     d.pageTitle = $('pageTitle').value.trim();
     d.description = $('description').value.trim();
-    d.footer = $('footer').value.trim();
   },
   image: {
     base: 'hero',

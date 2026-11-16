@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
   <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <title>Home · Hamza Shah admin</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
 <link rel="stylesheet" href="tabs.css">
 <link rel="stylesheet" href="admin.css">
 <script src="gh.js"></script>
@@ -19,7 +20,7 @@
 <body>
 <header class="topbar"><div class="topbar-in">
   <div class="topbar-left">
-    <a class="brand hide-phone" href="works.html">Hamza Shah</a>
+    <a class="brand hide-phone" href="works.html">Hamza Shah Mian</a>
     <span class="divider hide-phone"></span>
     <nav class="tabs" aria-label="Content"><a class="tab" href="works.html"><span>Works</span></a><a class="tab" href="exhibitions.html"><span>Exhibitions</span></a><a class="tab" href="home.html" aria-current="page"><span class="tab-pill"></span><span>Home</span></a><a class="tab" href="about.html"><span>About</span></a><a class="tab" href="contact.html"><span>Contact</span></a></nav>
     <span id="status" class="status" hidden></span>
@@ -33,33 +34,22 @@
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
 <main class="page" id="main">
   <section>
-    <div class="section-head"><h2>Hero image</h2><p>The large photo on the homepage (the first one when there are more).</p></div>
+    <div class="section-head"><h2>Main photo</h2><p>The photo on the homepage (the first one when more photos are shown).</p></div>
     <div class="drop" id="drop"></div>
     <div class="image-meta" id="drop-meta"></div>
+    <div style="max-width:640px"><label class="lbl" for="heroAlt">Photo description for screen readers</label><input class="field" id="heroAlt" type="text" placeholder="e.g. What We Venerate, coffee, lapis lazuli and chain, installation view, 2025" autocomplete="off"></div>
   </section>
   <section>
-    <div class="section-head"><h2>More photos</h2><p>Extra photos for the homepage. With more than one photo shown, the homepage changes photo by itself every 5 seconds. Untick “Show on the homepage” to keep a photo here without showing it.</p></div>
+    <div class="section-head"><h2>More photos</h2><p>Extra photos for the homepage. With two or more photos shown, the homepage changes photo by itself every 5 seconds. Untick “Show on the homepage” to keep a photo here without showing it.</p></div>
     <div class="slides" id="slides"></div>
     <button class="btn" type="button" id="add-slide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add photo</button>
   </section>
   <section>
-    <div class="section-head"><h2>Hero caption</h2><p>Not shown on the homepage at the moment (captions are switched off there).</p></div>
-    <div class="pair">
-      <div><label class="lbl" for="captionLeft">Left</label><input class="field" id="captionLeft" type="text" placeholder="e.g. „What We Venerate“, 2025" autocomplete="off"></div>
-      <div><label class="lbl" for="captionRight">Right</label><input class="field" id="captionRight" type="text" placeholder="e.g. *exhibited* at Mahalla Open / Berlin Art Week 2025 ©" autocomplete="off"><p class="hint">Put *stars* around words to show them in italics.</p></div>
-    </div>
-    <div style="max-width:640px"><div><label class="lbl" for="heroAlt">Image description for screen readers</label><input class="field" id="heroAlt" type="text" placeholder="e.g. Installation view of What We Venerate, 2025" autocomplete="off"></div></div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Browser and search</h2><p>What shows in the browser tab and in Google results.</p></div>
+    <div class="section-head"><h2>Browser and search</h2><p>What shows in the browser tab, in Google results and in link previews.</p></div>
     <div class="fields" style="max-width:640px">
       <div><label class="lbl" for="pageTitle">Page title</label><input class="field" id="pageTitle" type="text" placeholder="e.g. Hamza Shah Mian" autocomplete="off"></div>
       <div><label class="lbl" for="description">Search description</label><textarea class="field" id="description" rows="2" placeholder="e.g. Hamza Shah, artist based in Berlin."></textarea></div>
     </div>
-  </section>
-  <section>
-    <div class="section-head"><h2>Footer</h2><p>The small line at the very bottom of the site.</p></div>
-    <div style="max-width:640px"><div><label class="lbl" for="footer">Footer text</label><input class="field" id="footer" type="text" placeholder="e.g. © 2026 Hamza Shah. All rights reserved" autocomplete="off"></div></div>
   </section>
 </main>
 <footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>

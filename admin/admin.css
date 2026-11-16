@@ -17,7 +17,7 @@ a:hover { color: #555; }
 
 section { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
-.section-head h2 { margin: 0; font-size: 22px; font-weight: 600; }
+.section-head h2 { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: 26px; font-weight: 500; letter-spacing: -0.01em; }
 .section-head p { margin: 0; font-size: 13px; color: var(--grey); }
 .group-head { display: flex; align-items: baseline; gap: 8px; margin: 0; }
 .group-head h3 { margin: 0; font-size: 16px; font-weight: 600; }
@@ -184,3 +184,24 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .slide-tools { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
 .slide-show { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; margin-right: 8px; cursor: pointer; }
 .slide-empty { color: var(--grey); font-size: 13px; margin: 0; }
+
+/* Previews in the site's own look: Cormorant Garamond, labels in the same
+   44% grey as the site's section labels and credits. */
+.site-preview { font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif; }
+.site-preview .site-label { color: rgba(0, 0, 0, 0.44); font-style: italic; display: block; margin-bottom: 8px; }
+.site-preview .site-row { display: flex; justify-content: space-between; gap: 16px; font-size: 15px; margin-top: 10px; }
+.site-preview .site-pic { width: 100%; aspect-ratio: 1200 / 599; object-fit: cover; display: block; background: var(--soft); border-radius: 2px; }
+.site-preview .empty { color: #b0b0b0; }
+
+/* Lists of items (About: contacts, press cards) */
+.items { display: flex; flex-direction: column; gap: 28px; margin-bottom: 20px; }
+.item { border-top: 1px solid #e6e6e6; padding-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.item-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: start; }
+.item-cols.three { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 1.4fr); }
+@media (max-width: 720px) { .item-cols, .item-cols.three { grid-template-columns: minmax(0, 1fr); } }
+.press-card { overflow: hidden; max-width: 280px; }
+.press-card img, .press-card .no-pic { display: block; width: 100%; aspect-ratio: 594 / 459; object-fit: cover; background: var(--soft); }
+.press-card .panel-in { background: #efefef; padding: 18px; min-height: 120px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; font-family: "Cormorant Garamond", Georgia, serif; font-size: 16px; line-height: 1.2; }
+.press-card .panel-in a { color: #000; text-decoration: underline; text-underline-offset: 3px; }
+.color-field { display: flex; gap: 8px; align-items: center; }
+.color-field input[type=color] { width: 40px; height: 40px; border: 1px solid var(--field); border-radius: 8px; padding: 2px; background: #fff; cursor: pointer; }

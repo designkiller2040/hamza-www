@@ -1,14 +1,13 @@
 {
-  "title": "„What We Venerate“",
-  "line2": "Coffee, lapis lazuli, chain",
-  "line3": "exhibited at Mahalla Open / Berlin Art Week 2025",
+  "title": "What We Venerate",
+  "place": "Mahalla Open / Berlin Art Week 2025",
   "image": {
-    "src": "images/what-we-venerate-2025.jpg",
-    "width": 1600,
-    "height": 840,
-    "alt": "„What We Venerate“, installation view, 2025"
+    "src": "images/venerate/venerate-01-room.jpg",
+    "width": 1800,
+    "height": 1199,
+    "alt": "Piles of coffee and a lapis lazuli stone hanging from chains in an old tiled room"
   },
-  "order": 2,
-  "note": "",
-  "link": "venerate/"
+  "link": "venerate/",
+  "order": 3,
+  "note": ""
 }

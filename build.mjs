@@ -162,6 +162,30 @@ const exhibitionsHTML = exhibitions.map((e) => {
         </figure>`;
 }).join('\n');
 
+// ---- Exhibited page (/exhibited/) ----------------------------------------
+// One block per exhibition (content/exhibitions/*.json, edited in the admin),
+// in "order": photo, then the title in „quotes“ left and the place + year right.
+// "link" opens the exhibition's own page (e.g. "abimal/"); without one the
+// block is not a link.
+const exhibitedHTML = exhibitions.map((e, i) => {
+  const title = String(e.title || '').trim().replace(/^[„“"']+|[“”"']+$/g, '');
+  const place = e.place ?? [e.line2, e.line3].filter(Boolean).join(', ');
+  const src = e.image && e.image.src ? `../${String(e.image.src).replace(/^\.?\//, '')}` : '';
+  const img = src
+    ? `<img src="${esc(src)}" alt="${esc(e.image.alt || title)}" width="${e.image.width}" height="${e.image.height}"${i > 1 ? ' loading="lazy"' : ''}>`
+    : '';
+  const cap = `<span class="exd-cap"><span>„${esc(title)}“</span><span>${esc(place)}</span></span>`;
+  return e.link
+    ? `    <a class="exd-item" href="../${esc(String(e.link).replace(/^\//, ''))}">
+      ${img}
+      ${cap}
+    </a>`
+    : `    <div class="exd-item">
+      ${img}
+      ${cap}
+    </div>`;
+}).join('\n\n');
+
 // ---- Hero slideshow ------------------------------------------------------
 // The first slide is home.hero itself (edited in the admin); home.hero.moreSlides
 // follow in order. On scroll, each photo crossfades into the next.
@@ -201,13 +225,14 @@ const aboutLinks = (about.links || []).map((l) =>
 const mediaBlurFile = join(ROOT, 'images/media/blur.json');
 const mediaBlurs = existsSync(mediaBlurFile) ? JSON.parse(readFileSync(mediaBlurFile, 'utf8')) : {};
 const aboutMedia = (about.media || []).map((m) => {
-  const pre = blurPreview({ src: m.image }, mediaBlurs);
+  // m.blur: made by the admin when a press photo is uploaded; older photos use images/media/blur.json.
+  const pre = blurStyle(m.blur) || blurPreview({ src: m.image }, mediaBlurs);
   const ext = /^https?:/.test(m.href || '') ? ' target="_blank" rel="noopener"' : '';
   return `        <article class="abt-card"${m.bg ? ` style="--bg:${esc(m.bg)}" data-bg="fixed"` : ''}>
           <span class="abt-card-pic${pre ? ' wait' : ''}" style="${pre}"><img src="../${esc(m.image)}" alt="${esc(m.alt)}" loading="lazy"></span>
           <div class="abt-card-panel">
             <p class="abt-card-title">${esc(m.title).replace(/\n/g, '<br class="abt-card-br"> ')}</p>
-            <a class="abt-card-link" href="${esc(m.href || '#')}"${ext}>${esc(m.linkText)}</a>
+            <a class="abt-card-link" href="${esc(m.href || '#')}"${ext}>${esc(m.linkText || 'Read full article')}</a>
           </div>
         </article>`;
 }).join('\n');
@@ -240,7 +265,7 @@ const vars = {
   'about.studies': aboutList(about.studies),
   'about.links': aboutLinks,
   'about.contactsLabel': about.contactsLabel || 'Contacts',
-  'about.mediaLabel': about.mediaLabel || 'Media',
+  'about.mediaLabel': about.mediaLabel || 'Press',
   'about.media': aboutMedia,
   works: worksHTML,
   'home2.works': home2WorksHTML,
@@ -251,6 +276,7 @@ const vars = {
   'hero.left': heroSideHTML('left'),
   'hero.right': heroSideHTML('right'),
   exhibitions: exhibitionsHTML,
+  'exhibited.items': exhibitedHTML,
   footer: home.footer,
 };
 

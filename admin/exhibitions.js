@@ -1,4 +1,4 @@
-/* Exhibitions list: cards in homepage order, search, drag to reorder, Save order. */
+/* Exhibitions list: cards in Exhibited-page order, search, drag to reorder, Save order. */
 A.start(function () {
   var list = A.$('#list');
   var saveBtn = A.$('#save-order');
@@ -9,7 +9,9 @@ A.start(function () {
   function card(x, n) {
     var d = x.data, img = d.image && d.image.src;
     var tags = [];
-    if (d.line3) tags.push('<span class="tag">' + A.esc(d.line3) + '</span>');
+    var place = d.place != null ? d.place : [d.line2, d.line3].filter(Boolean).join(', ');
+    if (place) tags.push('<span class="tag">' + A.esc(place) + '</span>');
+    if (!d.link) tags.push('<span class="tag amber">No page</span>');
     if (!img) tags.push('<span class="tag amber">No image</span>');
     if (d.note) tags.push('<span class="tag yellow" title="' + A.esc(d.note) + '">Note</span>');
     return '<a class="card" href="exhibition.html?slug=' + encodeURIComponent(x.slug) + '" data-slug="' + A.esc(x.slug) + '" data-title="' + A.esc((d.title || '').toLowerCase()) + '">' +

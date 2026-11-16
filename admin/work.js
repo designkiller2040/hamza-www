@@ -4,7 +4,7 @@ A.start(function () {
   var isNew = !slugParam || A.param('new') === '1';
   var works = [], home2 = { rows: [] }, me = null, ed = null, zone = null, slugTouched = false;
   var $ = function (id) { return document.getElementById(id); };
-  var F = ['title', 'year', 'materials', 'size', 'alt', 'note', 'row', 'slug'];
+  var F = ['title', 'year', 'captionTitle', 'materials', 'size', 'alt', 'note', 'row', 'slug'];
 
   // Rows are the homepage rows in content/home2.json.
   function title(slug) { var w = works.filter(function (x) { return x.slug === slug; })[0]; return w ? w.data.title : slug; }
@@ -15,7 +15,7 @@ A.start(function () {
       var label = 'Row ' + (i + 1) + (names.length ? ': ' + names.join(', ') : '');
       if (label.length > 70) label = label.slice(0, 68) + '…';
       return '<option value="' + i + '">' + A.esc(label) + '</option>';
-    }).join('') + '<option value="new">A new row at the bottom</option><option value="none">Not on the homepage</option>';
+    }).join('') + '<option value="new">A new row at the bottom</option><option value="none">Not on the Works page</option>';
   }
   function rowValue() { var r = currentRow(); return r < 0 ? (me ? 'none' : 'new') : String(r); }
 
@@ -29,7 +29,8 @@ A.start(function () {
   function preview() {
     var t = $('title').value.trim(), y = $('year').value.trim();
     var lines = [];
-    lines.push(t ? A.esc(y ? t + ', ' + y : t) : '<span class="empty">Title</span>');
+    var ct = $('captionTitle').value.trim();
+    lines.push(ct ? A.esc(ct) : t ? A.esc(y ? t + ', ' + y : t) : '<span class="empty">Title</span>');
     if ($('materials').value.trim()) lines.push(A.esc($('materials').value.trim()).replace(/\n/g, '<br>'));
     if ($('size').value.trim()) lines.push(A.esc($('size').value.trim()));
     $('preview').innerHTML = lines.join('<br>') + '<br><span class="muted">Inquire to Purchase</span>';
@@ -71,6 +72,7 @@ A.start(function () {
     var old = me ? me.data : null;
     var data = old ? JSON.parse(JSON.stringify(old)) : {};
     ['title', 'year', 'materials', 'size', 'note'].forEach(function (k) { data[k] = $(k).value.trim(); });
+    if ($('captionTitle').value.trim()) data.captionTitle = $('captionTitle').value.trim(); else delete data.captionTitle;
     var alt = $('alt').value.trim();
     var img = A.imageChanges(zone, old && old.image, 'works', slug, alt);
     data.image = img.image;
@@ -134,7 +136,7 @@ A.start(function () {
     btn.disabled = true;
     btn.lastChild.textContent = 'Deleting…';
     var changes = [{ path: me.path, remove: true }];
-    if (me.data.image && me.data.image.src) changes.push({ path: me.data.image.src, remove: true });
+    if (me.data.image && A.ownImage(me.data.image.src)) changes.push({ path: me.data.image.src, remove: true });
     var slug = me.slug;
     changes.push(A.H2.update(function (h2) { A.H2.remove(h2, slug); }));
     A.commit('Delete work: ' + (me.data.title || me.slug), changes).then(function () {
@@ -156,7 +158,7 @@ A.start(function () {
     }
     var d = me ? me.data : {};
     zone = A.dropZone({ el: $('drop'), metaEl: $('drop-meta'), value: d.image, onChange: function () { ed.update(); } });
-    ['title', 'year', 'materials', 'size', 'note'].forEach(function (k) { $(k).value = d[k] || ''; });
+    ['title', 'year', 'captionTitle', 'materials', 'size', 'note'].forEach(function (k) { $(k).value = d[k] || ''; });
     $('alt').value = (d.image && d.image.alt) || '';
     fillRows();
     $('row').value = rowValue();

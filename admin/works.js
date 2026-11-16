@@ -39,7 +39,7 @@ A.start(function () {
     list.innerHTML = '<div class="groups">' + rows.map(function (r, gi) {
       var last = gi === rows.length - 1;
       return '<div class="group" data-row="' + r.row + '">' +
-        '<div class="group-head"><h3>' + (r.row === 'none' ? 'Not on the homepage' : 'Row ' + (gi + 1)) + '</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
+        '<div class="group-head"><h3>' + (r.row === 'none' ? 'Not on the Works page' : 'Row ' + (gi + 1)) + '</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
         '<div class="cards">' + r.items.map(function (w) { n++; return card(w, n); }).join('') +
         (last ? '<a class="new-card" href="work.html?new=1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New work</a>' : '') +
         '</div></div>';

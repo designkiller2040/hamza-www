@@ -1,0 +1,13 @@
+{
+  "title": "Regards Croisés",
+  "place": "Old Cinema Eldorado, Lausanne 2026",
+  "image": {
+    "src": "images/regards/regards-01-hall.jpg",
+    "width": 1800,
+    "height": 1252,
+    "alt": "Regards Croisés installation view: a round painting under a lit white rectangle, smaller works on both sides"
+  },
+  "link": "regards-croises/",
+  "order": 1,
+  "note": ""
+}

@@ -1,20 +1,18 @@
 A.single({
   name: 'contact details',
   path: 'content/contact.json',
-  view: '/',
-  fields: ['name', 'email', 'inquiryEmail'],
+  view: '../',
+  fields: ['name', 'inquiryEmail'],
   load: function (d, $) {
     $('name').value = d.name || '';
-    $('email').value = d.email || '';
     $('inquiryEmail').value = d.inquiryEmail || '';
   },
   store: function (d, $) {
     d.name = $('name').value.trim();
-    d.email = $('email').value.trim();
     d.inquiryEmail = $('inquiryEmail').value.trim();
   },
   validate: function () {
-    var bad = ['email', 'inquiryEmail'].filter(function (k) {
+    var bad = ['inquiryEmail'].filter(function (k) {
       var v = document.getElementById(k).value.trim();
       return v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     });

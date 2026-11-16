@@ -4,7 +4,9 @@ A.start(function () {
   var isNew = !slugParam || A.param('new') === '1';
   var items = [], me = null, ed = null, zone = null, slugTouched = false;
   var $ = function (id) { return document.getElementById(id); };
-  var F = ['title', 'line2', 'line3', 'alt', 'note', 'slug'];
+  var F = ['title', 'place', 'link', 'alt', 'note', 'slug'];
+  // The exhibition pages that exist on the site (each designed by hand).
+  var PAGES = [['regards-croises/', 'Regards Croisés'], ['abimal/', 'Abimal'], ['venerate/', 'What We Venerate'], ['coldrush/', 'Cold Rush']];
 
   function state() {
     var s = {};
@@ -12,11 +14,13 @@ A.start(function () {
     s.image = zone ? zone.signature() : '';
     return s;
   }
+  function clean(t) { return t.trim().replace(/^[„“"']+|[“”"']+$/g, ''); }
   function preview() {
-    var t = $('title').value.trim();
-    var lines = [t ? A.esc(t) : '<span class="empty">Title</span>'];
-    ['line2', 'line3'].forEach(function (k) { if ($(k).value.trim()) lines.push(A.esc($(k).value.trim())); });
-    $('preview').innerHTML = lines.join('<br>');
+    var t = clean($('title').value), p = $('place').value.trim();
+    var c = zone && zone.value();
+    $('preview').innerHTML = '<img class="site-pic" alt="" hidden>' + (c ? '' : '<div class="site-pic"></div>') +
+      '<div class="site-row"><span>' + (t ? '„' + A.esc(t) + '“' : '<span class="empty">Title</span>') + '</span><span>' + (p ? A.esc(p) : '<span class="empty">Place and year</span>') + '</span></div>';
+    if (c) { var img = $('preview').querySelector('img'); img.hidden = false; if (c.preview) img.src = c.preview; else A.showImage(img, c.src); }
     $('item-name').textContent = t || (isNew ? 'New exhibition' : 'Untitled');
     document.title = (t || 'Exhibition') + ' · Hamza Shah admin';
   }
@@ -27,8 +31,8 @@ A.start(function () {
   function lockSlug(slug) {
     $('slug-wrap').hidden = true;
     $('slug-lock').hidden = false;
-    $('slug-lock').querySelector('span').textContent = 'Page address: ' + new URL('../#exhibition-' + slug, location.href).href.replace(/^https?:\/\//, '');
-    $('view').href = '../#exhibition-' + slug;
+    $('slug-lock').querySelector('span').textContent = 'File name: ' + slug;
+    $('view').href = $('link').value ? '../' + $('link').value : '../exhibited/';
     $('view').removeAttribute('aria-disabled');
   }
   function autoSlug() {
@@ -48,7 +52,11 @@ A.start(function () {
     var path = 'content/exhibitions/' + slug + '.json';
     var old = me ? me.data : null;
     var data = old ? JSON.parse(JSON.stringify(old)) : {};
-    ['title', 'line2', 'line3', 'note'].forEach(function (k) { data[k] = $(k).value.trim(); });
+    data.title = clean($('title').value);
+    data.place = $('place').value.trim();
+    delete data.line2; delete data.line3;
+    if ($('link').value) data.link = $('link').value; else delete data.link;
+    data.note = $('note').value.trim();
     if (!old) data.order = Math.max.apply(null, [0].concat(items.map(function (x) { return x.data.order || 0; }))) + 1;
     var img = A.imageChanges(zone, old && old.image, 'exhibitions', slug, $('alt').value.trim());
     data.image = img.image;
@@ -72,7 +80,7 @@ A.start(function () {
     var btn = $('delete');
     btn.disabled = true; btn.lastChild.textContent = 'Deleting…';
     var changes = [{ path: me.path, remove: true }];
-    if (me.data.image && me.data.image.src) changes.push({ path: me.data.image.src, remove: true });
+    if (me.data.image && A.ownImage(me.data.image.src)) changes.push({ path: me.data.image.src, remove: true });
     A.commit('Delete exhibition: ' + (me.data.title || me.slug), changes).then(function () { ed.leave('exhibitions.html'); })
       .catch(function (e) { btn.disabled = false; btn.lastChild.textContent = 'Delete exhibition'; A.toast('Couldn’t delete: ' + e.message, true); });
   }
@@ -84,8 +92,13 @@ A.start(function () {
       if (!me) throw new Error('There’s no exhibition called “' + slugParam + '”. It may have been deleted.');
     }
     var d = me ? me.data : {};
-    zone = A.dropZone({ el: $('drop'), metaEl: $('drop-meta'), value: d.image, onChange: function () { ed.update(); } });
-    ['title', 'line2', 'line3', 'note'].forEach(function (k) { $(k).value = d[k] || ''; });
+    zone = A.dropZone({ el: $('drop'), metaEl: $('drop-meta'), value: d.image, onChange: function () { ed.update(); preview(); } });
+    $('link').innerHTML = '<option value="">No page yet</option>' + PAGES.concat(d.link && !PAGES.some(function (p) { return p[0] === d.link; }) ? [[d.link, d.link]] : [])
+      .map(function (p) { return '<option value="' + A.esc(p[0]) + '">' + A.esc(p[1]) + ' (' + A.esc(p[0]) + ')</option>'; }).join('');
+    $('title').value = d.title || '';
+    $('place').value = d.place != null ? d.place : [d.line2, d.line3].filter(Boolean).join(', ');
+    $('link').value = d.link || '';
+    $('note').value = d.note || '';
     $('alt').value = (d.image && d.image.alt) || '';
     if (me) { $('slug').value = me.slug; lockSlug(me.slug); }
     else { $('delete').hidden = true; $('view').setAttribute('aria-disabled', 'true'); }
@@ -94,6 +107,7 @@ A.start(function () {
     $('slug').addEventListener('input', function () { slugTouched = true; });
     $('title').addEventListener('input', autoSlug);
     document.addEventListener('input', preview);
+    $('link').addEventListener('change', function () { if (me) $('view').href = $('link').value ? '../' + $('link').value : '../exhibited/'; });
     $('delete').addEventListener('click', del);
     ed = A.editor({ state: state, save: save, validate: validate });
     ed.start();

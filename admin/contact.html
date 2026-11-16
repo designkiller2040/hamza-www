@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
   <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <title>Contact · Hamza Shah admin</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
 <link rel="stylesheet" href="tabs.css">
 <link rel="stylesheet" href="admin.css">
 <script src="gh.js"></script>
@@ -19,7 +20,7 @@
 <body>
 <header class="topbar"><div class="topbar-in">
   <div class="topbar-left">
-    <a class="brand hide-phone" href="works.html">Hamza Shah</a>
+    <a class="brand hide-phone" href="works.html">Hamza Shah Mian</a>
     <span class="divider hide-phone"></span>
     <nav class="tabs" aria-label="Content"><a class="tab" href="works.html"><span>Works</span></a><a class="tab" href="exhibitions.html"><span>Exhibitions</span></a><a class="tab" href="home.html"><span>Home</span></a><a class="tab" href="about.html"><span>About</span></a><a class="tab" href="contact.html" aria-current="page"><span class="tab-pill"></span><span>Contact</span></a></nav>
     <span id="status" class="status" hidden></span>
@@ -33,14 +34,11 @@
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
 <main class="page" id="main">
   <section>
-    <div class="section-head"><h2>Header</h2><p>The name and email at the top of every page of the site.</p></div>
-    <div class="fields" style="max-width:640px">
-      <div><label class="lbl" for="name">Name</label><input class="field" id="name" type="text" placeholder="e.g. Hamza Shah" autocomplete="off"></div>
-      <div><label class="lbl" for="email">Email shown in the header</label><input class="field" id="email" type="email" placeholder="e.g. studio@hamzashah.ch" autocomplete="off"></div>
-    </div>
+    <div class="section-head"><h2>Name</h2><p>Used in the browser tab titles, the Legal &amp; Privacy page and link previews.</p></div>
+    <div style="max-width:640px"><div><label class="lbl" for="name">Artist name</label><input class="field" id="name" type="text" placeholder="e.g. Hamza Shah Mian" autocomplete="off"></div></div>
   </section>
   <section>
-    <div class="section-head"><h2>Inquiries</h2><p>Where the “Inquire to Purchase” links under each work send their email.</p></div>
+    <div class="section-head"><h2>Inquiries</h2><p>Where the “Inquire to Purchase” links on the Works page send their email. The email shown on the About page is edited in the About tab, under Contacts.</p></div>
     <div style="max-width:640px"><div><label class="lbl" for="inquiryEmail">Inquiry email</label><input class="field" id="inquiryEmail" type="email" placeholder="e.g. studio@hamzashah.ch" autocomplete="off"><p class="hint">Empty: the link opens a blank email with the work in the subject.</p></div></div>
   </section>
 </main>

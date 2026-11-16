@@ -1,14 +1,13 @@
 {
-  "title": "Abimal. Painting as a Language of Gratitude",
-  "line2": "St. Elisabeth Berlin",
-  "line3": "30 May 2026",
+  "title": "Abimal",
+  "place": "St. Elisabeth, Berlin 2026",
   "image": {
-    "src": "images/abimal-berlin-2026.jpg",
-    "width": 2000,
-    "height": 1333,
-    "alt": "Installation view of Abimal, Berlin 2026"
+    "src": "images/abimal/abimal-01-altar.jpg",
+    "width": 1800,
+    "height": 1298,
+    "alt": "Abimal installation view at St. Elisabeth Berlin, looking towards the apse"
   },
-  "order": 1,
-  "note": "",
-  "link": "abimal/"
+  "link": "abimal/",
+  "order": 2,
+  "note": ""
 }

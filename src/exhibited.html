@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Template: the Exhibited page, built to /exhibited/. All exhibitions one under the other, newest first: a photo (880 x 439 at 1512, the homepage hero proportions made smaller so the next one peeks in) with the title left and venue + year right (alona's mockup, 2026-11-14). Each block opens the exhibition's own page. Menu and credits come from src/partials/. -->
+<!-- Template: the Exhibited page, built to /exhibited/. All exhibitions one under the other, newest first: a photo (880 x 439 at 1512, the homepage hero proportions made smaller so the next one peeks in) with the title left and venue + year right (alona's mockup, 2026-11-14). Each block opens the exhibition's own page. The list comes from content/exhibitions/*.json (admin Exhibitions tab). Menu and credits come from src/partials/. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -16,25 +16,7 @@
   <main class="exd">
     <h1 class="visually-hidden">Exhibited</h1>
 
-    <a class="exd-item" href="{{root}}regards-croises/">
-      <img src="{{root}}images/regards/regards-01-hall.jpg" alt="Regards Croisés installation view: a round painting under a lit white rectangle, smaller works on both sides" width="1800" height="1252">
-      <span class="exd-cap"><span>„Regards Croisés“</span><span>Old Cinema Eldorado, Lausanne 2026</span></span>
-    </a>
-
-    <a class="exd-item" href="{{root}}abimal/">
-      <img src="{{root}}images/abimal/abimal-01-altar.jpg" alt="Abimal installation view at St. Elisabeth Berlin, looking towards the apse" width="1800" height="1298">
-      <span class="exd-cap"><span>„Abimal“</span><span>St. Elisabeth, Berlin 2026</span></span>
-    </a>
-
-    <a class="exd-item" href="{{root}}venerate/">
-      <img src="{{root}}images/venerate/venerate-01-room.jpg" alt="Piles of coffee and a lapis lazuli stone hanging from chains in an old tiled room" width="1800" height="1199" loading="lazy">
-      <span class="exd-cap"><span>„What We Venerate“</span><span>Mahalla Open / Berlin Art Week 2025</span></span>
-    </a>
-
-    <a class="exd-item" href="{{root}}coldrush/">
-      <img src="{{root}}images/coldrush/coldrush-01-wall.jpg" alt="Two rust-coloured paintings on a half-plastered brick wall" width="1800" height="1124" loading="lazy">
-      <span class="exd-cap"><span>„Cold Rush“</span><span>Like A Casino, Berlin 2025</span></span>
-    </a>
+{{{exhibited.items}}}
   </main>
 
   <!-- Hover: the normal pointing-hand cursor (the "See more" tag was removed, alona 2026-11-16). -->

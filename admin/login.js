@@ -21,14 +21,9 @@
   }
   $('switch').addEventListener('click', function (e) { e.preventDefault(); setMode(mode === 'password' ? 'token' : 'password'); });
 
-  // If the password helper isn't set up yet, start with the token.
-  fetch('/api/admin/login', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (d) {
-      if (!d || !d.ready) {
-        setMode('token');
-        $('sub').textContent = 'Password sign-in isn’t set up yet. Paste a GitHub token to sign in.';
-      }
-    }).catch(function () {});
+  // The site runs on GitHub Pages, where the old password helper doesn't exist:
+  // sign-in is with a GitHub token only (the password form stays hidden).
+  $('switch').parentNode.hidden = true;
 
   function busy(on) { $('go').disabled = on; $('go').textContent = on ? 'Signing in…' : 'Sign in'; }
 
@@ -70,5 +65,5 @@
     }
   });
 
-  setMode('password');
+  setMode('token');
 })();

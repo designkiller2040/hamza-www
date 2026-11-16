@@ -381,7 +381,7 @@
         meta.innerHTML =
           '<dl><div style="min-width:0"><dt>File</dt><dd>' + A.esc(name) + '</dd></div>' +
           '<div><dt>Size</dt><dd>' + (c && c.bytes ? A.fmtBytes(c.bytes) : '–') + '</dd></div>' +
-          '<div><dt>Dimensions</dt><dd>' + (c ? c.width + ' × ' + c.height : '–') + '</dd></div></dl>' +
+          '<div><dt>Dimensions</dt><dd>' + (c && c.width ? c.width + ' × ' + c.height : '–') + '</dd></div></dl>' +
           '<div class="actions">' +
           '<button class="btn" type="button" data-act="replace"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"></path></svg>' + (c ? 'Replace' : 'Upload') + '</button>' +
           (c ? '<button class="btn ghost" type="button" data-act="remove"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Remove</button>' : '') +
@@ -441,6 +441,10 @@
 
   // Work out the files for an image change: a fresh file name for a new upload,
   // and removing the image it replaces. Returns {image, changes}.
+  // Only photos the admin uploaded itself are ever deleted. Photos that were
+  // put on the site by hand (exhibition pages, artworks, the first hero photos)
+  // may be used on other pages too, so replacing them here leaves the file alone.
+  A.ownImage = function (src) { return !!src && /^images\/(site|works|exhibitions|press)\//.test(src); };
   A.imageChanges = function (zone, oldImage, folder, base, alt) {
     var cur = zone.value();
     var changes = [];
@@ -455,7 +459,7 @@
       if (cur.blur) image.blur = cur.blur;
     }
     var oldSrc = oldImage && oldImage.src;
-    if (oldSrc && (!image || image.src !== oldSrc)) changes.push({ path: oldSrc, remove: true });
+    if (A.ownImage(oldSrc) && (!image || image.src !== oldSrc)) changes.push({ path: oldSrc, remove: true });
     return { image: image, changes: changes };
   };
 
