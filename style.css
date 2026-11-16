@@ -2248,8 +2248,22 @@ body:has(.h2-credits) .site-footer {
   text-underline-offset: 2px;
 }
 
-.h2-credits.h2-credits-end {
-  position: static;
+.vilna-end {
+  display: flex;
+  justify-content: center;
+  /* room under the logo so the fixed credits never cover it */
+  padding: 40px 0 calc(100vw / 1512 * 32 + 10px + 56px);
+}
+
+.vilna-end img {
+  display: block;
+  width: calc(100vw / 1512 * 56);
+  height: auto;
+}
+
+@media (max-width: 991.98px) {
+  .vilna-end { padding-bottom: 96px; }
+  .vilna-end img { width: 56px; }
 }
 
 @media (max-width: 767.98px) {
@@ -2267,7 +2281,7 @@ body:has(.h2-credits) .site-footer {
 }
 
 /* Fixed credits 10px higher on every page (alona 2026-11-16). Not the
-   About credits (in page flow) or the phone home credits on the photo. */
-.h2-credits:not(.h2-credits-end) {
+   phone home credits on the photo. */
+.h2-credits {
   bottom: 10px;
 }
