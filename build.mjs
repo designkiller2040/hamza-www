@@ -193,10 +193,7 @@ const aboutLinks = (about.links || []).map((l) =>
 const aboutMedia = (about.media || []).map((m) => {
   const ext = /^https?:/.test(m.href || '') ? ' target="_blank" rel="noopener"' : '';
   return `        <article class="abt-card"${m.bg ? ` style="--bg:${esc(m.bg)}" data-bg="fixed"` : ''}>
-          <div class="abt-card-media">
-            <img src="../${esc(m.image)}" alt="${esc(m.alt)}">
-            <div class="abt-card-blur" aria-hidden="true"></div>
-          </div>
+          <img src="../${esc(m.image)}" alt="${esc(m.alt)}" loading="lazy">
           <div class="abt-card-panel">
             <p class="abt-card-title">${esc(m.title).replace(/\n/g, '<br class="abt-card-br"> ')}</p>
             <a class="abt-card-link" href="${esc(m.href || '#')}"${ext}>${esc(m.linkText)}</a>
