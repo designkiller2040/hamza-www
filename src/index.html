@@ -35,23 +35,8 @@
   </main>
 
   <script>
-  // Phones (alona 2026-11-15): the credits sit on top of the photo, at its
-  // bottom, so they move into the photo frame there and back out on wider
-  // screens. Without JavaScript they stay fixed at the bottom of the screen.
-  (function () {
-    var credits = document.querySelector('.h2-credits');
-    var frame = document.querySelector('.hero-frame');
-    if (!credits || !frame || !window.matchMedia) return;
-    var mq = window.matchMedia('(max-width: 767.98px)');
-    var home = credits.parentNode, next = credits.nextSibling;
-    function place() {
-      if (mq.matches) frame.appendChild(credits);
-      else home.insertBefore(credits, next);
-    }
-    if (mq.addEventListener) mq.addEventListener('change', place);
-    else if (mq.addListener) mq.addListener(place);
-    place();
-  })();
+  // Phones (alona 2026-11-16): the credits sit under the photo (not on it);
+  // the page scrolls a little to show them. See the end of style.css.
 
   // Hero slideshow (alona 2026-11-16): the photos change on their own every
   // 5 seconds (instant swap, no fade), scrolling does nothing. It pauses while the
