@@ -2557,3 +2557,15 @@ body.home-page:not(.works-page) > .h2-credits {
     margin-top: 0;
   }
 }
+
+/* Exhibition pages: the photos after the first one line up with the top
+   menu's letters at every window width (alona 2026-11-16 22:07). The menu
+   scales with the window (100vw / 1512), so these photos do too
+   sideways; their height stays on the page's own scale, so on narrower
+   windows they are cropped a hair instead of overlapping. */
+@media (min-width: 992px) {
+  .ex-abs figure.pos.mw {
+    left: calc(var(--x) * 100vw / 1512);
+    width: calc(var(--w) * 100vw / 1512);
+  }
+}
