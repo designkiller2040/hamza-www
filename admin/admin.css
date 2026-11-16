@@ -277,3 +277,12 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .ex-list .ex-item + .ex-item { padding-top: 72px; border-top: 1px solid var(--line); }
 .ex-tools { display: flex; gap: 4px; align-items: center; }
 .ex-tools .btn.danger { margin-left: auto; }
+
+/* Works tab: arrows to move a painting one place earlier/later, shown on
+   hover (always on touch screens), like the photo info on other tabs. */
+.thumb .move { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+.card:hover .thumb .move, .card:focus-within .thumb .move { opacity: 1; }
+@media (hover: none) { .thumb .move { opacity: 1; } }
+.move-btn { width: 26px; height: 26px; padding: 0; border: 0; border-radius: 6px; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.move-btn:hover { background: #fff; }
+.move-btn[hidden] { display: none; }
