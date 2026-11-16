@@ -39,21 +39,24 @@
       "alt": "Le Courrier",
       "title": "In the Dim Light of the\nFormer Eldorado",
       "linkText": "Read full article",
-      "href": "https://lecourrier.ch/2026/09/30/dans-la-penombre-de-lex-eldorado/"
+      "href": "https://lecourrier.ch/2026/09/30/dans-la-penombre-de-lex-eldorado/",
+      "bg": "#4F3E34"
     },
     {
       "image": "images/media/rts.jpg",
       "alt": "RTS",
       "title": "La question: Hamza Shah Mian\ndraws inspiration from his mother\nfor his paintings. Why?",
       "linkText": "Listen full interview",
-      "href": "https://www.rts.ch/audio-podcast/2026/audio/la-question-hamza-shah-mian-s-inspire-de-sa-mere-pour-peindre-pourquoi-29371126.html"
+      "href": "https://www.rts.ch/audio-podcast/2026/audio/la-question-hamza-shah-mian-s-inspire-de-sa-mere-pour-peindre-pourquoi-29371126.html",
+      "bg": "#845D3B"
     },
     {
       "image": "images/media/24-heures.jpg",
       "alt": "24 heures",
       "title": "He paints with coffee and tea as\na tribute to his Afghan mother",
       "linkText": "Read full article",
-      "href": "https://www.24heures.ch/lausanne-lancien-cinema-eldorado-rouvre-pour-une-exposition-560621111454"
+      "href": "https://www.24heures.ch/lausanne-lancien-cinema-eldorado-rouvre-pour-une-exposition-560621111454",
+      "bg": "#301E14"
     }
   ],
   "pagePortrait": {

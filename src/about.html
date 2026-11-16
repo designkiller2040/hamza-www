@@ -88,7 +88,8 @@
       }
       if (img.complete && img.naturalWidth) run(); else img.addEventListener('load', run);
     }
-    document.querySelectorAll('.abt-card').forEach(tint);
+    // A card with its own colour in content/about.json (alona 2026-11-16) keeps it
+    document.querySelectorAll('.abt-card:not([data-bg])').forEach(tint);
   })();
   </script>
 </body>

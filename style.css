@@ -1134,6 +1134,7 @@ html:has(.home2) {
    image's left edge, headlines top-aligned across cards, link the same
    distance under the headline as before. */
 .abt-card {
+  aspect-ratio: 305 / 372; /* alona's canvas 2026-11-16 */
   --bg: #3b3734; /* replaced per card by the colour of its image's bottom edge (script in about.html) */
   container-type: inline-size;
   display: flex;
@@ -1164,7 +1165,7 @@ html:has(.home2) {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 55%;
+  height: 40%; /* alona's canvas 2026-11-16: shorter fade (was 55%) */
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 55%);
@@ -1177,15 +1178,21 @@ html:has(.home2) {
   left: 0;
   right: 0;
   bottom: -1px;
-  height: 55%;
+  height: 40%;
   background: linear-gradient(to bottom, transparent, var(--bg) 92%);
   pointer-events: none;
 }
 
 .abt-card-panel {
   flex: 1;
-  min-height: 52cqw;
-  padding: 13.9cqw calc(var(--u, 1px) * 24) 11cqw;
+  /* alona's canvas 2026-11-16: shorter card (305 x 372); title and link
+     sit at the bottom, link 32 px above the card's bottom edge */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  min-height: 0;
+  padding: 0 7.87cqw 10.49cqw;
 }
 
 .abt-card-title {
@@ -1201,7 +1208,7 @@ html:has(.home2) {
 
 .abt-card-link {
   display: inline-block;
-  margin-top: 12.41cqw;
+  margin-top: 7.87cqw;
   font-size: 4.6cqw;
   line-height: 1.2;
   color: inherit;
@@ -1257,7 +1264,7 @@ html:has(.home2) {
   .abt-cv {
     grid-template-columns: minmax(0, 1fr) calc(var(--u) * 391) calc(var(--u) * 253);
     gap: 0;
-    margin-top: calc(var(--u) * 107);
+    margin-top: calc(var(--u) * 82); /* alona's canvas 2026-11-16 (was 107) */
   }
 
   /* alona 2026-11-16: Studies text on one line */
@@ -1270,7 +1277,7 @@ html:has(.home2) {
      Contacts stays on the first row, its left edge lined up with the
      portrait's left edge (start of the middle column), 253 px wide. */
   .abt-studies { grid-column: 1; grid-row: 1; }
-  .abt-solo { grid-column: 1; grid-row: 2; margin-top: calc(var(--u) * 48); }
+  .abt-solo { grid-column: 1; grid-row: 2; margin-top: calc(var(--u) * 79); }
 
   /* alona 2026-11-14: Contacts hang under the portrait, exactly its
      width: label and handles start at the photo's left edge, (ig) and
@@ -1283,8 +1290,8 @@ html:has(.home2) {
     top: 100%;
     left: 0;
     right: 0;
-    /* alona 2026-11-16: same top as Studies (was 74) */
-    margin-top: calc(var(--u) * 107);
+    /* alona 2026-11-16: same top as Studies */
+    margin-top: calc(var(--u) * 82);
   }
 
   .abt-list {
@@ -1292,7 +1299,7 @@ html:has(.home2) {
   }
 
   .abt-media {
-    margin-top: calc(var(--u) * 125);
+    margin-top: calc(var(--u) * 82.5); /* alona's canvas 2026-11-16 (was 125) */
   }
 
   /* alona 2026-11-14: four equal columns across the content width, so

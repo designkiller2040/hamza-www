@@ -191,7 +191,7 @@ const aboutLinks = (about.links || []).map((l) =>
 // Four columns on desktop, so a 4th card fits the row.
 const aboutMedia = (about.media || []).map((m) => {
   const ext = /^https?:/.test(m.href || '') ? ' target="_blank" rel="noopener"' : '';
-  return `        <article class="abt-card">
+  return `        <article class="abt-card"${m.bg ? ` style="--bg:${esc(m.bg)}" data-bg="fixed"` : ''}>
           <div class="abt-card-media">
             <img src="../${esc(m.image)}" alt="${esc(m.alt)}">
             <div class="abt-card-blur" aria-hidden="true"></div>
