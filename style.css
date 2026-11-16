@@ -2236,12 +2236,9 @@ body:has(.h2-credits) .site-footer {
   display: none;
 }
 
+/* Instant swap, no fade (alona 2026-11-16 16:12) */
 .hero-js .home-page .hero-frame img {
-  transition: opacity 1.2s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-js .home-page .hero-frame img { transition: none; }
+  transition: none;
 }
 
 /* Credits, 2026-11-16 (alona): the Vilna logo is only on /about/, at the very
