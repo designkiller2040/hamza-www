@@ -2352,14 +2352,16 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
   .home-page:not(.works-page) .h2-slides .hero {
     --hw: calc(100vw - 176px);
     width: var(--hw);
-    padding-top: clamp(100px, var(--U) * 150, 150px);
+    /* 20 px higher (alona 2026-11-16): 130 from the top */
+    padding-top: clamp(80px, var(--U) * 130, 130px);
   }
 
   .hero-js .home-page:not(.works-page) .hero-frame,
   .home-page:not(.works-page).hero-js .hero-frame,
   .home-page:not(.works-page) .hero-frame {
     aspect-ratio: auto;
-    height: min(var(--hw) * 599 / 1200, 100svh - clamp(100px, var(--U) * 150, 150px) - 110px);
+    /* a little taller (alona 2026-11-16): 1336 x 728 at 1512 wide (was 667) */
+    height: min(var(--hw) * 728 / 1336, 100svh - clamp(80px, var(--U) * 130, 130px) - 110px);
   }
 }
 
