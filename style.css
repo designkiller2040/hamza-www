@@ -1193,6 +1193,8 @@ html:has(.home2) {
   align-items: flex-start;
   min-height: 0;
   padding: 0 7.87cqw 10.49cqw;
+  position: relative;
+  z-index: 1; /* text stays above the photo's fade if it runs long */
 }
 
 .abt-card-title {
@@ -1200,10 +1202,13 @@ html:has(.home2) {
   /* alona 2026-11-15: same look as the About quote (34 / 1.2, -1.38) */
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 6.2cqw;
+  font-size: 5.2cqw;
   line-height: 1.2;
-  letter-spacing: -0.0406em;
+  letter-spacing: 0;
   text-align: left;
+  /* alona 2026-11-16: caps; a touch smaller and no tight tracking so
+     the headlines wrap on their own in three lines at most */
+  text-transform: uppercase;
 }
 
 .abt-card-link {
