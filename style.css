@@ -2351,8 +2351,8 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
   .home-page:not(.works-page) .h2-slides .hero {
     --hw: calc(100vw - 176px);
     width: var(--hw);
-    /* 20 px higher (alona 2026-11-16): 130 from the top */
-    padding-top: clamp(80px, var(--U) * 130, 130px);
+    /* 20 px higher twice (alona 2026-11-16): 110 from the top */
+    padding-top: clamp(60px, var(--U) * 110, 110px);
   }
 
   .hero-js .home-page:not(.works-page) .hero-frame,
@@ -2360,7 +2360,7 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
   .home-page:not(.works-page) .hero-frame {
     aspect-ratio: auto;
     /* taller again (alona 2026-11-16 16:28, +40): 1336 x 768 at 1512 wide */
-    height: min(var(--hw) * 768 / 1336, 100svh - clamp(80px, var(--U) * 130, 130px) - 84px);
+    height: min(var(--hw) * 768 / 1336, 100svh - clamp(60px, var(--U) * 110, 110px) - 84px);
   }
 }
 
