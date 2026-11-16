@@ -2408,26 +2408,31 @@ body.home-page:not(.works-page) > .h2-credits {
     overflow: visible;
   }
 
-  body.home-page:not(.works-page) > .h2-credits {
+  body:not(.lens-page) > .h2-credits {
     position: static;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-top: 0;
     padding: 24px var(--gutter, 24px) 32px;
     text-align: center;
   }
 
-  body.home-page:not(.works-page) > .h2-credits > p { margin: 0; }
-  body.home-page:not(.works-page) > .h2-credits .h2-imprint { order: 1; }
-  body.home-page:not(.works-page) > .h2-credits .h2-signature { order: 2; }
-  body.home-page:not(.works-page) > .h2-credits .h2-fun {
+  body:not(.lens-page) > .h2-credits > p { margin: 0; }
+  body:not(.lens-page) > .h2-credits .h2-imprint { order: 1; }
+  body:not(.lens-page) > .h2-credits .h2-signature { order: 2; }
+  body:not(.lens-page) > .h2-credits .h2-fun {
     order: 3;
     justify-self: auto;
   }
 
-  body.home-page:not(.works-page) > .h2-credits .h2-fun .h2-look {
+  body:not(.lens-page) > .h2-credits .h2-fun .h2-look {
     margin-right: 20px;
   }
+}
+
+/* Phones: on every page (not /lens/) the bottom texts are stacked one
+   after another, centred, like on Home (alona 2026-11-16). */
+@media (max-width: 767.98px) {
+  body.home-page:not(.works-page) > .h2-credits { margin-top: 0; }
 }
