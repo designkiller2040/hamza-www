@@ -367,6 +367,18 @@ ${sitemapPages.map((p) => `  <url><loc>${SITE}${p}</loc></url>`).join('\n')}
 `);
 writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nDisallow: /admin/\nDisallow: /home-1/\nDisallow: /about-1/\nSitemap: ${SITE}sitemap.xml\n`);
 mkdirSync(join(OUT, 'admin'), { recursive: true });
+// Admin pages: stamp ?v=<hash> on their own stylesheets and scripts, so a
+// browser never pairs a new admin page with an old cached file (GitHub Pages
+// lets browsers cache them for 10 minutes).
+for (const f of readdirSync(join(OUT, 'admin')).filter((n) => n.endsWith('.html'))) {
+  const file = join(OUT, 'admin', f);
+  const html = readFileSync(file, 'utf8').replace(/((?:href|src)=")([\w-]+\.(?:css|js))"/g, (m, a, name) => {
+    const src = join(ROOT, 'admin', name);
+    if (!existsSync(src)) return m;
+    return `${a}${name}?v=${createHash('sha1').update(readFileSync(src)).digest('hex').slice(0, 8)}"`;
+  });
+  writeFileSync(file, html);
+}
 writeFileSync(join(OUT, 'admin', 'version.json'), JSON.stringify({
   commit: process.env.COMMIT_REF || process.env.GITHUB_SHA || null,
   builtAt: new Date().toISOString(),

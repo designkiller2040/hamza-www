@@ -1,77 +1,127 @@
-/* Exhibitions list: cards in Exhibited-page order, search, drag to reorder, Save order. */
+/* Exhibited tab: every exhibition on one page (content/exhibitions/*.json),
+   top to bottom in the Exhibited page's order. Each: photo left, Title and
+   Place and year right; arrows move it up or down; one Save for everything.
+   Link, description and note already saved are kept as they are. */
 A.start(function () {
-  var list = A.$('#list');
-  var saveBtn = A.$('#save-order');
-  var items = [], before = '', query = '';
+  var box = A.$('#list');
+  var items = [], removed = [], ed = null, uid = 0;
+  var I = {
+    up: '<path d="M12 19V5M6 11l6-6 6 6"></path>',
+    down: '<path d="M12 5v14M6 13l6 6 6-6"></path>',
+    del: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path>',
+  };
+  function icon(p) { return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+  function clean(t) { return t.trim().replace(/^[„“"']+|[“”"']+$/g, ''); }
 
-  function key() { return items.map(function (x) { return x.slug; }).join(','); }
-
-  function card(x, n) {
-    var d = x.data, img = d.image && d.image.src;
-    var tags = [];
-    var place = d.place != null ? d.place : [d.line2, d.line3].filter(Boolean).join(', ');
-    if (place) tags.push('<span class="tag">' + A.esc(place) + '</span>');
-    if (!d.link) tags.push('<span class="tag amber">No page</span>');
-    if (!img) tags.push('<span class="tag amber">No image</span>');
-    if (d.note) tags.push('<span class="tag yellow" title="' + A.esc(d.note) + '">Note</span>');
-    return '<a class="card" href="exhibition.html?slug=' + encodeURIComponent(x.slug) + '" data-slug="' + A.esc(x.slug) + '" data-title="' + A.esc((d.title || '').toLowerCase()) + '">' +
-      '<div class="thumb"><span class="badge">' + n + '</span>' +
-      (img ? '<img alt="" data-src="' + A.esc(img) + '" loading="lazy">'
-           : '<div class="no-image"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 16l5-5 4 4 3-3 6 6"></path><circle cx="15.5" cy="8.5" r="1.5"></circle></svg></div>') +
-      '</div><div class="card-title">' + A.esc(d.title || 'Untitled') + '</div><div class="tags">' + tags.join('') + '</div></a>';
-  }
-
-  function render() {
-    list.innerHTML = '<div class="cards" id="cards">' + items.map(function (x, i) { return card(x, i + 1); }).join('') +
-      '<a class="new-card" href="exhibition.html?new=1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New exhibition</a></div>' +
-      '<p class="empty-search" id="no-results" hidden>No exhibitions match that search.</p>';
-    A.$$('img[data-src]', list).forEach(function (img) { A.showImage(img, img.dataset.src); });
-    A.sortable(A.$('#cards'), { items: '.card', disabled: function () { return !!query; }, onEnd: changed });
-  }
-
-  function changed() {
-    items = A.$$('.card', list).map(function (c) { return items.filter(function (x) { return x.slug === c.dataset.slug; })[0]; });
-    var n = 0;
-    A.$$('.card .badge', list).forEach(function (b) { b.textContent = ++n; });
-    saveBtn.hidden = key() === before;
-  }
-
-  function search(q) {
-    query = q.trim().toLowerCase();
-    A.$('#search').value = q; A.$('#search-phone').value = q;
-    var any = false;
-    A.$$('.card', list).forEach(function (c) {
-      var hit = !query || c.dataset.title.indexOf(query) >= 0;
-      c.hidden = !hit; if (hit) any = true;
-    });
-    A.$('.new-card', list).hidden = !!query;
-    A.$('#no-results').hidden = any || !query;
-  }
-  A.$('#search').addEventListener('input', function (e) { search(e.target.value); });
-  A.$('#search-phone').addEventListener('input', function (e) { search(e.target.value); });
-
-  saveBtn.addEventListener('click', function () {
-    saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
-    var changes = [];
-    items.forEach(function (x, i) {
-      if (x.data.order !== i + 1) {
-        var d = JSON.parse(JSON.stringify(x.data)); d.order = i + 1;
-        changes.push({ path: x.path, text: A.json(d), x: x, d: d });
+  function make(x) {
+    var d = (x && x.data) || {};
+    var n = ++uid;
+    var el = document.createElement('div');
+    el.className = 'ex-grid ex-item';
+    el.innerHTML =
+      '<div class="ex-photo"><div class="drop"></div><div class="image-meta"></div></div>' +
+      '<div class="fields">' +
+        '<div><label class="lbl" for="t' + n + '">Title</label><input class="field" id="t' + n + '" data-k="title" type="text" placeholder="e.g. Abimal" autocomplete="off"><p class="hint">The „quotes“ are added on the site.</p></div>' +
+        '<div><label class="lbl" for="p' + n + '">Place and year</label><input class="field" id="p' + n + '" data-k="place" type="text" placeholder="e.g. St. Elisabeth, Berlin 2026" autocomplete="off"></div>' +
+        '<div class="ex-tools">' +
+          '<button class="btn icon ghost" type="button" data-act="up" aria-label="Move up">' + icon(I.up) + '</button>' +
+          '<button class="btn icon ghost" type="button" data-act="down" aria-label="Move down">' + icon(I.down) + '</button>' +
+          '<button class="btn danger" type="button" data-act="del">' + icon(I.del) + 'Remove</button>' +
+        '</div>' +
+      '</div>';
+    var it = { el: el, x: x || null };
+    el.querySelector('[data-k=title]').value = d.title || '';
+    el.querySelector('[data-k=place]').value = d.place != null ? d.place : [d.line2, d.line3].filter(Boolean).join(', ');
+    it.zone = A.dropZone({ el: el.querySelector('.drop'), metaEl: el.querySelector('.image-meta'), value: d.image, onChange: function () { ed && ed.update(); } });
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-act]');
+      if (!b || b.closest('.image-meta')) return;
+      var i = items.indexOf(it);
+      if (b.dataset.act === 'del') {
+        var name = clean(el.querySelector('[data-k=title]').value) || 'this exhibition';
+        if (!confirm('Remove “' + name + '” from the Exhibited page? It goes once you press Save.')) return;
+        items.splice(i, 1);
+        if (it.x) removed.push(it.x);
       }
+      if (b.dataset.act === 'up' && i > 0) { items.splice(i, 1); items.splice(i - 1, 0, it); }
+      if (b.dataset.act === 'down' && i < items.length - 1) { items.splice(i, 1); items.splice(i + 1, 0, it); }
+      render();
+      ed.update();
     });
-    A.commit('Reorder exhibitions', changes.map(function (c) { return { path: c.path, text: c.text }; })).then(function () {
-      changes.forEach(function (c) { c.x.data = c.d; });
-      before = key();
-      saveBtn.hidden = true;
-      A.toast('Order saved. The site updates in about a minute.');
-    }).catch(function (e) { A.toast('Couldn’t save the order: ' + e.message, true); })
-      .then(function () { saveBtn.disabled = false; saveBtn.textContent = 'Save order'; });
+    return it;
+  }
+  function render() {
+    box.innerHTML = '';
+    if (!items.length) box.innerHTML = '<p class="slide-empty">No exhibitions yet.</p>';
+    items.forEach(function (it, i) {
+      it.el.querySelector('[data-act=up]').disabled = i === 0;
+      it.el.querySelector('[data-act=down]').disabled = i === items.length - 1;
+      box.appendChild(it.el);
+    });
+  }
+  function val(it, k) { return it.el.querySelector('[data-k="' + k + '"]').value; }
+  function state() {
+    return items.map(function (it) { return [it.x ? it.x.slug : 'new', val(it, 'title'), val(it, 'place'), it.zone.signature()]; });
+  }
+  function validate() {
+    for (var i = 0; i < items.length; i++) {
+      if (!clean(val(items[i], 'title'))) return 'Please give every exhibition a title.';
+      if (!items[i].zone.value()) return 'Please add a photo for “' + clean(val(items[i], 'title')) + '”.';
+    }
+    return '';
+  }
+  function save() {
+    var changes = [], taken = {}, done = [];
+    items.forEach(function (it) { if (it.x) taken[it.x.slug] = true; });
+    items.forEach(function (it, i) {
+      var old = it.x ? it.x.data : null;
+      var d = old ? JSON.parse(JSON.stringify(old)) : {};
+      d.title = clean(val(it, 'title'));
+      d.place = val(it, 'place').trim();
+      delete d.line2; delete d.line3;
+      d.order = i + 1;
+      var slug = it.x ? it.x.slug : null;
+      if (!slug) {
+        var base = A.slugify(d.title + ' ' + (d.place.match(/\d{4}/) || [''])[0]) || 'exhibition';
+        slug = base; var k = 2;
+        while (taken[slug]) slug = base + '-' + (k++);
+        taken[slug] = true;
+        if (d.note == null) d.note = '';
+      }
+      var path = 'content/exhibitions/' + slug + '.json';
+      var img = A.imageChanges(it.zone, old && old.image, 'exhibitions', slug, (old && old.image && old.image.alt) || '');
+      d.image = img.image;
+      img.changes.forEach(function (c) { changes.push(c); });
+      var text = A.json(d);
+      if (!old || text !== A.json(old)) changes.push({ path: path, text: text });
+      done.push({ it: it, slug: slug, path: path, data: d });
+    });
+    removed.forEach(function (x) {
+      changes.push({ path: x.path, remove: true });
+      if (x.data.image && A.ownImage(x.data.image.src)) changes.push({ path: x.data.image.src, remove: true });
+    });
+    if (!changes.length) return Promise.resolve();
+    return A.commit('Update exhibitions', changes).then(function () {
+      done.forEach(function (r) {
+        r.it.x = { slug: r.slug, path: r.path, data: r.data };
+        r.it.zone.saved(r.data.image);
+      });
+      removed = [];
+    });
+  }
+  A.$('#add').addEventListener('click', function () {
+    var it = make(null);
+    items.push(it);
+    render();
+    ed.update();
+    it.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
-  window.addEventListener('beforeunload', function (e) { if (!saveBtn.hidden) { e.preventDefault(); e.returnValue = ''; } });
 
   return A.readFolder('content/exhibitions').then(function (all) {
-    items = all.sort(function (a, b) { return (a.data.order || 0) - (b.data.order || 0); });
-    before = key();
+    all.sort(function (a, b) { return (a.data.order || 0) - (b.data.order || 0); });
+    items = all.map(make);
     render();
+    ed = A.editor({ state: state, save: save, validate: validate });
+    ed.start();
   });
 });

@@ -25,18 +25,17 @@
     <span id="status" class="status" hidden></span>
   </div>
   <div class="topbar-right">
-    <label class="search search-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg><input class="field" id="search" type="search" placeholder="Search exhibitions" aria-label="Search exhibitions"></label>
-    <button class="btn dark" id="save-order" type="button" hidden>Save order</button>
-    <a class="btn" href="exhibition.html?new=1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg><span class="hide-phone">New exhibition</span><span class="only-phone">New</span></a>
+    <span id="save-state" class="save-state" aria-live="polite"></span>
+    <a class="btn view-page" id="view" href="../exhibited/" target="_blank" rel="noopener" aria-label="View page"><span class="label">View page</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"></path></svg></a>
+    <button class="btn dark" id="save" type="button" disabled>Save</button>
   </div>
 </div></header>
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
 <main class="page" id="main">
-  <section>
-    <div class="section-head"><h2>Exhibited</h2><p>The exhibitions on the Exhibited page, top to bottom in this order. Drag to reorder. Click to edit.</p></div>
-    <label class="search search-phone"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg><input class="field" id="search-phone" type="search" placeholder="Search exhibitions" aria-label="Search exhibitions"></label>
-    <div id="list"></div>
-  </section>
+  <!-- Every exhibition on one page, top to bottom in the Exhibited page's
+       order: photo left, Title and Place right (alona 2026-11-16). -->
+  <div class="ex-list" id="list"></div>
+  <div><button class="btn" type="button" id="add"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add exhibition</button></div>
 </main>
 <footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
 </body>

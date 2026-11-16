@@ -2,61 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="../favicon.ico" sizes="48x48">
-  <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
-  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
-<title>Exhibition · Hamza Shah admin</title>
-<link rel="stylesheet" href="../fonts/fonts.css">
-<link rel="stylesheet" href="tabs.css">
-<link rel="stylesheet" href="admin.css">
-<script src="gh.js"></script>
-<script src="admin.js" defer></script>
-<script src="exhibition.js" defer></script>
+<title>Exhibited · Hamza Shah admin</title>
+<script>location.replace('exhibitions.html');</script>
 </head>
-<body>
-<header class="topbar"><div class="topbar-in">
-  <div class="topbar-left">
-    <a class="back" href="exhibitions.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>Exhibited</a>
-    <span class="divider"></span>
-    <h1 class="item-name" id="item-name">&nbsp;</h1>
-    <span id="status" class="status" hidden></span>
-  </div>
-  <div class="topbar-right">
-    <span id="save-state" class="save-state" aria-live="polite"></span>
-    <a class="btn view-page" id="view" href="../" target="_blank" rel="noopener" aria-label="View page"><span class="label">View page</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"></path></svg></a>
-    <button class="btn dark" id="save" type="button" disabled>Save</button>
-  </div>
-</div></header>
-<div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
-<main class="page" id="main">
-    <div class="note-banner" id="note-banner" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"></path><circle cx="12" cy="12" r="9"></circle></svg><span></span></div>
-  <!-- Layout from alona's wireframe (2026-11-16): photo left, Title and Place right. -->
-  <div class="ex-grid">
-    <div class="ex-photo">
-      <div class="drop" id="drop"></div>
-      <div class="image-meta" id="drop-meta"></div>
-    </div>
-    <div class="fields">
-      <div><label class="lbl" for="title">Title</label><input class="field" id="title" type="text" placeholder="e.g. Abimal" autocomplete="off"><p class="hint">The „quotes“ are added on the site.</p></div>
-      <div><label class="lbl" for="place">Place and year</label><input class="field" id="place" type="text" placeholder="e.g. St. Elisabeth, Berlin 2026" autocomplete="off"></div>
-    </div>
-  </div>
-  <!-- Kept for the script, not shown: page link, description, file name, preview. -->
-  <div hidden>
-    <select class="field" id="link"></select>
-    <input class="field" id="alt" type="text">
-    <div id="slug-wrap"><input class="field" id="slug" type="text"></div>
-    <div class="lock" id="slug-lock" hidden><span></span></div>
-    <div id="preview"></div>
-  </div>
-  <section class="bottom">
-    <div class="note-field"><div><label class="lbl" for="note">Private note (shows a yellow reminder in the admin until cleared)</label><input class="field" id="note" type="text" placeholder="e.g. waiting for the final photo" autocomplete="off"></div></div>
-    <button class="btn danger" id="delete" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Delete exhibition</button>
-  </section>
-</main>
-<footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
-</body>
+<body><a href="exhibitions.html">Exhibited</a></body>
 </html>

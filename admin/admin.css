@@ -272,3 +272,8 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .ex-photo .drop { min-height: 0; aspect-ratio: 817 / 520; }
 .ex-photo .drop.has-image img { position: absolute; inset: 24px; width: calc(100% - 48px); height: calc(100% - 48px); max-height: none; object-fit: contain; }
 @media (max-width: 860px) { .ex-grid { grid-template-columns: minmax(0, 1fr); margin-top: 0; } }
+.ex-list { display: flex; flex-direction: column; gap: 72px; }
+.ex-list .ex-grid { margin-top: 0; }
+.ex-list .ex-item + .ex-item { padding-top: 72px; border-top: 1px solid var(--line); }
+.ex-tools { display: flex; gap: 4px; align-items: center; }
+.ex-tools .btn.danger { margin-left: auto; }
