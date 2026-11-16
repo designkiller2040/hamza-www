@@ -1146,14 +1146,18 @@ html:has(.home2) {
   object-fit: cover;
 }
 
+/* alona 2026-11-16: grey panel back; text 24 from the panel's top
+   (to the letters) and 24 from its left edge, 24 kept free on the
+   right and under the link. Panels stretch to the tallest card. */
 .abt-card-panel {
-  padding-top: calc(var(--u, 1px) * 24 - 1.31cqw); /* letters start 24 under the image */
+  flex: 1;
+  padding: calc(var(--u, 1px) * 24 - 1.31cqw) calc(var(--u, 1px) * 24) calc(var(--u, 1px) * 24);
+  background: #efefef;
   color: #000;
 }
 
 .abt-card-title {
   margin: 0;
-  max-width: 86cqw; /* text box stops short of the image edge (alona 2026-11-15) */
   /* alona 2026-11-15: same look as the About quote (34 / 1.2, -1.38) */
   font-family: var(--serif);
   font-weight: 400;
@@ -1224,8 +1228,10 @@ html:has(.home2) {
     margin-top: calc(var(--u) * 107);
   }
 
+  /* alona 2026-11-16: Studies text on one line */
   .abt-studies .abt-list {
-    width: calc(var(--u) * 315);
+    text-align: left;
+    white-space: nowrap;
   }
 
   /* alona 2026-11-14: left column is Studies, then Solo shows below it.
@@ -1245,7 +1251,8 @@ html:has(.home2) {
     top: 100%;
     left: 0;
     right: 0;
-    margin-top: calc(var(--u) * 74);
+    /* alona 2026-11-16: same top as Studies (was 74) */
+    margin-top: calc(var(--u) * 107);
   }
 
   .abt-list {
