@@ -93,8 +93,11 @@ function artworkSrcset(img) {
 const blurFile = join(ROOT, 'images/artworks/blur.json');
 const blurs = existsSync(blurFile) ? JSON.parse(readFileSync(blurFile, 'utf8')) : {};
 function blurPreview(img) {
-  const b = blurs[(img.src || '').split('/').pop()];
-  if (!b) return '';
+  return blurStyle(blurs[(img.src || '').split('/').pop()]);
+}
+// b = {w, h, jpg (base64)}: a tiny JPEG, drawn blurred as a CSS background.
+function blurStyle(b) {
+  if (!b || !b.jpg) return '';
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${b.w} ${b.h}' preserveAspectRatio='none'>`
     + `<filter id='b' color-interpolation-filters='sRGB'><feGaussianBlur stdDeviation='1.2'/>`
     + `<feComponentTransfer><feFuncA type='discrete' tableValues='1 1'/></feComponentTransfer></filter>`
@@ -162,7 +165,8 @@ const exhibitionsHTML = exhibitions.map((e) => {
 // Extra slides marked "hidden" (admin: "Show on the homepage" unticked) are kept but not shown.
 const slides = [home.hero, ...(home.hero.moreSlides || []).filter((s) => s && !s.hidden)].filter((s) => s && s.image && s.image.src);
 const heroImagesHTML = slides.map((s, i) =>
-  `      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}"${i ? ' aria-hidden="true"' : ''}>`
+  // Blurred preview (image.blur, made by the admin on upload) shows until the photo has loaded.
+  `      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}"${i ? ' aria-hidden="true"' : ''}${s.image.blur ? ` style="${blurStyle(s.image.blur)};background-size:cover;background-position:center"` : ''}>`
 ).join('\n');
 // Home #2: the captions sit left and right of the photo, one per slide.
 const heroSideHTML = (side) => slides.map((s, i) =>

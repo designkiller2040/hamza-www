@@ -278,9 +278,10 @@
       var long = Math.max(w, h);
       var ext = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[file.type];
       var passMode = (GH.readAuth() || {}).mode !== 'token';
+      var blur = tinyBlur(bmp, w, h);
       // Small enough already: keep the original file untouched.
       if (long <= A.MAX_SIDE && !(passMode && file.size > 4 * 1024 * 1024)) {
-        return { blob: file, ext: ext, width: w, height: h, bytes: file.size, name: file.name };
+        return { blob: file, ext: ext, width: w, height: h, bytes: file.size, name: file.name, blur: blur };
       }
       var scale = Math.min(1, A.MAX_SIDE / long);
       var tw = Math.round(w * scale), th = Math.round(h * scale);
@@ -297,10 +298,22 @@
         if (!keepPNG && blob.size > 4.2 * 1024 * 1024) return toBlob(canvas, type, 0.78);
         return blob;
       }).then(function (blob) {
-        return { blob: blob, ext: keepPNG ? 'png' : 'jpg', width: tw, height: th, bytes: blob.size, name: file.name };
+        return { blob: blob, ext: keepPNG ? 'png' : 'jpg', width: tw, height: th, bytes: blob.size, name: file.name, blur: blur };
       });
     });
   };
+  // A 24 px wide JPEG of the image, shown blurred on the site while the real one loads.
+  function tinyBlur(bmp, w, h) {
+    try {
+      var tw = 24, th = Math.max(1, Math.round(h * tw / w));
+      var c = document.createElement('canvas');
+      c.width = tw; c.height = th;
+      var x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, tw, th);
+      x.drawImage(bmp, 0, 0, tw, th);
+      return { w: tw, h: th, jpg: c.toDataURL('image/jpeg', 0.7).split(',')[1] };
+    } catch (e) { return null; }
+  }
   function loadBitmap(file) {
     if (window.createImageBitmap) {
       return createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return loadImg(file); });
@@ -436,8 +449,10 @@
       var path = 'images/' + folder + '/' + A.slugify(base) + '-' + A.rand(6) + '.' + cur.ext;
       changes.push({ path: path, blob: cur.blob });
       image = { src: path, width: cur.width, height: cur.height, alt: alt || '' };
+      if (cur.blur) image.blur = cur.blur;
     } else if (cur) {
       image = { src: cur.src, width: cur.width, height: cur.height, alt: alt || '' };
+      if (cur.blur) image.blur = cur.blur;
     }
     var oldSrc = oldImage && oldImage.src;
     if (oldSrc && (!image || image.src !== oldSrc)) changes.push({ path: oldSrc, remove: true });
