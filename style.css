@@ -2360,8 +2360,7 @@ body.home-page:not(.works-page) > .h2-credits {
   font-size: 15px;
   font-weight: 400;
   line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
+  white-space: nowrap; /* written as is, not in caps (alona 2026-11-16) */
 }
 .h2-header .h2-nav {
   margin: 0;
