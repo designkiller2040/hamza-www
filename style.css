@@ -2327,7 +2327,7 @@ html.credits-wait .home-page .h2-credits > * {
    was trimmed instead. */
 @media (min-width: 992px) {
   /* alona 2026-11-16 17:12: 100 design px from the last content to the
-     bottom edge (credits included), so 146 less than About had. */
+     credits text (alona 17:20: content to credits, not to the edge). */
   body.about2 > main,
   body.exhibited-page > main,
   body.legal2 > main,
@@ -2335,8 +2335,8 @@ html.credits-wait .home-page .h2-credits > * {
   body.works-page section.h2-works { padding-bottom: 0; }
   body.about2 > .h2-credits,
   body.exhibited-page > .h2-credits,
-  body.legal2 > .h2-credits { margin-top: calc(var(--u) * 55); }
-  body.works-page > .h2-credits { margin-top: calc(var(--u) * -7); }
+  body.legal2 > .h2-credits { margin-top: calc(var(--u) * 100); }
+  body.works-page > .h2-credits { margin-top: calc(var(--u) * 38); }
 }
 
 /* Home doesn't scroll at all (alona 2026-11-16): nothing moves; the
@@ -2408,8 +2408,10 @@ body.home-page:not(.works-page) > .h2-credits {
     overflow: visible;
   }
 
-  body:not(.lens-page) > .h2-credits {
-    position: static;
+  body:not(.lens-page) > .h2-credits,
+  body.home-page:not(.works-page) > .h2-credits { position: static; }
+
+  body > .h2-credits {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2418,20 +2420,20 @@ body.home-page:not(.works-page) > .h2-credits {
     text-align: center;
   }
 
-  body:not(.lens-page) > .h2-credits > p { margin: 0; }
-  body:not(.lens-page) > .h2-credits .h2-imprint { order: 1; }
-  body:not(.lens-page) > .h2-credits .h2-signature { order: 2; }
-  body:not(.lens-page) > .h2-credits .h2-fun {
+  body > .h2-credits > p { margin: 0; }
+  body > .h2-credits .h2-imprint { order: 1; }
+  body > .h2-credits .h2-signature { order: 2; }
+  body > .h2-credits .h2-fun {
     order: 3;
     justify-self: auto;
   }
 
-  body:not(.lens-page) > .h2-credits .h2-fun .h2-look {
+  body > .h2-credits .h2-fun .h2-look {
     margin-right: 20px;
   }
 }
 
-/* Phones: on every page (not /lens/) the bottom texts are stacked one
+/* Phones: on every page (incl. /lens/, where they stay fixed) the bottom texts are stacked one
    after another, centred, like on Home (alona 2026-11-16). */
 @media (max-width: 767.98px) {
   body.home-page:not(.works-page) > .h2-credits { margin-top: 0; }
@@ -2448,4 +2450,24 @@ body.home-page:not(.works-page) > .h2-credits {
   }
   .exd-cap span:first-child { flex: 0 0 auto; }
   .exd-cap span:last-child { text-align: right; text-wrap: balance; }
+}
+
+/* Phones: 100 px from the last content to the bottom texts on every page
+   except Home (alona 2026-11-16 17:20, "same for mobile"). */
+@media (max-width: 767.98px) {
+  body.about2 > main,
+  body.exhibited-page > main,
+  body.legal2 > main,
+  body.legal2 > main > section:last-child,
+  body.works-page section.h2-works,
+  body.exhibition-body > main,
+  body.exhibition-body > main > article:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  body:not(.lens-page):not(.home-page) > .h2-credits,
+  body.works-page > .h2-credits {
+    margin-top: 76px; /* + 24 padding = 100 */
+  }
 }
