@@ -1202,13 +1202,10 @@ html:has(.home2) {
   /* alona 2026-11-15: same look as the About quote (34 / 1.2, -1.38) */
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 5.2cqw;
+  font-size: 6.2cqw;
   line-height: 1.2;
-  letter-spacing: 0;
-  text-align: left;
-  /* alona 2026-11-16: caps; a touch smaller and no tight tracking so
-     the headlines wrap on their own in three lines at most */
-  text-transform: uppercase;
+  letter-spacing: -0.0406em;
+  text-align: left; /* no caps (alona 2026-11-16) */
 }
 
 .abt-card-link {
