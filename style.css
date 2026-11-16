@@ -2026,39 +2026,11 @@ body:has(.h2-credits) .site-footer {
   }
 }
 
-/* Exhibited: over a card the cursor turns into a "See more" tag
-   (white box, black text), only with a mouse or trackpad. */
-.exd-cursor {
-  display: none;
-}
-
-.exd-js .exd-item {
-  cursor: none;
-}
-
-.exd-js .exd-item:hover .exd-cap span:first-child {
-  text-decoration: none;
-}
-
-.exd-js .exd-cursor {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 20;
-  padding: 4px 8px 5px;
-  background: #fff;
-  color: #000;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 16px;
-  line-height: 1;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-}
-
-.exd-js .exd-cursor.is-on {
-  opacity: 1;
+/* Exhibited: the pointing-hand "click" cursor over the whole card, photo and
+   text (alona 2026-11-16 22:17; the "See more" tag is gone). */
+.exd-item,
+.exd-item * {
+  cursor: pointer;
 }
 
 /* ---- First-open slide-in (alona, 2026-11-14) ----------------------------
