@@ -2436,3 +2436,16 @@ body.home-page:not(.works-page) > .h2-credits {
 @media (max-width: 767.98px) {
   body.home-page:not(.works-page) > .h2-credits { margin-top: 0; }
 }
+
+/* Exhibited on phones (alona 2026-11-16): every caption like Regards Croisés,
+   title on the left and the place on the right of the same line; a long
+   place wraps inside its right-hand column instead of dropping under the
+   title. */
+@media (max-width: 991.98px) {
+  .exd-cap {
+    flex-wrap: nowrap;
+    align-items: start;
+  }
+  .exd-cap span:first-child { flex: 0 0 auto; }
+  .exd-cap span:last-child { text-align: right; text-wrap: balance; }
+}
