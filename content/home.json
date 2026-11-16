@@ -19,7 +19,8 @@
           "alt": "„What We Venerate“, installation view, 2025"
         },
         "captionLeft": "„What We Venerate“, 2025",
-        "captionRight": "*exhibited* at Mahalla Open / Berlin Art Week 2025 ©"
+        "captionRight": "*exhibited* at Mahalla Open / Berlin Art Week 2025 ©",
+        "hidden": true
       },
       {
         "image": {
@@ -29,7 +30,8 @@
           "alt": "„Cold Rush“, installation view, Berlin 2025"
         },
         "captionLeft": "„Cold Rush“, 2025",
-        "captionRight": "*exhibited* in Berlin ©"
+        "captionRight": "*exhibited* in Berlin ©",
+        "hidden": true
       },
       {
         "image": {
@@ -39,7 +41,8 @@
           "alt": "Installation view of Abimal, Berlin 2026"
         },
         "captionLeft": "„Abimal. Painting as a Language of Gratitude“, 2026",
-        "captionRight": "*exhibited* at St. Elisabeth Berlin, 30 May 2026 ©"
+        "captionRight": "*exhibited* at St. Elisabeth Berlin, 30 May 2026 ©",
+        "hidden": true
       }
     ]
   },

@@ -2357,8 +2357,8 @@ html.vilna-on.vilna-end .h2-imprint .h2-vilna-logo {
   .home-page:not(.works-page).hero-js .hero-frame,
   .home-page:not(.works-page) .hero-frame {
     aspect-ratio: auto;
-    /* a little taller (alona 2026-11-16): 1336 x 728 at 1512 wide (was 667) */
-    height: min(var(--hw) * 728 / 1336, 100svh - clamp(80px, var(--U) * 130, 130px) - 110px);
+    /* taller again (alona 2026-11-16 16:28, +40): 1336 x 768 at 1512 wide */
+    height: min(var(--hw) * 768 / 1336, 100svh - clamp(80px, var(--U) * 130, 130px) - 84px);
   }
 }
 

@@ -7,6 +7,7 @@ A.single = function (opts) {
       var s = {};
       opts.fields.forEach(function (k) { s[k] = $(k).value; });
       s.image = zone ? zone.signature() : '';
+      if (opts.extra) s.extra = opts.extra.state();
       return s;
     }
     if (opts.view) $('view').href = opts.view;
@@ -16,6 +17,7 @@ A.single = function (opts) {
       if (opts.image) {
         zone = A.dropZone({ el: $('drop'), metaEl: $('drop-meta'), value: opts.image.get(data), onChange: function () { ed.update(); } });
       }
+      if (opts.extra) opts.extra.init(data, $, function () { ed.update(); });
       ed = A.editor({
         state: state,
         validate: opts.validate,
@@ -28,10 +30,12 @@ A.single = function (opts) {
             opts.image.set(next, r.image);
             changes = r.changes;
           }
+          if (opts.extra) changes = changes.concat(opts.extra.store(next, data));
           changes.push({ path: opts.path, text: A.json(next) });
           return A.commit('Update ' + opts.name, changes).then(function () {
             data = next;
             if (zone) zone.saved(opts.image.get(data));
+            if (opts.extra) opts.extra.saved(data);
           });
         },
       });

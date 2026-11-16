@@ -159,7 +159,8 @@ const exhibitionsHTML = exhibitions.map((e) => {
 // ---- Hero slideshow ------------------------------------------------------
 // The first slide is home.hero itself (edited in the admin); home.hero.moreSlides
 // follow in order. On scroll, each photo crossfades into the next.
-const slides = [home.hero, ...(home.hero.moreSlides || [])].filter((s) => s && s.image && s.image.src);
+// Extra slides marked "hidden" (admin: "Show on the homepage" unticked) are kept but not shown.
+const slides = [home.hero, ...(home.hero.moreSlides || []).filter((s) => s && !s.hidden)].filter((s) => s && s.image && s.image.src);
 const heroImagesHTML = slides.map((s, i) =>
   `      <img src="${esc(s.image.src)}" alt="${esc(s.image.alt || '')}" width="${s.image.width}" height="${s.image.height}"${i ? ' aria-hidden="true"' : ''}>`
 ).join('\n');

@@ -29,12 +29,17 @@
 <div id="loader" class="loader" aria-live="polite"><div class="loader-in"><div class="loader-name"><img class="logo" src="logo.svg" alt="Vilna" width="90" height="63"></div><div class="loader-text">Loading<span class="dots"><i>.</i><i>.</i><i>.</i></span></div></div></div>
 <main class="page" id="main">
   <section>
-    <div class="section-head"><h2>Hero image</h2><p>The large photo at the top of the homepage.</p></div>
+    <div class="section-head"><h2>Hero image</h2><p>The large photo on the homepage (the first one when there are more).</p></div>
     <div class="drop" id="drop"></div>
     <div class="image-meta" id="drop-meta"></div>
   </section>
   <section>
-    <div class="section-head"><h2>Hero caption</h2><p>The two lines under the hero photo, left and right.</p></div>
+    <div class="section-head"><h2>More photos</h2><p>Extra photos for the homepage. With more than one photo shown, the homepage changes photo by itself every 5 seconds. Untick “Show on the homepage” to keep a photo here without showing it.</p></div>
+    <div class="slides" id="slides"></div>
+    <button class="btn" type="button" id="add-slide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add photo</button>
+  </section>
+  <section>
+    <div class="section-head"><h2>Hero caption</h2><p>Not shown on the homepage at the moment (captions are switched off there).</p></div>
     <div class="pair">
       <div><label class="lbl" for="captionLeft">Left</label><input class="field" id="captionLeft" type="text" placeholder="e.g. „What We Venerate“, 2025" autocomplete="off"></div>
       <div><label class="lbl" for="captionRight">Right</label><input class="field" id="captionRight" type="text" placeholder="e.g. *exhibited* at Mahalla Open / Berlin Art Week 2025 ©" autocomplete="off"><p class="hint">Put *stars* around words to show them in italics.</p></div>

@@ -62,7 +62,7 @@
     var imgs = wrap.querySelectorAll('.hero-frame > img');
     var frame = wrap.querySelector('.hero-frame');
     var n = imgs.length;
-    if (n < 2) return;
+    if (!n) return;
     document.documentElement.classList.add('hero-js');
     var idx = -1;
     var DELAY = 5000;
@@ -112,8 +112,10 @@
     for (var t = 0; t < n; t++) imgs[t].addEventListener('load', setTone);
 
     var timer = null;
+    // Only one photo (alona 2026-11-16): it just stays. More can be added
+    // in the admin (Home > More photos) and then it plays again.
     function start() {
-      if (timer || document.hidden) return;
+      if (timer || document.hidden || n < 2) return;
       timer = setInterval(function () { show((idx + 1) % n); }, DELAY);
     }
     function stop() { clearInterval(timer); timer = null; }

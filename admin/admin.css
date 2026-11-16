@@ -175,3 +175,12 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .only-phone { display: none; }
 @media (max-width: 720px) { .only-phone { display: inline; } }
 .signin h1 { line-height: 0; margin-bottom: 18px; }
+
+/* Home: extra slideshow photos */
+.slides { display: flex; flex-direction: column; gap: 28px; margin-bottom: 20px; }
+.slide { border-top: 1px solid #e6e6e6; padding-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.slide-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.slide-head h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.slide-tools { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.slide-show { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; margin-right: 8px; cursor: pointer; }
+.slide-empty { color: var(--grey); font-size: 13px; margin: 0; }
