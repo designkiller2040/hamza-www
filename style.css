@@ -2375,3 +2375,40 @@ html.credits-wait .home-page .h2-credits > * {
   opacity: 0;
   visibility: hidden;
 }
+
+/* Soft white fades at the top and bottom edges (alona 2026-11-16): content
+   scrolling under the fixed menu and credits fades out a little. They sit
+   just under the menu/credits (z-index 10) and let clicks through. Not on
+   the homepage (one screen, photo) or /lens/ (black page). */
+body:not(.lens-page):not(.home-page)::before,
+body:not(.lens-page):not(.home-page)::after,
+body.works-page::before,
+body.works-page::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  pointer-events: none;
+}
+
+body:not(.lens-page):not(.home-page)::before,
+body.works-page::before {
+  top: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, #fff 0%, #fff 35%, rgba(255, 255, 255, 0) 100%);
+}
+
+body:not(.lens-page):not(.home-page)::after,
+body.works-page::after {
+  bottom: 0;
+  height: 120px;
+  background: linear-gradient(to top, #fff 0%, #fff 30%, rgba(255, 255, 255, 0) 100%);
+}
+
+@media (max-width: 767.98px) {
+  body:not(.lens-page):not(.home-page)::before,
+  body.works-page::before { height: 100px; }
+  body:not(.lens-page):not(.home-page)::after,
+  body.works-page::after { height: 150px; }
+}
