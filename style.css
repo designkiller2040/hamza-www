@@ -1134,6 +1134,7 @@ html:has(.home2) {
    image's left edge, headlines top-aligned across cards, link the same
    distance under the headline as before. */
 .abt-card {
+  position: relative; /* the link covers the whole card (alona 2026-11-16) */
   container-type: inline-size;
   display: flex;
   flex-direction: column;
@@ -1206,6 +1207,13 @@ html:has(.home2) {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.75cqw;
+}
+
+/* Clicking anywhere on a Press card opens its article */
+.abt-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 @media (min-width: 992px) {
