@@ -361,3 +361,12 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
 .btn.dark.confirm-yes { background: var(--red); border-color: var(--red); }
 .btn.dark.confirm-yes:hover { background: #8f1b12; border-color: #8f1b12; }
+
+/* Works tab rows laid out like the Works page (alona's sketch 2026-11-16):
+   outlined boxes, square/vertical = 2 of 6 columns, horizontal = 4 (or 3+3). */
+.wk-row-group + .wk-row-group { margin-top: -4px; }
+.cards.wk-row { --g: 36px; container-type: inline-size; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 var(--g); }
+.wk-row .thumb { aspect-ratio: auto; height: calc((100cqw - 2 * var(--g)) / 3 * 1.22); background: #fff; border: 1px solid var(--ink); border-radius: 16px; }
+.wk-row .card:hover .thumb { background: #fafafa; }
+.wk-row .thumb img { max-width: 80%; max-height: 80%; }
+@media (max-width: 600px) { .cards.wk-row { --g: 12px; } .wk-row .thumb { border-radius: 10px; } .wk-row .tags { display: none; } }

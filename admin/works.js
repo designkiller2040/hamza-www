@@ -54,9 +54,21 @@ A.start(function () {
     var n = 0;
     list.innerHTML = '<div class="groups">' + rows.map(function (r, gi) {
       var last = gi === rows.length - 1;
+      if (r.row !== 'none') {
+        // A row laid out like on the Works page (alona's sketch 2026-11-16): a
+        // 6-column grid; square/vertical take 2 columns, a horizontal one 4
+        // (3 each when two horizontals share the row).
+        var wides = r.items.filter(A.H2.isWide).length;
+        return '<div class="group wk-row-group" data-row="' + r.row + '"><div class="cards wk-row">' +
+          r.items.map(function (w) {
+            n++;
+            var span = A.H2.isWide(w) ? (wides === 2 ? 3 : 4) : 2;
+            return card(w, n, true).replace('<a class="card"', '<a class="card' + (A.H2.isWide(w) ? ' wide' : '') + '" style="grid-column:span ' + span + '"');
+          }).join('') + '</div></div>';
+      }
       return '<div class="group" data-row="' + r.row + '">' +
-        '<div class="group-head"><h3>' + (r.row === 'none' ? 'Not on the Works page' : 'Row ' + (gi + 1)) + '</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
-        '<div class="cards">' + r.items.map(function (w) { n++; return card(w, n, r.row !== 'none'); }).join('') +
+        '<div class="group-head"><h3>Not on the Works page</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
+        '<div class="cards">' + r.items.map(function (w) { n++; return card(w, n, false); }).join('') +
         (last ? '<a class="new-card" href="work.html?new=1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New work</a>' : '') +
         '</div></div>';
     }).join('') + (rows.length ? '' : '<div class="cards"><a class="new-card" href="work.html?new=1">+ New work</a></div>') +
