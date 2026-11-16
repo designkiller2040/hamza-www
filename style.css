@@ -2408,14 +2408,16 @@ body.home-page:not(.works-page) > .h2-credits {
   .h2-name { font-size: 0.95rem; }
   .h2-header .h2-nav { width: auto; max-width: none; gap: 32px; }
 }
-/* Phones: still one line (name left, links right, 20 px apart); only very
-   narrow screens put the name on its own line above the links */
+/* Phones: links 20 px apart */
 @media (max-width: 767.98px) {
   .h2-name { font-size: 0.8rem; }
   .h2-header .h2-nav { gap: 20px; justify-content: flex-end; }
 }
-@media (max-width: 359.98px) {
+/* Phones (alona 2026-11-16): name on the first line, Works / Exhibited /
+   About on the next, starting at the same left edge */
+@media (max-width: 767.98px) {
   .h2-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .h2-header .h2-nav { justify-content: flex-start; }
 }
 
 /* Legal: the text column keeps the width it had under the old centred menu
@@ -2502,5 +2504,16 @@ body.home-page:not(.works-page) > .h2-credits {
   .h2-header {
     padding-left: calc((100vw - var(--u) * 880) / 2);
     padding-right: calc((100vw - var(--u) * 880) / 2);
+  }
+}
+
+/* Phones: the menu is two lines now (name, then links), so the home photo
+   starts 96 px from the top like the first photo on Works and Exhibited */
+@media (max-width: 767.98px) {
+  .home-page:not(.works-page) .h2-slides .hero { padding-top: 96px; }
+  .hero-js .home-page:not(.works-page) .hero-frame,
+  .home-page:not(.works-page).hero-js .hero-frame,
+  .home-page:not(.works-page) .hero-frame {
+    height: calc(100svh - 96px - 20px);
   }
 }
