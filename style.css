@@ -1165,6 +1165,12 @@ html:has(.home2) {
   line-height: 1.2;
   letter-spacing: -0.0406em;
   text-align: left;
+  /* alona 2026-11-16: headings bottom-aligned across cards and links on
+     one line: every heading box is three lines tall, text at its bottom */
+  min-height: 3.6em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .abt-card-link {
