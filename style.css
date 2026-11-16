@@ -2527,7 +2527,8 @@ body.home-page:not(.works-page) > .h2-credits {
     display: grid;
     grid-template-columns: calc(var(--u) * 880) 1fr;
     column-gap: calc(var(--u) * 32);
-    align-items: start;
+    /* text centred on the photo's height (alona 2026-11-16 22:00) */
+    align-items: center;
     width: auto;
     margin: 0 88px calc(var(--u) * 96);
   }
