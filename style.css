@@ -2224,3 +2224,12 @@ body:has(.h2-credits) .site-footer {
   .h2-imprint { font-size: 12px; }
   .home-page .hero-frame .h2-imprint { font-size: 12px; }
 }
+
+/* Credit texts at 66% opacity (alona 2026-11-16): copyright, Digital imprint,
+   Look closer, Legal & Privacy. The Vilna logo on /about/ stays solid. */
+.h2-signature,
+.h2-imprint,
+.h2-studio-link span,
+.h2-fun {
+  opacity: 0.66;
+}
