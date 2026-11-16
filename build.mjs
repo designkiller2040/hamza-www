@@ -330,7 +330,7 @@ writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 ${sitemapPages.map((p) => `  <url><loc>${SITE}${p}</loc></url>`).join('\n')}
 </urlset>
 `);
-writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nDisallow: /admin/\nSitemap: ${SITE}sitemap.xml\n`);
+writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nDisallow: /admin/\nDisallow: /home-1/\nDisallow: /about-1/\nSitemap: ${SITE}sitemap.xml\n`);
 mkdirSync(join(OUT, 'admin'), { recursive: true });
 writeFileSync(join(OUT, 'admin', 'version.json'), JSON.stringify({
   commit: process.env.COMMIT_REF || process.env.GITHUB_SHA || null,
