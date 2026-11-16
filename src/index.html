@@ -100,7 +100,7 @@
         g.drawImage(img, img.naturalWidth * 0.25, h * 0.8, img.naturalWidth * 0.5, h * 0.2, 0, 0, 24, 8);
         var d = g.getImageData(0, 0, 24, 8).data, sum = 0;
         for (var i = 0; i < d.length; i += 4) sum += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
-        img.dataset.tone = sum / (d.length / 4) > 150 ? 'light' : 'dark';
+        img.dataset.tone = sum / (d.length / 4) > 130 ? 'light' : 'dark';
       } catch (e) { img.dataset.tone = 'dark'; }
       return img.dataset.tone;
     }
