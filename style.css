@@ -2326,9 +2326,17 @@ html.credits-wait .home-page .h2-credits > * {
    sits 32 from the bottom edge. Desktop. Exhibition pages: their --H
    was trimmed instead. */
 @media (min-width: 992px) {
-  body.works-page > .h2-credits { margin-top: calc(var(--u) * (40 - 56)); }
-  body.exhibited-page > .h2-credits { margin-top: calc(var(--u) * (40 - 39)); }
-  body.legal2 > .h2-credits { margin-top: calc(var(--u) * 40 - 69px); }
+  /* alona 2026-11-16 17:12: 100 design px from the last content to the
+     bottom edge (credits included), so 146 less than About had. */
+  body.about2 > main,
+  body.exhibited-page > main,
+  body.legal2 > main,
+  body.legal2 > main > section:last-child,
+  body.works-page section.h2-works { padding-bottom: 0; }
+  body.about2 > .h2-credits,
+  body.exhibited-page > .h2-credits,
+  body.legal2 > .h2-credits { margin-top: calc(var(--u) * 55); }
+  body.works-page > .h2-credits { margin-top: calc(var(--u) * -7); }
 }
 
 /* Home doesn't scroll at all (alona 2026-11-16): nothing moves; the
