@@ -1099,6 +1099,12 @@ html:has(.home2) {
   color: inherit;
 }
 
+/* alona 2026-11-16: handle / email underlined on hover */
+.abt-links a:hover span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* No underline on @hamzashah / the email since 2026-11-14 (alona's
    screenshot); was underlined from 2026-11-12. */
 
