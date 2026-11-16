@@ -675,7 +675,7 @@ html:has(.home2) {
   font-size: 15px; /* desktop: 15px (alona 2026-11-12, was 17); phones: see end of file */
   font-weight: 400;
   line-height: 1;
-  text-transform: uppercase;
+  text-transform: none; /* normal case (alona 2026-11-16) */
 }
 
 /* The page you're on is underlined: thin line a little below the text */
@@ -2378,7 +2378,7 @@ body.home-page:not(.works-page) > .h2-credits {
   font-size: 15px;
   font-weight: 400;
   line-height: 1;
-  text-transform: uppercase; /* tried normal case, caps look better (alona 2026-11-16) */
+  text-transform: none; /* normal case, no caps (alona 2026-11-16, final) */
   white-space: nowrap;
 }
 .h2-header .h2-nav {
