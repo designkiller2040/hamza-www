@@ -276,6 +276,8 @@ const vars = {
   'home2.worksPage': home2WorksHTML.replace(/src="(?!https?:|\/|data:)/g, 'src="../')
     .replace(/srcset="([^"]*)"/g, (_, v) => `srcset="${v.replace(/(^|, )images\//g, '$1../images/')}"`),
   'home2.exhibitions': exhibitionRowsHTML,
+  // Slideshow speed from the admin Home tab (alona 2026-11-17), seconds -> ms; 5 s by default.
+  'home.slideMs': Math.round(Math.min(60, Math.max(1, Number(home.slideSeconds) || 5)) * 1000),
   'hero.left': heroSideHTML('left'),
   'hero.right': heroSideHTML('right'),
   exhibitions: exhibitionsHTML,

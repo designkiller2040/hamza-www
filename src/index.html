@@ -50,7 +50,7 @@
     if (!n) return;
     document.documentElement.classList.add('hero-js');
     var idx = -1;
-    var DELAY = 5000;
+    var DELAY = {{home.slideMs}}; // admin Home tab: "Change photo every … seconds"
 
     function show(k) {
       if (k === idx) return;

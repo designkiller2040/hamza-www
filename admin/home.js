@@ -12,6 +12,8 @@ A.start(function () {
   function icon(p, s) { return '<svg width="' + (s || 14) + '" height="' + (s || 14) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
 
   function on() { return $('slideshow').checked; }
+  // Slideshow speed in seconds (home.json "slideSeconds", 5 by default).
+  function speed() { var v = Number(String($('speed').value).replace(',', '.')); return v >= 1 && v <= 60 ? v : 5; }
 
   function make(slide) {
     var el = document.createElement('div');
@@ -51,8 +53,9 @@ A.start(function () {
       box.appendChild(t);
     }
     $('slideshow-label').textContent = on() ? 'Slideshow on' : 'Slideshow off';
+    $('speed-row').hidden = !on();
     $('slideshow-hint').textContent = on()
-      ? 'The homepage changes photo every 5 seconds, in this order. Drag a photo to move it.'
+      ? 'The homepage changes photo every ' + speed() + ' seconds, in this order. Drag a photo to move it.'
       : 'The homepage shows this photo. Your other photos stay saved; switch the slideshow on to show them.';
   }
   A.sortable(box, { items: '.home-card', handle: '.pic', disabled: function () { return !on(); }, onEnd: function () {
@@ -63,7 +66,7 @@ A.start(function () {
   } });
 
   function state() {
-    return [on(), $('pageTitle').value, $('description').value, items.map(function (it) { return it.zone.signature(); })];
+    return [on(), $('speed').value, $('pageTitle').value, $('description').value, items.map(function (it) { return it.zone.signature(); })];
   }
   function save() {
     var next = JSON.parse(JSON.stringify(data));
@@ -84,6 +87,7 @@ A.start(function () {
     var first = slides[0];
     next.hero = { image: first.image, captionLeft: first.captionLeft || '', captionRight: first.captionRight || '', moreSlides: slides.slice(1) };
     next.slideshow = on();
+    next.slideSeconds = speed();
     next.pageTitle = $('pageTitle').value.trim();
     next.description = $('description').value.trim();
     // Photos the admin uploaded that are gone now.
@@ -104,6 +108,7 @@ A.start(function () {
     // Before the switch existed, extra photos were each shown or hidden.
     var show = data.slideshow != null ? !!data.slideshow : more.some(function (s) { return s && !s.hidden; });
     $('slideshow').checked = show;
+    $('speed').value = data.slideSeconds || 5;
     items = [make({ image: h.image, captionLeft: h.captionLeft, captionRight: h.captionRight })].concat(more.map(make))
       .filter(function (it) { return it.zone.value(); });
     $('pageTitle').value = data.pageTitle || '';
@@ -112,6 +117,7 @@ A.start(function () {
   }
 
   $('slideshow').addEventListener('change', function () { render(); ed.update(); });
+  $('speed').addEventListener('input', function () { render(); ed.update(); });
   return A.readJSON(PATH).then(function (d) {
     data = d || {};
     load();

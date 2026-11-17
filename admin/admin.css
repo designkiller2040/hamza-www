@@ -437,3 +437,9 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 }
 .ep-after { margin-top: 24px; max-width: 880px; }
 .ep-cols-hint { margin: 12px 0 0; }
+
+/* Home tab: slideshow speed (alona 2026-11-17) */
+.home-speed { display: flex; align-items: center; gap: 12px; margin-top: -8px; }
+.home-speed .lbl { margin: 0; font-size: 13px; color: var(--ink); }
+.home-speed-in { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.home-speed .field { width: 72px; text-align: center; }
