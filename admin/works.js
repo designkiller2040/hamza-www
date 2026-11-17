@@ -1,5 +1,5 @@
 /* Works list: cards grouped by Works-page row, search, drag (or arrows) to
-   reorder, Save order. Rows are rebuilt from the order by shape (alona
+   reorder (with Undo and a compact view), Save order. Rows are rebuilt from the order by shape (alona
    2026-11-16): square or vertical paintings sit 3 to a row; a horizontal one
    shares its row with one other painting (square, vertical or horizontal).
    Each painting keeps its own size; a row that comes out the same as before
@@ -50,60 +50,249 @@ A.start(function () {
       '<div class="tags">' + tags.join('') + '</div></a>';
   }
 
-  function render() {
+  // Each card is made once and moved around, so images don't reload and the
+  // cards can slide to their new places.
+  var cards = {};
+  function cardEl(w, placed) {
+    var key = w.slug + (placed ? '' : ':none');
+    if (!cards[key]) {
+      var t = document.createElement('div');
+      t.innerHTML = card(w, 0, placed);
+      cards[key] = t.firstChild;
+      cards[key].title = w.data.title || '';
+      var img = A.$('img[data-src]', cards[key]);
+      if (img) A.showImage(img, img.dataset.src);
+    }
+    return cards[key];
+  }
+
+  function render() { layout(false); }
+  // Builds the rows. animate: cards slide from where they were (FLIP).
+  function layout(animate) {
+    var first = {};
+    if (animate) Object.keys(cards).forEach(function (k) {
+      if (cards[k].isConnected) first[k] = cards[k].getBoundingClientRect();
+    });
     var n = 0;
-    list.innerHTML = '<div class="groups">' + rows.map(function (r, gi) {
-      var last = gi === rows.length - 1;
+    var groups = document.createElement('div');
+    groups.className = 'groups';
+    rows.forEach(function (r, gi) {
+      var g = document.createElement('div');
+      g.dataset.row = r.row;
+      var box = document.createElement('div');
       if (r.row !== 'none') {
         // A row laid out like on the Works page (alona's sketch 2026-11-16): a
         // 6-column grid; square/vertical take 2 columns, a horizontal one 4
         // (3 each when two horizontals share the row).
+        g.className = 'group wk-row-group';
+        box.className = 'cards wk-row';
         var wides = r.items.filter(A.H2.isWide).length;
-        return '<div class="group wk-row-group" data-row="' + r.row + '"><div class="cards wk-row">' +
-          r.items.map(function (w) {
-            n++;
-            var span = A.H2.isWide(w) ? (wides === 2 ? 3 : 4) : 2;
-            return card(w, n, true).replace('<a class="card"', '<a class="card' + (A.H2.isWide(w) ? ' wide' : '') + '" style="grid-column:span ' + span + '"');
-          }).join('') + '</div></div>';
+        r.items.forEach(function (w) {
+          var c = cardEl(w, true);
+          n++;
+          A.$('.badge', c).textContent = n;
+          c.classList.toggle('wide', A.H2.isWide(w));
+          c.style.gridColumn = 'span ' + (A.H2.isWide(w) ? (wides === 2 ? 3 : 4) : 2);
+          box.appendChild(c);
+        });
+      } else {
+        g.className = 'group';
+        g.innerHTML = '<div class="group-head"><h3>Not on the Works page</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>';
+        box.className = 'cards';
+        r.items.forEach(function (w) { var c = cardEl(w, false); n++; A.$('.badge', c).textContent = n; box.appendChild(c); });
+        if (gi === rows.length - 1) box.insertAdjacentHTML('beforeend', '<a class="new-card" href="work.html?new=1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New work</a>');
       }
-      return '<div class="group" data-row="' + r.row + '">' +
-        '<div class="group-head"><h3>Not on the Works page</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>' +
-        '<div class="cards">' + r.items.map(function (w) { n++; return card(w, n, false); }).join('') +
-        (last ? '<a class="new-card" href="work.html?new=1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New work</a>' : '') +
-        '</div></div>';
-    }).join('') + (rows.length ? '' : '<div class="cards"><a class="new-card" href="work.html?new=1">+ New work</a></div>') +
-      '</div><p class="empty-search" id="no-results" hidden>No works match that search.</p>';
-    A.$$('img[data-src]', list).forEach(function (img) { A.showImage(img, img.dataset.src); });
-    var placedCards = A.$$('.group:not([data-row="none"]) .card', list);
-    if (placedCards.length) {
-      A.$('.move-btn[data-move="-1"]', placedCards[0]).hidden = true;
-      A.$('.move-btn[data-move="1"]', placedCards[placedCards.length - 1]).hidden = true;
+      g.appendChild(box);
+      groups.appendChild(g);
+    });
+    if (!rows.length) groups.innerHTML = '<div class="cards"><a class="new-card" href="work.html?new=1">+ New work</a></div>';
+    list.innerHTML = '';
+    list.appendChild(groups);
+    list.insertAdjacentHTML('beforeend', '<p class="empty-search" id="no-results" hidden>No works match that search.</p>');
+    var placedCards = A.$$('.wk-row .card', list);
+    placedCards.forEach(function (c, i) {
+      A.$('.move-btn[data-move="-1"]', c).hidden = i === 0;
+      A.$('.move-btn[data-move="1"]', c).hidden = i === placedCards.length - 1;
+    });
+    if (query) search(query);
+    if (!animate) return;
+    Object.keys(first).forEach(function (k) {
+      var c = cards[k];
+      if (!c.isConnected) return;
+      var a = first[k], b = c.getBoundingClientRect();
+      var dx = a.left - b.left, dy = a.top - b.top;
+      if (!dx && !dy) return;
+      c.style.transition = 'none';
+      c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+      c.getBoundingClientRect();
+      c.style.transition = 'transform 0.25s ease';
+      c.style.transform = '';
+    });
+  }
+
+  function slugs(order) { return order.map(function (w) { return w.slug; }); }
+
+  /* ---------- Undo (alona 2026-11-16) ---------- */
+  var history = [], undoBar = null, undoTimer = null;
+  function remember(prev, title) {
+    history.push(prev);
+    if (!undoBar) {
+      undoBar = document.createElement('div');
+      undoBar.className = 'undo-bar';
+      undoBar.innerHTML = '<span></span><button type="button" class="undo-btn">Undo</button>';
+      document.body.appendChild(undoBar);
+      A.$('.undo-btn', undoBar).addEventListener('click', undo);
+    }
+    A.$('span', undoBar).textContent = 'Moved “' + title + '”.';
+    undoBar.hidden = false;
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(function () { undoBar.hidden = true; }, 8000);
+  }
+  function undo() {
+    var prev = history.pop();
+    if (!prev) return;
+    reorder(prev.map(bySlug));
+    if (undoBar) {
+      A.$('span', undoBar).textContent = 'Undone.';
+      clearTimeout(undoTimer);
+      if (history.length) undoTimer = setTimeout(function () { undoBar.hidden = true; }, 8000);
+      else { A.$('.undo-btn', undoBar).hidden = true; undoTimer = setTimeout(function () { undoBar.hidden = true; A.$('.undo-btn', undoBar).hidden = false; }, 2000); }
     }
   }
-  // One drag area for all rows (set up once; the list is re-rendered inside it).
-  A.sortable(list, { items: '.group:not([data-row="none"]) .card', disabled: searching, onEnd: changed });
+  function forget() { history = []; if (undoBar) undoBar.hidden = true; }
+  document.addEventListener('keydown', function (e) {
+    if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key.toLowerCase() === 'z' && history.length &&
+        !/^(INPUT|TEXTAREA)$/.test((document.activeElement || {}).tagName)) {
+      e.preventDefault();
+      undo();
+    }
+  });
+
   // The arrows move a painting one place earlier or later (across rows too).
-  list.addEventListener('pointerdown', function (e) { if (e.target.closest('.move-btn')) e.stopPropagation(); }, true);
   list.addEventListener('click', function (e) {
     var b = e.target.closest('.move-btn');
     if (!b) return;
     e.preventDefault(); e.stopPropagation();
     var order = flat(), slug = b.closest('.card').dataset.slug;
-    var i = order.map(function (w) { return w.slug; }).indexOf(slug), j = i + Number(b.dataset.move);
+    var i = slugs(order).indexOf(slug), j = i + Number(b.dataset.move);
     if (i < 0 || j < 0 || j >= order.length) return;
+    var prev = slugs(order);
     order.splice(j, 0, order.splice(i, 1)[0]);
     reorder(order);
+    remember(prev, bySlug(slug).data.title || slug);
   });
 
   function reorder(order) {
     chunk(order);
-    render();
-    if (query) search(query);
+    layout(true);
     saveBtn.hidden = orderKey() === before;
   }
-  function changed() {
-    // Read the new order back from the page (a card may have crossed rows).
-    reorder(A.$$('.group:not([data-row="none"]) .card', list).map(function (c) { return bySlug(c.dataset.slug); }));
+
+  /* ---------- Drag (alona 2026-11-16): the spot where the painting will land
+     shows as a dark dashed box, the other paintings slide aside and the rows
+     rebuild by shape while dragging. ---------- */
+  var drag = null;
+  list.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || query) return;
+    if (e.target.closest('.move-btn')) return;
+    var c = e.target.closest('.wk-row .card');
+    if (!c) return;
+    var d = { x: e.clientX, y: e.clientY, id: e.pointerId, card: c, slug: c.dataset.slug, touch: e.pointerType === 'touch', active: false, timer: null, lock: 0 };
+    if (d.touch) d.timer = setTimeout(function () { begin(d, d.x, d.y); }, 300);
+    drag = d;
+  });
+  function begin(d, x, y) {
+    if (d.active) return;
+    d.active = true;
+    d.start = slugs(flat());
+    var r = d.card.getBoundingClientRect();
+    d.dx = Math.min(x - r.left, 140); d.dy = Math.min(y - r.top, 120);
+    d.ghost = d.card.cloneNode(true);
+    d.ghost.classList.add('drag-ghost', 'wk-ghost');
+    d.ghost.style.transform = '';
+    var gw = Math.min(r.width, 280);
+    d.ghost.style.width = gw + 'px';
+    var gt = A.$('.thumb', d.ghost);
+    if (gt) gt.style.height = Math.round(gw * Math.min(1.1, A.$('.thumb', d.card).offsetHeight / r.width)) + 'px';
+    document.body.appendChild(d.ghost);
+    d.card.classList.add('placeholder');
+    document.body.classList.add('is-dragging');
+    if (navigator.vibrate && d.touch) navigator.vibrate(10);
+    moveGhost(d, x, y);
+  }
+  function moveGhost(d, x, y) {
+    d.ghost.style.left = (x - d.dx) + 'px';
+    d.ghost.style.top = (y - d.dy) + 'px';
+  }
+  window.addEventListener('pointermove', function (e) {
+    var d = drag;
+    if (!d || e.pointerId !== d.id) return;
+    if (!d.active) {
+      var moved = Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y);
+      if (d.touch) { if (moved > 10) { clearTimeout(d.timer); drag = null; } return; }
+      if (moved < 6) return;
+      begin(d, e.clientX, e.clientY);
+    }
+    e.preventDefault();
+    d.px = e.clientX; d.py = e.clientY;
+    moveGhost(d, e.clientX, e.clientY);
+    target(d);
+    // Scroll near the screen edges.
+    clearInterval(d.scroll);
+    var edge = e.clientY < 110 ? -14 : e.clientY > innerHeight - 70 ? 14 : 0;
+    if (edge) d.scroll = setInterval(function () { window.scrollBy(0, edge); target(d); }, 16);
+  }, { passive: false });
+  window.addEventListener('touchmove', function (e) { if (drag && drag.active) e.preventDefault(); }, { passive: false });
+  // Which place the pointer points at: before or after the card under it.
+  function target(d) {
+    if (Date.now() < d.lock) return;
+    var under = document.elementFromPoint(d.px, d.py);
+    var t = under && under.closest('.wk-row .card');
+    if (!t || t === d.card) return;
+    var r = t.getBoundingClientRect();
+    var after = d.px > r.left + r.width / 2;
+    var order = flat().filter(function (w) { return w.slug !== d.slug; });
+    var i = slugs(order).indexOf(t.dataset.slug);
+    if (i < 0) return;
+    order.splice(after ? i + 1 : i, 0, bySlug(d.slug));
+    if (slugs(order).join() === slugs(flat()).join()) return;
+    chunk(order);
+    layout(true);
+    d.lock = Date.now() + 260; // let the cards finish sliding first
+  }
+  function end(e) {
+    var d = drag;
+    if (!d || (e && e.pointerId !== d.id)) return;
+    clearTimeout(d.timer);
+    clearInterval(d.scroll);
+    drag = null;
+    if (!d.active) return;
+    d.ghost.remove();
+    d.card.classList.remove('placeholder');
+    document.body.classList.remove('is-dragging');
+    // Swallow the click that follows a drag.
+    var stop = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
+    d.card.addEventListener('click', stop, { capture: true, once: true });
+    setTimeout(function () { d.card.removeEventListener('click', stop, { capture: true }); }, 50);
+    if (slugs(flat()).join() !== d.start.join()) remember(d.start, bySlug(d.slug).data.title || d.slug);
+    saveBtn.hidden = orderKey() === before;
+  }
+  window.addEventListener('pointerup', end);
+  window.addEventListener('pointercancel', end);
+  list.addEventListener('contextmenu', function (e) { if (e.target.closest('.wk-row .card')) e.preventDefault(); });
+  list.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  /* ---------- Compact view (alona 2026-11-16): small paintings, so the whole
+     page fits on one screen while sorting. Remembered in this browser. ---------- */
+  var compactBtn = A.$('#compact');
+  function setCompact(on) {
+    list.classList.toggle('compact', on);
+    compactBtn.setAttribute('aria-pressed', String(on));
+    try { localStorage.setItem('hamzaWorksCompact', on ? '1' : ''); } catch (e) {}
+  }
+  if (compactBtn) {
+    compactBtn.addEventListener('click', function () { setCompact(!list.classList.contains('compact')); });
+    try { if (localStorage.getItem('hamzaWorksCompact')) setCompact(true); } catch (e) {}
   }
 
   // Search by title
@@ -147,6 +336,7 @@ A.start(function () {
       render();
       if (query) search(query);
       saveBtn.hidden = true;
+      forget();
       A.toast(toast);
     }).catch(function (e) {
       A.toast('Couldn’t save the order: ' + e.message, true);
@@ -185,6 +375,7 @@ A.start(function () {
       restore(home2);
       group(); before = orderKey(); render(); if (query) search(query);
       saveBtn.hidden = true;
+      forget();
       A.toast('Original order is back. The site updates in about a minute.');
     }).catch(function (e) {
       A.toast('Couldn’t restore the order: ' + e.message, true);
