@@ -393,7 +393,7 @@
           '<div><dt>Dimensions</dt><dd>' + (c && c.width ? c.width + ' × ' + c.height : '–') + '</dd></div></dl>' +
           '<div class="actions">' +
           '<button class="btn" type="button" data-act="replace"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"></path></svg>' + (c ? 'Replace' : 'Upload') + '</button>' +
-          (c ? '<button class="btn ghost" type="button" data-act="remove"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Remove</button>' : '') +
+          (c && (!opts.canRemove || opts.canRemove(c)) ? '<button class="btn ghost" type="button" data-act="remove"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>' + A.esc(opts.removeLabel || 'Remove') + '</button>' : '') +
           '</div><p class="error-text" data-err hidden></p>';
       }
     }
@@ -431,7 +431,7 @@
       if (!b) return;
       if (b.dataset.act === 'replace') input.click();
       if (b.dataset.act === 'remove') {
-        A.confirm('Remove this photo?').then(function (yes) {
+        A.confirm(opts.removeConfirm || 'Remove this photo?', opts.removeOk).then(function (yes) {
           if (!yes) return;
           state.upload = null;
           state.removed = true;

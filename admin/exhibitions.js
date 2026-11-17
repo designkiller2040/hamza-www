@@ -8,6 +8,7 @@ A.start(function () {
   var I = {
     up: '<path d="M12 19V5M6 11l6-6 6 6"></path>',
     down: '<path d="M12 5v14M6 13l6 6 6-6"></path>',
+    edit: '<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"></path>',
     del: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path>',
   };
   function icon(p) { return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
@@ -23,25 +24,15 @@ A.start(function () {
       '<div class="fields">' +
         '<div><label class="lbl" for="t' + n + '">Title</label><input class="field" id="t' + n + '" data-k="title" type="text" placeholder="e.g. Abimal" autocomplete="off"><p class="hint">The „quotes“ are added on the site.</p></div>' +
         '<div><label class="lbl" for="p' + n + '">Place and year</label><input class="field" id="p' + n + '" data-k="place" type="text" placeholder="e.g. St. Elisabeth, Berlin 2026" autocomplete="off"></div>' +
-        '<div class="ex-page" hidden>' +
-          '<p class="ex-page-link"></p>' +
-          '<div><label class="lbl" for="x' + n + '">Text on the page</label><textarea class="field" id="x' + n + '" data-k="text" rows="6" placeholder="About the exhibition…"></textarea><p class="hint">Leave an empty line between paragraphs.</p></div>' +
-          '<div><span class="lbl">More photos on the page</span><div class="ex-photos"></div><p class="hint">The photo on the left opens the page across its full width; these follow, at the menu’s width. Upright photos sit two side by side.</p></div>' +
-        '</div>' +
+        '<div class="ex-edit"><button class="btn" type="button" data-act="page">' + icon(I.edit) + 'Edit page info</button><p class="hint ex-page-link"></p></div>' +
         '<div class="ex-tools">' +
           '<button class="btn icon ghost" type="button" data-act="up" aria-label="Move up">' + icon(I.up) + '</button>' +
           '<button class="btn icon ghost" type="button" data-act="down" aria-label="Move down">' + icon(I.down) + '</button>' +
           '<button class="btn danger" type="button" data-act="del">' + icon(I.del) + 'Remove</button>' +
         '</div>' +
       '</div>';
-    var it = { el: el, x: x || null, photos: [], auto: !x || d.page === 'auto' };
-    if (it.auto) {
-      el.querySelector('.ex-page').hidden = false;
-      el.querySelector('[data-k=text]').value = d.text || '';
-      (d.photos || []).forEach(function (p) { addPhoto(it, p); });
-      photoTile(it);
-      el.querySelector('.ex-page-link').textContent = x ? 'Its page: ' + location.host + '/' + x.slug + '/' : 'Gets its own page when you press Save.';
-    }
+    var it = { el: el, x: x || null, auto: !x || d.page === 'auto' };
+    pageLink(it);
     el.querySelector('[data-k=title]').value = d.title || '';
     el.querySelector('[data-k=place]').value = d.place != null ? d.place : [d.line2, d.line3].filter(Boolean).join(', ');
     it.zone = A.dropZone({ el: el.querySelector('.drop'), metaEl: el.querySelector('.image-meta'), value: d.image, onChange: function () { ed && ed.update(); } });
@@ -49,6 +40,12 @@ A.start(function () {
       var b = e.target.closest('button[data-act]');
       if (!b || b.closest('.image-meta')) return;
       var i = items.indexOf(it);
+      if (b.dataset.act === 'page') {
+        // Its page's own editor: text, main photo, more photos (alona 2026-11-16).
+        if (!it.x || ed.dirty()) { A.toast(it.x ? 'Please press Save first, then Edit page info.' : 'Please press Save first: the page is made when you save.', true); return; }
+        location.href = 'exhibition.html?slug=' + encodeURIComponent(it.x.slug);
+        return;
+      }
       if (b.dataset.act === 'del') {
         var name = clean(el.querySelector('[data-k=title]').value) || 'this exhibition';
         A.confirm('Remove “' + name + '” from the Exhibited page' + (it.auto && it.x ? ' and its page' : '') + '? It goes once you press Save.').then(function (yes) {
@@ -67,33 +64,9 @@ A.start(function () {
     });
     return it;
   }
-  function addPhoto(it, p) {
-    var wrap = document.createElement('div');
-    wrap.className = 'ex-ph';
-    wrap.innerHTML = '<div class="drop"></div><div class="image-meta"></div>';
-    var box = it.el.querySelector('.ex-photos');
-    var tile = box.querySelector('.ex-ph-add');
-    box.insertBefore(wrap, tile || null);
-    var ph = { el: wrap, orig: p || null };
-    ph.zone = A.dropZone({ el: wrap.querySelector('.drop'), metaEl: wrap.querySelector('.image-meta'), value: p || null, onChange: function () {
-      // Remove on a page photo takes the whole slot away.
-      if (!ph.zone.value()) { it.photos.splice(it.photos.indexOf(ph), 1); wrap.remove(); }
-      ed && ed.update();
-    } });
-    it.photos.push(ph);
-    return ph;
-  }
-  function photoTile(it) {
-    var t = document.createElement('button');
-    t.type = 'button';
-    t.className = 'new-card ex-ph-add';
-    t.innerHTML = icon('<path d="M12 5v14M5 12h14"></path>') + 'Add photo';
-    t.addEventListener('click', function () {
-      var ph = addPhoto(it, null);
-      ph.el.querySelector('input[type=file]').click();
-      ed && ed.update();
-    });
-    it.el.querySelector('.ex-photos').appendChild(t);
+  function pageLink(it) {
+    var p = it.x && (it.x.data.link || '').replace(/^\/|\/$/g, '');
+    it.el.querySelector('.ex-page-link').textContent = p ? 'Its page: ' + location.host + '/' + p + '/' : 'Gets its own page when you press Save.';
   }
   function render() {
     box.innerHTML = '';
@@ -107,8 +80,7 @@ A.start(function () {
   function val(it, k) { return it.el.querySelector('[data-k="' + k + '"]').value; }
   function state() {
     return items.map(function (it) {
-      return [it.x ? it.x.slug : 'new', val(it, 'title'), val(it, 'place'), it.zone.signature(), val(it, 'text'),
-        it.photos.map(function (p) { return p.zone.signature(); })];
+      return [it.x ? it.x.slug : 'new', val(it, 'title'), val(it, 'place'), it.zone.signature()];
     });
   }
   function validate() {
@@ -145,17 +117,8 @@ A.start(function () {
         // Its own page, made by the site from content/exhibitions/<slug>.json.
         d.page = 'auto';
         d.link = slug + '/';
-        d.text = val(it, 'text').trim();
-        var kept = {};
-        d.photos = it.photos.map(function (ph, k) {
-          var r = A.imageChanges(ph.zone, null, 'exhibitions', slug + '-' + (k + 2), (ph.orig && ph.orig.alt) || d.title);
-          r.changes.forEach(function (c) { changes.push(c); });
-          if (r.image) kept[r.image.src] = true;
-          return r.image;
-        }).filter(Boolean);
-        ((old && old.photos) || []).forEach(function (p) {
-          if (p && A.ownImage(p.src) && !kept[p.src]) changes.push({ path: p.src, remove: true });
-        });
+        if (d.text == null) d.text = '';
+        if (!d.photos) d.photos = [];
       }
       var img = A.imageChanges(it.zone, old && old.image, 'exhibitions', slug, (old && old.image && old.image.alt) || '');
       d.image = img.image;
@@ -168,16 +131,15 @@ A.start(function () {
       changes.push({ path: x.path, remove: true });
       if (x.data.image && A.ownImage(x.data.image.src)) changes.push({ path: x.data.image.src, remove: true });
       (x.data.photos || []).forEach(function (p) { if (p && A.ownImage(p.src)) changes.push({ path: p.src, remove: true }); });
+      var pe = (x.data.pageEdits && x.data.pageEdits.photos) || {};
+      Object.keys(pe).forEach(function (k) { if (pe[k] && A.ownImage(pe[k].src)) changes.push({ path: pe[k].src, remove: true }); });
     });
     if (!changes.length) return Promise.resolve();
     return A.commit('Update exhibitions', changes).then(function () {
       done.forEach(function (r) {
         r.it.x = { slug: r.slug, path: r.path, data: r.data };
         r.it.zone.saved(r.data.image);
-        if (r.it.auto) {
-          r.it.photos.forEach(function (ph, k) { ph.orig = r.data.photos[k]; ph.zone.saved(r.data.photos[k]); });
-          r.it.el.querySelector('.ex-page-link').textContent = 'Its page: ' + location.host + '/' + r.slug + '/';
-        }
+        pageLink(r.it);
       });
       removed = [];
     });

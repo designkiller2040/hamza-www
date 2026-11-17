@@ -301,8 +301,38 @@ const iconLinks = (r) => [
   `<link rel="icon" type="image/png" sizes="16x16" href="${r}icons/favicon-16.png">`,
   `<link rel="apple-touch-icon" href="${r}icons/apple-touch-icon.png">`,
 ].join('\n  ');
+// Hand-made exhibition pages (src/abimal.html etc.) keep their hand-set layout,
+// but their texts and photos can be changed in the admin ("Edit page info",
+// alona 2026-11-16): content/exhibitions/<x>.json "pageEdits" = {texts: {"<n>": text},
+// photos: {"<original src>": {src, width, height, alt}}}. Texts are numbered in page
+// order (label, title, paragraphs, credit); admin/exhibition.js numbers them the same way.
+const EX_TEXT = /<(h1|p) class="(ex-label|ex-title|ex-p|rc-credit)\b([^"]*)"([^>]*)>([\s\S]*?)<\/\1>/g;
+const EX_IMG = /<img src="\{\{root\}\}([^"]+)" alt="([^"]*)" width="(\d+)" height="(\d+)"/g;
+const pageEdits = {};
+for (const e of exhibitions) {
+  const page = String(e.link || '').replace(/^\/|\/$/g, '');
+  if (e.pageEdits && page && e.page !== 'auto') pageEdits[page] = e.pageEdits;
+}
+function applyPageEdits(html, edits) {
+  const texts = edits.texts || {};
+  const photos = edits.photos || {};
+  let i = 0;
+  html = html.replace(EX_TEXT, (m, tag, cls, rest, attrs) => {
+    const k = String(i++);
+    if (typeof texts[k] !== 'string') return m;
+    const t = esc(texts[k].trim()).replace(/\{/g, '&#123;').replace(/\}/g, '&#125;').replace(/\n/g, '<br>');
+    return `<${tag} class="${cls}${rest}"${attrs}>${t}</${tag}>`;
+  });
+  return html.replace(EX_IMG, (m, src) => {
+    const p = photos[src];
+    if (!p || !p.src) return m;
+    return `<img src="{{root}}${esc(String(p.src).replace(/^\.?\//, ''))}" alt="${esc(p.alt || '')}" width="${Number(p.width) || 1}" height="${Number(p.height) || 1}"`;
+  });
+}
+
 function render(file, root, extra = {}) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
+  if (pageEdits[basename(file, '.html')]) html = applyPageEdits(html, pageEdits[basename(file, '.html')]);
   html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
   html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);

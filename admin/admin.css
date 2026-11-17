@@ -370,3 +370,14 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .wk-row .card:hover .thumb { background: #ececec; }
 .wk-row .thumb img { max-width: 80%; max-height: 80%; }
 @media (max-width: 600px) { .cards.wk-row { --g: 12px; } .wk-row .thumb { border-radius: 10px; } .wk-row .tags { display: none; } }
+
+/* Exhibited tab: "Edit page info" opens each exhibition's own page (alona 2026-11-16) */
+.ex-edit { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.ex-edit .hint { margin: 0; }
+.ep-head { display: flex; flex-direction: column; gap: 6px; }
+.ep-head .hint { margin: 0; max-width: 640px; }
+.ep-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--grey); text-decoration: none; }
+.ep-back:hover { color: var(--ink); }
+.ep-grid { margin-top: 32px; }
+.ep-more { margin-top: 48px; }
+.ep-photos { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
