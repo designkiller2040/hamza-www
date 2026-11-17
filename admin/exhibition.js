@@ -210,6 +210,7 @@ A.start(function () {
       ed && ed.update();
     });
     $('photos-hint').textContent = 'Horizontal photos go one per row, vertical ones two side by side, as on the page. Drag a photo to move it.';
+    $('cols-hint').textContent = 'Text in only two columns? The page uses the two-column layout, like Cold Rush: first word, two texts, second word.';
   }
   function saveAuto(d) {
     var changes = [], kept = {};
@@ -253,9 +254,19 @@ A.start(function () {
         }).join('') + '</div>';
       }).join('') + '</div>';
       texts.filter(function (t) { return t.kind === 'credit'; }).forEach(function (t) { body += '<div class="exg-text">' + paras(t.el.value) + '</div>'; });
+    } else if (cols.filter(function (c) { return c.text.value.trim(); }).length === 2) {
+      // Only two columns with text: the Cold Rush layout (alona 2026-11-17).
+      var f = cols.filter(function (c) { return c.text.value.trim(); });
+      var wd = function (c, cls) { return c.word.value.trim() ? '<p class="exg-word ' + cls + '">' + esc(c.word.value.trim()) + '</p>' : ''; };
+      var ws = cols.filter(function (c) { return c.word.value.trim(); });
+      body += '<div class="exg-cols two">' + (ws[0] ? wd(ws[0], 'ew1') : '') + '<div class="exg-col ec1">' + paras(f[0].text.value) + '</div>' +
+        '<div class="exg-col ec2">' + paras(f[1].text.value) + '</div>' + (ws.length > 1 ? wd(ws[ws.length - 1], 'ew2') : '') + '</div>';
     } else if (cols.some(function (c) { return c.word.value.trim() || c.text.value.trim(); })) {
-      body += '<div class="exg-cols">' + cols.map(function (c) {
-        return '<div class="exg-col">' + (c.word.value.trim() ? '<p class="exg-word">' + esc(c.word.value.trim()) + '</p>' : '') + paras(c.text.value) + '</div>';
+      // Three columns: texts 1 and 3 on top, words in a row, text 2 under the middle word.
+      body += '<div class="exg-cols three">' + [0, 2, 1].map(function (i) {
+        return cols[i].text.value.trim() ? '<div class="exg-col ec' + (i + 1) + '">' + paras(cols[i].text.value) + '</div>' : '';
+      }).join('') + cols.map(function (c, i) {
+        return c.word.value.trim() ? '<p class="exg-word ew' + (i + 1) + '">' + esc(c.word.value.trim()) + '</p>' : '';
       }).join('') + '</div>';
     }
     var rest = (hand ? photos.slice(1) : photos).map(function (p) { var c = p.zone.value(); return fig(c, shapeOf(c)); }).join('');

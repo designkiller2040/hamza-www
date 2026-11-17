@@ -2662,3 +2662,35 @@ body {
   .exg-word { margin-bottom: 16px; font-size: 48px; line-height: 48px; letter-spacing: -0.03em; }
   .exg-col .ex-p { font-size: 16px; line-height: 20px; margin-bottom: 16px; }
 }
+
+/* Only two columns of text: Cold Rush layout (alona 2026-11-17):
+   word (x88) | text (x315, 312 wide) | text (x796, 401 wide) | word, right-aligned. */
+.exg-cols.two { grid-template-columns: calc(var(--U) * 227) calc(var(--U) * 312) calc(var(--U) * 401) minmax(0, 1fr); column-gap: 0; }
+.exg-cols.two .ec1 { grid-column: 2; }
+.exg-cols.two .ec2 { grid-column: 3; margin-left: calc(var(--U) * 169); width: calc(var(--U) * 401); }
+.exg-cols.two .ew1 { grid-column: 1; grid-row: 1; }
+.exg-cols.two .ew2 { grid-column: 4; grid-row: 1; text-align: right; }
+.exg-cols.two .ec1, .exg-cols.two .ec2 { grid-row: 1; }
+.exg-cols.two .exg-word { margin: 0; }
+@media (max-width: 991.98px) {
+  .exg-cols.two { grid-template-columns: minmax(0, 1fr); }
+  .exg-cols.two > * { grid-column: 1 !important; grid-row: auto !important; margin-left: 0 !important; width: auto !important; text-align: left !important; }
+}
+
+/* Three columns: Regards Croisés layout (alona 2026-11-17): texts 1 and 3 on top,
+   big words in a row under them, text 2 under the middle word. */
+.exg-cols.three .ec1 { grid-column: 1; grid-row: 1; }
+.exg-cols.three .ec3 { grid-column: 3; grid-row: 1; }
+.exg-cols.three .ew1 { grid-column: 1; grid-row: 2; }
+.exg-cols.three .ew2 { grid-column: 2; grid-row: 2; }
+.exg-cols.three .ew3 { grid-column: 3; grid-row: 2; }
+.exg-cols.three .ec2 { grid-column: 2; grid-row: 3; }
+.exg-cols.three .exg-word { margin: calc(var(--U) * 40) 0 calc(var(--U) * 60); }
+@media (max-width: 991.98px) {
+  .exg-cols.three > * { grid-column: 1 !important; grid-row: auto !important; }
+  .exg-cols.three .exg-word { margin: 0 0 -16px; }
+  .exg-cols.three { display: flex; flex-direction: column; }
+  .exg-cols.three .ew1 { order: 1; } .exg-cols.three .ec1 { order: 2; }
+  .exg-cols.three .ew2 { order: 3; } .exg-cols.three .ec2 { order: 4; }
+  .exg-cols.three .ew3 { order: 5; } .exg-cols.three .ec3 { order: 6; }
+}

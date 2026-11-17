@@ -406,12 +406,19 @@ function exhibitionPageBody(e) {
   // Three columns, each a big word over its text (alona's admin design 2026-11-17).
   const paras = (t) => String(t || '').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
     .map((x) => `        <p class="ex-p">${esc(x).replace(/\n/g, '<br>')}</p>`).join('\n');
-  const cols = (e.columns || []).some((c) => c && (String(c.word || '').trim() || String(c.text || '').trim()))
-    ? `    <div class="exg-cols">\n${[0, 1, 2].map((i) => {
+  // Only two columns with text: the Cold Rush layout, word | text | text | word (alona 2026-11-17).
+  const filled = (e.columns || []).filter((c) => c && String(c.text || '').trim());
+  const word = (c, cls) => String((c && c.word) || '').trim() ? `      <p class="exg-word ${cls}" aria-hidden="true">${esc(String(c.word).trim())}</p>\n` : '';
+  const words = (e.columns || []).filter((c) => c && String(c.word || '').trim());
+  const cols = filled.length === 2
+    ? `    <div class="exg-cols two">\n${word(words[0], 'ew1')}      <div class="exg-col ec1">\n${paras(filled[0].text)}\n      </div>\n      <div class="exg-col ec2">\n${paras(filled[1].text)}\n      </div>\n${words.length > 1 ? word(words[words.length - 1], 'ew2') : ''}    </div>`
+    : (e.columns || []).some((c) => c && (String(c.word || '').trim() || String(c.text || '').trim()))
+    // Three columns: Regards Croisés layout (alona 2026-11-17): texts 1 and 3 on top,
+    // the three big words in a row, text 2 under the middle word.
+    ? `    <div class="exg-cols three">\n${[0, 2, 1].map((i) => {
       const c = (e.columns || [])[i] || {};
-      const w = String(c.word || '').trim();
-      return `      <div class="exg-col">\n${w ? `        <p class="exg-word" aria-hidden="true">${esc(w)}</p>\n` : ''}${paras(c.text)}\n      </div>`;
-    }).join('\n')}\n    </div>`
+      return String(c.text || '').trim() ? `      <div class="exg-col ec${i + 1}">\n${paras(c.text)}\n      </div>\n` : '';
+    }).join('')}${[0, 1, 2].map((i) => word((e.columns || [])[i], 'ew' + (i + 1))).join('')}    </div>`
     : '';
   return [
     `    <p class="exg-label">${exLabel(e)}</p>`,
