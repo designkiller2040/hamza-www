@@ -323,6 +323,13 @@ function applyPageEdits(html, edits) {
     const t = esc(texts[k].trim()).replace(/\{/g, '&#123;').replace(/\}/g, '&#125;').replace(/\n/g, '<br>');
     return `<${tag} class="${cls}${rest}"${attrs}>${t}</${tag}>`;
   });
+  // Big words ("Ve", "ne", "rate"…), keyed "w0", "w1"… in page order.
+  let w = 0;
+  html = html.replace(/<span class="ex-word\b([^"]*)"([^>]*)>([^<]*)<\/span>/g, (m, rest, attrs) => {
+    const k = 'w' + (w++);
+    if (typeof texts[k] !== 'string') return m;
+    return `<span class="ex-word${rest}"${attrs}>${esc(texts[k].trim()).replace(/\{/g, '&#123;').replace(/\}/g, '&#125;')}</span>`;
+  });
   return html.replace(EX_IMG, (m, src) => {
     const p = photos[src];
     if (!p || !p.src) return m;

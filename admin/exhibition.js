@@ -54,25 +54,61 @@ A.start(function () {
   function loadHand(html) {
     var edits = me.data.pageEdits || {};
     var et = edits.texts || {}, ep = edits.photos || {};
-    var m, i = 0, para = 0;
-    $('cols').hidden = true;
-    $('texts').hidden = false;
-    $('add-images').hidden = true;
+    var m, i = 0;
+    // Same layout as a new exhibition (alona 2026-11-17): the page title under
+    // Place, then three columns (big word over its paragraphs, by where they sit
+    // on the page), credit after. Texts keep their hand-set places on the page.
+    function colOf(attrs, fallback) {
+      var x = /--x:\s*(\d+)/.exec(attrs || '');
+      if (!x) return fallback;
+      x = Number(x[1]);
+      return x < 400 ? 0 : x < 900 ? 1 : 2;
+    }
+    function rowsFor(v) { return Math.min(16, Math.max(2, Math.ceil(v.length / 46) + (v.match(/\n/g) || []).length)); }
+    function field(box, label, k, def, cls) {
+      var el = document.createElement('div');
+      el.innerHTML = '<label class="lbl" for="tx' + k + '"></label>' + (cls ? '<input class="field ' + cls + '" type="text" autocomplete="off" id="tx' + k + '">' : '<textarea class="field" id="tx' + k + '"></textarea>');
+      el.querySelector('label').textContent = label;
+      var f = el.querySelector('.field');
+      f.value = typeof et[k] === 'string' ? et[k] : def;
+      if (!cls) f.rows = rowsFor(f.value);
+      box.appendChild(el);
+      return f;
+    }
+    var colBoxes = [0, 1, 2].map(function (n) {
+      var c = document.createElement('div');
+      c.className = 'ep-col';
+      c.innerHTML = '<span class="lbl-main">Column ' + (n + 1) + '</span>';
+      $('cols').appendChild(c);
+      return c;
+    });
+    var after = document.createElement('div');
+    after.className = 'fields ep-after';
+    // Big words first, so each column starts with its word.
+    var WORD_RE = /<span class="ex-word\b([^"]*)"([^>]*)>([^<]*)<\/span>/g;
+    var w = 0;
+    WORD_RE.lastIndex = 0;
+    while ((m = WORD_RE.exec(html))) {
+      var wk = 'w' + (w++), wdef = fromHTML(m[3]), wc = colOf(m[2], 0);
+      texts.push({ k: wk, def: wdef, kind: 'word', col: wc, el: field(colBoxes[wc], 'Big word', wk, wdef, 'ep-word') });
+    }
+    var last = 0;
     TEXT_RE.lastIndex = 0;
     while ((m = TEXT_RE.exec(html))) {
       var k = String(i++);
       if (m[2] === 'ex-label') continue; // "Latest / Previous exhibition" is set by the site
       var def = fromHTML(m[5]);
-      var label = m[2] === 'ex-title' ? 'Title on the page' : m[2] === 'rc-credit' ? 'Credit' : 'Paragraph ' + (++para);
-      var el = document.createElement('div');
-      el.innerHTML = '<label class="lbl" for="tx' + k + '"></label><textarea class="field" id="tx' + k + '"></textarea>';
-      el.querySelector('label').textContent = label;
-      var ta = el.querySelector('textarea');
-      ta.value = typeof et[k] === 'string' ? et[k] : def;
-      ta.rows = Math.min(14, Math.max(2, Math.ceil(ta.value.length / 90) + (ta.value.match(/\n/g) || []).length));
-      $('texts').appendChild(el);
-      texts.push({ k: k, def: def, el: ta });
+      if (m[2] === 'ex-title') {
+        texts.push({ k: k, def: def, kind: 'title', el: field($('head-fields'), 'Title on the page', k, def) });
+      } else if (m[2] === 'rc-credit') {
+        texts.push({ k: k, def: def, kind: 'credit', el: field(after, 'Credit', k, def) });
+      } else {
+        last = colOf(m[4], last);
+        texts.push({ k: k, def: def, kind: 'p', col: last, el: field(colBoxes[last], 'Text', k, def) });
+      }
     }
+    if (after.children.length) $('cols').insertAdjacentElement('afterend', after);
+    $('add-images').hidden = true;
     var list = [];
     IMG_RE.lastIndex = 0;
     while ((m = IMG_RE.exec(html))) {
@@ -99,7 +135,7 @@ A.start(function () {
       photos.push(p);
     });
     $('ep-hint').hidden = false;
-    $('ep-hint').textContent = 'This page’s layout was set by hand, so every text and photo keeps its place. Keep texts about the same length so they fit. Title and Place are what the Exhibited page shows.';
+    $('ep-hint').textContent = 'This page was laid out by hand: texts and photos keep their places, so keep texts about the same length. Title and Place are what the Exhibited page shows.';
     $('photos-hint').textContent = 'Each photo keeps its place and frame on the page: you can replace one, not add or remove. “Original” brings the first photo back.';
   }
   function saveHand(d) {
@@ -209,8 +245,14 @@ A.start(function () {
     var paras = function (t) { return t.split(/\n\s*\n/).map(function (x) { return x.trim(); }).filter(Boolean)
       .map(function (x) { return '<p class="ex-p">' + esc(x).replace(/\n/g, '<br>') + '</p>'; }).join(''); };
     if (hand) {
-      body += '<div class="exg-text">' + texts.filter(function (t) { return !/^Title/.test(t.el.labels[0].textContent); })
-        .map(function (t) { return paras(t.el.value); }).join('') + '</div>';
+      var pt = texts.filter(function (t) { return t.kind === 'title'; })[0];
+      if (pt) body = body.replace(/<h1 class="exg-title">[\s\S]*?<\/h1>/, '<h1 class="exg-title">' + esc(pt.el.value).replace(/\n/g, '<br>') + '</h1>');
+      body += '<div class="exg-cols">' + [0, 1, 2].map(function (n) {
+        return '<div class="exg-col">' + texts.filter(function (t) { return t.col === n; }).map(function (t) {
+          return t.kind === 'word' ? '<p class="exg-word">' + esc(t.el.value) + '</p>' : paras(t.el.value);
+        }).join('') + '</div>';
+      }).join('') + '</div>';
+      texts.filter(function (t) { return t.kind === 'credit'; }).forEach(function (t) { body += '<div class="exg-text">' + paras(t.el.value) + '</div>'; });
     } else if (cols.some(function (c) { return c.word.value.trim() || c.text.value.trim(); })) {
       body += '<div class="exg-cols">' + cols.map(function (c) {
         return '<div class="exg-col">' + (c.word.value.trim() ? '<p class="exg-word">' + esc(c.word.value.trim()) + '</p>' : '') + paras(c.text.value) + '</div>';

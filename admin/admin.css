@@ -435,3 +435,4 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 @media (max-width: 860px) {
   .ep-grid, .ep-cols { grid-template-columns: minmax(0, 1fr); }
 }
+.ep-after { margin-top: 24px; max-width: 880px; }
