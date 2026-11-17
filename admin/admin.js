@@ -446,6 +446,8 @@
       // For the "has something changed" check.
       signature: function () { var c = current(); return c ? (c.preview || c.src) : ''; },
       hasUpload: function () { return !!state.upload; },
+      // Start with a file picked elsewhere (e.g. "Add images" with several files).
+      take: take,
       // Called after a save, with the stored image.
       saved: function (v) { state.saved = v; state.upload = null; state.removed = false; render(); },
     };

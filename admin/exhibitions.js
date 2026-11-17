@@ -144,12 +144,10 @@ A.start(function () {
       removed = [];
     });
   }
+  // "Add exhibition" opens the page editor (alona's design 2026-11-17).
   A.$('#add').addEventListener('click', function () {
-    var it = make(null);
-    items.unshift(it);
-    render();
-    ed.update();
-    it.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (ed && ed.dirty()) { A.toast('Please press Save first, then Add exhibition.', true); return; }
+    location.href = 'exhibition.html?new=1';
   });
 
   return A.readFolder('content/exhibitions').then(function (all) {

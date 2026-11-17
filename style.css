@@ -2633,3 +2633,32 @@ body {
   .exg-text .ex-p { font-size: 16px; line-height: 20px; margin-bottom: 16px; }
   .exg-photos { gap: 16px; }
 }
+
+/* Admin-made exhibition pages: three columns, a big word over each text
+   (alona's admin design, 2026-11-17), on the 88 px grid like What We Venerate. */
+.exg-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: calc(var(--U) * 68);
+  margin: calc(var(--U) * 130) 88px 0;
+  align-items: start;
+}
+.exg-word {
+  margin: 0 0 calc(var(--U) * 35);
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: calc(var(--U) * 79);
+  line-height: calc(var(--U) * 79);
+  letter-spacing: calc(var(--U) * -1.3);
+  color: rgba(0, 0, 0, 0.8);
+}
+.exg-col .ex-p {
+  margin: 0 0 calc(var(--U) * 19);
+  font-size: calc(var(--U) * 16);
+  line-height: calc(var(--U) * 19);
+}
+@media (max-width: 991.98px) {
+  .exg-cols { grid-template-columns: minmax(0, 1fr); row-gap: 32px; margin: 48px 0 0; }
+  .exg-word { margin-bottom: 16px; font-size: 48px; line-height: 48px; letter-spacing: -0.03em; }
+  .exg-col .ex-p { font-size: 16px; line-height: 20px; margin-bottom: 16px; }
+}

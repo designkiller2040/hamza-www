@@ -333,6 +333,9 @@ function applyPageEdits(html, edits) {
 function render(file, root, extra = {}) {
   let html = read(file).replace(/^<!-- Template:.*-->\n/m, '');
   if (pageEdits[basename(file, '.html')]) html = applyPageEdits(html, pageEdits[basename(file, '.html')]);
+  if (exByPage[basename(file, '.html')] && exByPage[basename(file, '.html')].page !== 'auto') {
+    html = html.replace(/(<p class="ex-label\b[^"]*"[^>]*>)[\s\S]*?(<\/p>)/, `$1${exLabel(exByPage[basename(file, '.html')])}$2`);
+  }
   html = html.replace(/(href="(?:\{\{root\}\})?style\.css)"/g, `$1?v=${cssVersion}"`);
   // Gentle slide-in, only the first time a page is opened in a visit (alona, 2026-11-14).
   html = html.replace('</head>', `  <script>${introScript}</script>\n</head>`);
@@ -378,6 +381,11 @@ const pages = readdirSync(join(ROOT, 'src')).filter((f) => f.endsWith('.html') &
 // Exhibition pages made from the admin ("page": "auto" in content/exhibitions/*.json),
 // built from src/_exhibition.html to /<slug>/. Photos: the exhibition's own photo
 // first (full grid width), then "photos" (menu width; portraits side by side).
+// The exhibition first on the Exhibited page (the latest added) is "Latest exhibition",
+// every other one "Previous exhibition" (alona 2026-11-17), hand-made pages included.
+const exLabel = (e) => (e === exhibitions[0] ? 'Latest exhibition' : 'Previous exhibition');
+const exByPage = {};
+for (const e of exhibitions) { const pg = String(e.link || '').replace(/^\/|\/$/g, ''); if (pg) exByPage[pg] = e; }
 const autoExhibitions = exhibitions.filter((e) => e.page === 'auto' && !existsSync(join(ROOT, 'src', e.slug + '.html')));
 function exhibitionPageBody(e) {
   const title = String(e.title || '').trim().replace(/^[„“"']+|[“”"']+$/g, '');
@@ -388,11 +396,22 @@ function exhibitionPageBody(e) {
     .map((t) => `      <p class="ex-p">${esc(t).replace(/\n/g, '<br>')}</p>`).join('\n');
   const photos = (e.photos || []).filter((p) => p && p.src)
     .map((p) => pic(p, p.height > p.width ? 'tall' : 'wide', true)).join('\n');
+  // Three columns, each a big word over its text (alona's admin design 2026-11-17).
+  const paras = (t) => String(t || '').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
+    .map((x) => `        <p class="ex-p">${esc(x).replace(/\n/g, '<br>')}</p>`).join('\n');
+  const cols = (e.columns || []).some((c) => c && (String(c.word || '').trim() || String(c.text || '').trim()))
+    ? `    <div class="exg-cols">\n${[0, 1, 2].map((i) => {
+      const c = (e.columns || [])[i] || {};
+      const w = String(c.word || '').trim();
+      return `      <div class="exg-col">\n${w ? `        <p class="exg-word" aria-hidden="true">${esc(w)}</p>\n` : ''}${paras(c.text)}\n      </div>`;
+    }).join('\n')}\n    </div>`
+    : '';
   return [
-    `    <p class="exg-label">Exhibition</p>`,
+    `    <p class="exg-label">${exLabel(e)}</p>`,
     `    <h1 class="exg-title">${esc(title)}${e.place ? ' - ' + esc(e.place) : ''}</h1>`,
     pic(e.image, 'exg-first', false),
-    text ? `    <div class="exg-text">\n${text}\n    </div>` : '',
+    cols,
+    !cols && text ? `    <div class="exg-text">\n${text}\n    </div>` : '',
     photos ? `    <div class="exg-photos">\n${photos.replace(/^/gm, '  ')}\n    </div>` : '',
   ].filter(Boolean).join('\n');
 }
