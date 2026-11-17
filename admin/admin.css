@@ -468,3 +468,30 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .pick-thumb img { max-width: 80%; max-height: 80%; display: block; }
 .pick-tile:hover .pick-thumb { background: #e6e6e6; }
 .pick-title { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Works tab (alona 2026-11-17): rows stay put; a painting that no longer fits
+   its row waits in a small panel on the right until it's dragged into a free
+   place. */
+.wk-waiting { position: fixed; right: 16px; top: 96px; z-index: 120; width: 150px; max-height: calc(100vh - 140px); overflow: auto; box-sizing: border-box; padding: 12px; border-radius: 14px; background: #fff; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12); display: none; }
+.wk-waiting.show, body.is-dragging .wk-waiting { display: block; }
+body.is-dragging .wk-waiting:not(.show) .wk-waiting-hint::before { content: "Drop here to put a painting aside. "; }
+.wk-waiting-head { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: 17px; font-weight: 500; line-height: 1.15; }
+.wk-waiting-hint { margin: 4px 0 10px; font-size: 11px; color: var(--grey); }
+.wk-waiting-list { display: flex; flex-direction: column; gap: 10px; }
+.wk-waiting .card { gap: 4px; }
+.wk-waiting .thumb { aspect-ratio: auto; height: 90px; border-radius: 8px; }
+.wk-waiting .thumb img { max-width: 84%; max-height: 84%; }
+.wk-waiting .card-title { font-size: 12px; }
+.wk-waiting .tags, .wk-waiting .move, .wk-waiting .badge { display: none; }
+.wk-waiting .card.placeholder .thumb { background: transparent; border: 2px dashed var(--ink); }
+.wk-waiting .card.placeholder .thumb > *, .wk-waiting .card.placeholder .card-title { visibility: hidden; }
+@media (min-width: 1100px) { body.has-waiting .page { padding-right: 176px; } }
+@media (max-width: 1099px) {
+  .wk-waiting { top: auto; bottom: 16px; left: 16px; right: 16px; width: auto; max-height: 160px; }
+  .wk-waiting-list { flex-direction: row; overflow-x: auto; }
+  .wk-waiting .card { flex: 0 0 96px; }
+  body.has-waiting .page { padding-bottom: 180px; }
+}
+.wk-newrow { display: none; height: 64px; border: 1.5px dashed #bdbdbd; border-radius: 16px; align-items: center; justify-content: center; font-size: 13px; color: var(--grey); }
+body.is-dragging .wk-newrow { display: flex; }
+.badge:empty { display: none; }

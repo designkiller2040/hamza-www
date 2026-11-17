@@ -786,15 +786,22 @@
   // order stays exactly as it was; the same paintings in another order keep
   // the row's top alignment and lifts.
   H2.reflow = function (data, order, workOf, extra) {
+    var groups = H2.split(order.map(function (s) { return workOf(s) || { slug: s }; }))
+      .map(function (items) { return items.map(function (w) { return w.slug; }); });
+    return H2.regroup(data, groups, extra);
+  };
+  // Write rows given as groups of slugs (the admin Works tab keeps its rows
+  // fixed: alona 2026-11-17). Sizes, kept rows, lifts: as in reflow.
+  H2.regroup = function (data, groups, extra) {
     var entries = {}, old = {};
     data.rows.forEach(function (r) {
       old[H2.slots(r).map(function (p) { entries[p.slug] = p; return p.slug; }).join(',')] = r;
     });
     Object.keys(extra || {}).forEach(function (s) { entries[s] = extra[s]; });
-    order = order.filter(function (s) { return entries[s]; });
     var sorted = function (a) { return a.slice().sort().join(','); };
-    data.rows = H2.split(order.map(function (s) { return workOf(s) || { slug: s }; })).map(function (items) {
-      var slugs = items.map(function (w) { return w.slug; });
+    groups = groups.map(function (g) { return g.filter(function (s) { return entries[s]; }); })
+      .filter(function (g) { return g.length; });
+    data.rows = groups.map(function (slugs) {
       if (old[slugs.join(',')]) return old[slugs.join(',')];
       var same = data.rows.filter(function (r) { return sorted(r.works.map(function (p) { return p.slug; })) === sorted(slugs); })[0];
       var row = H2.place({ height: 0, works: slugs.map(function (slug) {

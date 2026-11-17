@@ -122,15 +122,25 @@ A.start(function () {
         var extra = {};
         extra[slug] = { w: sh.w, h: Math.round(sh.w / ratio) };
         A.H2.remove(h2, slug);
-        // First on the page, or into the empty place it was added from (?before= / ?after=).
-        var order = A.H2.order(h2), at = 0;
-        if (A.param('before') && order.indexOf(A.param('before')) >= 0) at = order.indexOf(A.param('before'));
-        else if (A.param('after') && order.indexOf(A.param('after')) >= 0) at = order.indexOf(A.param('after')) + 1;
-        order.splice(at, 0, slug);
-        A.H2.reflow(h2, order, function (s) {
-          if (s === slug) return { slug: slug, data: data };
-          return works.filter(function (w) { return w.slug === s; })[0];
-        }, extra);
+        // Into the free place it was added from (?before= / ?after=): only that
+        // row changes. Otherwise first on the page, rows rebuilt by shape.
+        var ref = A.param('before') || A.param('after');
+        var groups = h2.rows.map(function (r) { return A.H2.slots(r).map(function (p) { return p.slug; }); });
+        var g = ref && groups.filter(function (x) { return x.indexOf(ref) >= 0; })[0];
+        var workOf = function (s) { return s === slug ? { slug: slug, data: data } : works.filter(function (w) { return w.slug === s; })[0]; };
+        if (g) g.splice(g.indexOf(ref) + (A.param('before') ? 0 : 1), 0, slug);
+        var fits = g && g.length <= (g.some(function (s) { return A.H2.isWide(workOf(s)); }) ? 2 : 3);
+        if (fits) {
+          A.H2.regroup(h2, groups, extra);
+        } else if (g) {
+          // Doesn't fit that row after all: put it there in the order, rows rebuilt by shape.
+          A.H2.reflow(h2, groups.reduce(function (a, x) { return a.concat(x); }, []), workOf, extra);
+        } else {
+          A.H2.reflow(h2, [slug].concat(A.H2.order(h2)), function (s) {
+            if (s === slug) return { slug: slug, data: data };
+            return works.filter(function (w) { return w.slug === s; })[0];
+          }, extra);
+        }
       } else if (moved) {
         var target = pick === 'new' || pick === 'none' ? null : h2.rows[Number(pick)];
         A.H2.remove(h2, slug);
