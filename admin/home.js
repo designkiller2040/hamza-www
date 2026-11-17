@@ -66,7 +66,7 @@ A.start(function () {
   } });
 
   function state() {
-    return [on(), $('speed').value, $('pageTitle').value, $('description').value, items.map(function (it) { return it.zone.signature(); })];
+    return [on(), $('speed').value, items.map(function (it) { return it.zone.signature(); })];
   }
   function save() {
     var next = JSON.parse(JSON.stringify(data));
@@ -88,8 +88,6 @@ A.start(function () {
     next.hero = { image: first.image, captionLeft: first.captionLeft || '', captionRight: first.captionRight || '', moreSlides: slides.slice(1) };
     next.slideshow = on();
     next.slideSeconds = speed();
-    next.pageTitle = $('pageTitle').value.trim();
-    next.description = $('description').value.trim();
     // Photos the admin uploaded that are gone now.
     var old = [data.hero].concat((data.hero && data.hero.moreSlides) || []);
     old.forEach(function (s) {
@@ -111,8 +109,6 @@ A.start(function () {
     $('speed').value = data.slideSeconds || 5;
     items = [make({ image: h.image, captionLeft: h.captionLeft, captionRight: h.captionRight })].concat(more.map(make))
       .filter(function (it) { return it.zone.value(); });
-    $('pageTitle').value = data.pageTitle || '';
-    $('description').value = data.description || '';
     render();
   }
 
