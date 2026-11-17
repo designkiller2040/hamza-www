@@ -29,8 +29,11 @@ A.start(function () {
   var split = A.H2.split;
   // Put a flat order back into rows (the preview in this list).
   function chunk(order) {
-    var none = rows.filter(function (r) { return r.row === 'none'; });
-    rows = split(order).map(function (items, i) { return { row: 'r' + i, items: items }; }).concat(none);
+    var on = {};
+    order.forEach(function (w) { on[w.slug] = 1; });
+    var loose = works.filter(function (w) { return !on[w.slug]; });
+    rows = split(order).map(function (items, i) { return { row: 'r' + i, items: items }; });
+    if (loose.length) rows.push({ row: 'none', items: loose });
   }
   function orderKey() { return rows.map(function (r) { return r.items.map(function (w) { return w.slug; }).join(','); }).join('|'); }
 
@@ -92,9 +95,10 @@ A.start(function () {
           n++;
           A.$('.badge', c).textContent = n;
           c.classList.toggle('wide', A.H2.isWide(w));
-          c.style.gridColumn = 'span ' + (A.H2.isWide(w) ? (wides === 2 ? 3 : 4) : 2);
+          c.style.gridColumn = 'span ' + spanOf(w, wides);
           box.appendChild(c);
         });
+        addSpot(r, box);
       } else {
         g.className = 'group';
         g.innerHTML = '<div class="group-head"><h3>Not on the Works page</h3><span>' + r.items.length + (r.items.length === 1 ? ' work' : ' works') + '</span></div>';
@@ -132,6 +136,100 @@ A.start(function () {
 
   function slugs(order) { return order.map(function (w) { return w.slug; }); }
 
+  /* ---------- Empty spots (alona 2026-11-17) ----------
+     A row that isn't full shows a quiet note in its free place: two square or
+     vertical paintings sit left and right with space between them (as on the
+     page), or he can add one there: a new painting, or one he already
+     uploaded. Moving one from another row marks the place it came from, so he
+     can fill that too or leave it as it is. */
+  // { prev, next, title } around the place a painting left. Kept for this
+  // browser tab, so the mark is still there after saving or adding a painting.
+  var leftFrom = null;
+  try { leftFrom = JSON.parse(sessionStorage.getItem('hamzaWorksLeft') || 'null'); } catch (e) {}
+  function setLeft(v) {
+    leftFrom = v;
+    try { if (v) sessionStorage.setItem('hamzaWorksLeft', JSON.stringify(v)); else sessionStorage.removeItem('hamzaWorksLeft'); } catch (e) {}
+  }
+  function spanOf(w, wides) { return A.H2.isWide(w) ? (wides === 2 ? 3 : 4) : 2; }
+  function addSpot(r, box) {
+    var wides = r.items.filter(A.H2.isWide).length;
+    var used = r.items.reduce(function (a, w) { return a + spanOf(w, wides); }, 0);
+    if (used >= 6) return;
+    var pair = r.items.length === 2 && !wides;
+    var slugsHere = r.items.map(function (w) { return w.slug; });
+    var marked = leftFrom && (slugsHere.indexOf(leftFrom.prev) >= 0 || slugsHere.indexOf(leftFrom.next) >= 0);
+    var el = document.createElement('div');
+    el.className = 'wk-spot' + (marked ? ' marked' : '');
+    el.style.gridColumn = 'span 2';
+    if (pair) el.dataset.before = r.items[1].slug; else el.dataset.after = r.items[r.items.length - 1].slug;
+    el.dataset.row = slugsHere.join(',');
+    var text = marked ? '“' + A.esc(leftFrom.title) + '” was here.'
+      : pair ? 'These two paintings sit left and right, with space in the middle.'
+      : 'There’s room for one more painting here.';
+    el.innerHTML = '<div class="wk-spot-box"><p>' + text + '<br><span>' + (marked ? 'Add a painting here, or leave it as it is.' : 'Or add one here:') + '</span></p>' +
+      '<div class="wk-spot-actions"><button type="button" class="btn spot-new">New painting</button><button type="button" class="btn spot-pick">Choose from works</button>' +
+      (marked ? '<button type="button" class="btn ghost spot-leave">Leave it</button>' : '') + '</div></div>';
+    if (pair) box.insertBefore(el, box.children[1]); else box.appendChild(el);
+  }
+  function spotClick(e) {
+    var spot = e.target.closest('.wk-spot');
+    if (!spot) return false;
+    e.preventDefault(); e.stopPropagation();
+    if (e.target.closest('.spot-leave')) { setLeft(null); layout(false); return true; }
+    if (e.target.closest('.spot-new')) {
+      if (!saveBtn.hidden) { A.toast('Please save the order first, then add the new painting.', true); return true; }
+      location.href = 'work.html?new=1&' + (spot.dataset.before ? 'before=' + encodeURIComponent(spot.dataset.before) : 'after=' + encodeURIComponent(spot.dataset.after));
+      return true;
+    }
+    if (e.target.closest('.spot-pick')) pick(spot);
+    return true;
+  }
+  // Choose one of the uploaded paintings (square or vertical ones fit here).
+  function pick(spot) {
+    var here = spot.dataset.row.split(',');
+    var placed = slugs(flat());
+    var fits = function (w) { return !A.H2.isWide(w) && here.indexOf(w.slug) < 0; };
+    var on = flat().filter(fits);
+    var off = works.filter(function (w) { return placed.indexOf(w.slug) < 0 && fits(w); });
+    function tile(w) {
+      var img = w.data.image && w.data.image.src;
+      return '<button type="button" class="pick-tile" data-slug="' + A.esc(w.slug) + '"><span class="pick-thumb">' +
+        (img ? '<img alt="" data-src="' + A.esc(img) + '">' : '') + '</span><span class="pick-title">' + A.esc(w.data.title || w.slug) + '</span></button>';
+    }
+    var back = document.createElement('div');
+    back.className = 'confirm-back';
+    back.innerHTML = '<div class="confirm pick" role="dialog" aria-modal="true" aria-labelledby="pick-t">' +
+      '<p class="confirm-title" id="pick-t">Choose a painting</p>' +
+      '<p class="confirm-text">Square and vertical paintings fit this place. If taking one from another row leaves an empty place there, that place is marked so you can fill it too or leave it.</p>' +
+      (on.length ? '<p class="pick-head">On the Works page</p><div class="pick-grid">' + on.map(tile).join('') + '</div>' : '') +
+      (off.length ? '<p class="pick-head">Not on the Works page</p><div class="pick-grid">' + off.map(tile).join('') + '</div>' : '') +
+      '<div class="confirm-actions"><button class="btn" type="button" data-no>Cancel</button></div></div>';
+    function close() { back.remove(); document.removeEventListener('keydown', key, true); }
+    function key(e) { if (e.key === 'Escape') { e.preventDefault(); close(); } }
+    back.addEventListener('click', function (e) {
+      if (e.target === back || e.target.closest('[data-no]')) return close();
+      var t = e.target.closest('.pick-tile');
+      if (!t) return;
+      close();
+      moveInto(t.dataset.slug, spot.dataset.before, spot.dataset.after);
+    });
+    document.addEventListener('keydown', key, true);
+    document.body.appendChild(back);
+    A.$$('img[data-src]', back).forEach(function (img) { A.showImage(img, img.dataset.src); });
+  }
+  function moveInto(slug, before, after) {
+    var prev = slugs(flat());
+    var w = bySlug(slug);
+    var order = flat().filter(function (x) { return x.slug !== slug; });
+    var was = prev.indexOf(slug);
+    if (was >= 0) setLeft({ prev: prev[was - 1], next: prev[was + 1], title: w.data.title || slug });
+    var at = before ? slugs(order).indexOf(before) : slugs(order).indexOf(after) + 1;
+    if (at < 0) at = 0;
+    order.splice(at, 0, w);
+    reorder(order);
+    remember(prev, w.data.title || slug);
+  }
+
   /* ---------- Undo (alona 2026-11-16) ---------- */
   var history = [], undoBar = null, undoTimer = null;
   function remember(prev, title) {
@@ -151,6 +249,7 @@ A.start(function () {
   function undo() {
     var prev = history.pop();
     if (!prev) return;
+    setLeft(null);
     reorder(prev.map(bySlug));
     if (undoBar) {
       A.$('span', undoBar).textContent = 'Undone.';
@@ -170,6 +269,7 @@ A.start(function () {
 
   // The arrows move a painting one place earlier or later (across rows too).
   list.addEventListener('click', function (e) {
+    if (spotClick(e)) return;
     var b = e.target.closest('.move-btn');
     if (!b) return;
     e.preventDefault(); e.stopPropagation();
@@ -321,9 +421,18 @@ A.start(function () {
 
   // Write an order into home2.json (rows by shape, see A.H2.reflow).
   function fill(data, order) {
-    var have = A.H2.order(data).sort().join(',');
-    if (have !== order.slice().sort().join(',')) throw new Error('the works changed meanwhile. Reload the page and try again');
-    A.H2.reflow(data, order, bySlug);
+    var have = A.H2.order(data);
+    if (have.some(function (s) { return order.indexOf(s) < 0; })) throw new Error('the works changed meanwhile. Reload the page and try again');
+    // Paintings added from "Not on the Works page": 318 wide, height from the photo.
+    var extra = {};
+    order.forEach(function (s) {
+      if (have.indexOf(s) >= 0) return;
+      var w = bySlug(s), im = w && w.data.image;
+      var sh = A.H2.SHAPES[w && w.data.shape] || (A.H2.isWide(w) ? A.H2.SHAPES.horizontal : A.H2.SHAPES.square);
+      var ratio = im && im.width ? im.width / im.height : sh.ratio;
+      extra[s] = { w: sh.w, h: Math.round(sh.w / ratio) };
+    });
+    A.H2.reflow(data, order, bySlug, extra);
   }
   function saveOrder(order, message, toast) {
     saveBtn.disabled = true;

@@ -443,3 +443,28 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 .home-speed .lbl { margin: 0; font-size: 13px; color: var(--ink); }
 .home-speed-in { display: flex; align-items: center; gap: 8px; font-size: 13px; }
 .home-speed .field { width: 72px; text-align: center; }
+
+/* Works tab: a quiet note in a row's free place (alona 2026-11-17), with
+   "New painting" and "Choose from works". "marked" = a painting left it. */
+.wk-spot { display: flex; flex-direction: column; min-width: 0; }
+.wk-spot-box { box-sizing: border-box; height: calc((100cqw - 2 * var(--g)) / 3 * 1.22); border: 1px dashed #cfcfcf; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px; text-align: center; }
+.wk-spot-box p { margin: 0; font-size: 13px; line-height: 1.45; color: var(--grey); }
+.wk-spot-box p span { color: #9a9a9a; }
+.wk-spot-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.wk-spot-actions .btn { height: 32px; font-size: 12px; padding: 0 12px; }
+.wk-spot.marked .wk-spot-box { border: 1.5px solid var(--ink); background: #fbfbfb; }
+.wk-spot.marked .wk-spot-box p { color: var(--ink); }
+#list.compact .wk-spot-box { height: calc((100cqw - 2 * var(--g)) / 3 * 0.5); border-radius: 8px; padding: 6px; gap: 4px; }
+#list.compact .wk-spot-box p { display: none; }
+#list.compact .wk-spot-actions .btn { height: 24px; font-size: 11px; padding: 0 8px; }
+@media (max-width: 600px) { .wk-spot-box { padding: 8px; gap: 6px; border-radius: 10px; } .wk-spot-box p span { display: none; } .wk-spot-actions .btn { height: 26px; font-size: 11px; padding: 0 8px; } }
+
+/* "Choose a painting" dialog */
+.confirm.pick { max-width: 720px; max-height: calc(100vh - 32px); overflow: auto; }
+.pick-head { margin: 16px 0 8px; font-size: 12px; color: var(--grey); }
+.pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-bottom: 8px; }
+.pick-tile { display: flex; flex-direction: column; gap: 6px; padding: 0; border: 0; background: none; font: inherit; text-align: left; cursor: pointer; color: var(--ink); }
+.pick-thumb { aspect-ratio: 1 / 1; border-radius: 10px; background: var(--soft); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: background-color 0.15s; }
+.pick-thumb img { max-width: 80%; max-height: 80%; display: block; }
+.pick-tile:hover .pick-thumb { background: #e6e6e6; }
+.pick-title { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -122,7 +122,11 @@ A.start(function () {
         var extra = {};
         extra[slug] = { w: sh.w, h: Math.round(sh.w / ratio) };
         A.H2.remove(h2, slug);
-        var order = [slug].concat(A.H2.order(h2));
+        // First on the page, or into the empty place it was added from (?before= / ?after=).
+        var order = A.H2.order(h2), at = 0;
+        if (A.param('before') && order.indexOf(A.param('before')) >= 0) at = order.indexOf(A.param('before'));
+        else if (A.param('after') && order.indexOf(A.param('after')) >= 0) at = order.indexOf(A.param('after')) + 1;
+        order.splice(at, 0, slug);
         A.H2.reflow(h2, order, function (s) {
           if (s === slug) return { slug: slug, data: data };
           return works.filter(function (w) { return w.slug === s; })[0];
@@ -209,6 +213,7 @@ A.start(function () {
     $('row').value = rowValue();
     if (isNew) {
       $('shape-step').hidden = false;
+      if (A.param('before') || A.param('after')) $('shape-hint').textContent = 'It goes into the free place you chose on the Works page. Square and vertical paintings fit there best.';
       $('wk-grid').hidden = true;
       $('shape-row').hidden = false;
       A.$$('[data-shape]').forEach(function (b) { b.addEventListener('click', function () { setShape(b.dataset.shape); }); });
