@@ -37,7 +37,7 @@ A.start(function () {
     var wrap = document.createElement('div');
     wrap.className = 'ep-ph ' + shapeOf(value);
     wrap.innerHTML = '<div class="drop"></div><div class="image-meta"></div>';
-    $('photos').appendChild(wrap);
+    $('photos').insertBefore(wrap, $('add-images'));
     var o = { el: wrap.querySelector('.drop'), metaEl: wrap.querySelector('.image-meta'), value: value };
     for (var k in opts) o[k] = opts[k];
     var p = { wrap: wrap };
@@ -148,8 +148,9 @@ A.start(function () {
     for (var i = 0; i < 3; i++) {
       var col = document.createElement('div');
       col.className = 'ep-col';
-      col.innerHTML = '<input class="field ep-word" type="text" autocomplete="off" aria-label="Big word, column ' + (i + 1) + '">' +
-        '<textarea class="field ep-text" rows="12" aria-label="Text, column ' + (i + 1) + '"></textarea>';
+      col.innerHTML = '<span class="lbl-main">Column ' + (i + 1) + '</span>' +
+        '<div><label class="lbl" for="w' + i + '">Big word</label><input class="field ep-word" id="w' + i + '" type="text" autocomplete="off"></div>' +
+        '<div><label class="lbl" for="c' + i + '">Text</label><textarea class="field ep-text" id="c' + i + '" rows="10"></textarea><p class="hint">Leave an empty line between paragraphs.</p></div>';
       var w = col.querySelector('input'), t = col.querySelector('textarea');
       w.placeholder = ph[i][0]; t.placeholder = ph[i][1];
       w.value = (c[i] && c[i].word) || '';
@@ -172,7 +173,7 @@ A.start(function () {
       pick.value = '';
       ed && ed.update();
     });
-    $('photos-hint').textContent = 'Horizontal photos go one per row; vertical ones sit two side by side. Drag a photo to move it.';
+    $('photos-hint').textContent = 'Horizontal photos go one per row, vertical ones two side by side, as on the page. Drag a photo to move it.';
   }
   function saveAuto(d) {
     var changes = [], kept = {};

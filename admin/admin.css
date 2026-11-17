@@ -409,45 +409,29 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; }
 #list.compact .wk-row .card-title, #list.compact .wk-row .tags, #list.compact .wk-row .move { display: none; }
 #list.compact .wk-row .badge { top: 5px; left: 5px; min-width: 18px; height: 18px; font-size: 10px; }
 
-/* Exhibition page editor: adding / editing (alona's design, 2026-11-17) */
-.ep-top .topbar-left { gap: 14px; }
-.ep-top .ep-back { display: inline-flex; color: var(--ink); margin-left: -4px; }
-.ep-crumb { font-size: 20px; color: var(--ink); text-decoration: none; white-space: nowrap; }
-.ep-crumb:hover { color: #555; }
-.ep-sep { font-size: 20px; color: var(--ink); margin: 0 10px; }
-.ep-name { margin: 0; font-size: 20px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.ep-top .btn { height: 34px; padding: 0 18px; border-radius: 17px; font-size: 15px; }
-.ep-top .btn:not(.dark) { border-color: var(--ink); }
+/* Exhibition page editor: adding / editing (alona's structure 2026-11-17, admin style) */
 .ep-page { gap: 0; }
-.ep-hint { margin: 0 0 32px; max-width: 640px; }
-.ep-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.42fr); gap: 32px 9%; align-items: start; margin-top: 40px; }
-.ep-grid > .fields { max-width: 340px; }
-.ep-main { position: relative; }
-.ep-main-lbl { position: absolute; z-index: 3; top: 18px; left: 18px; font-size: 13px; color: var(--ink); pointer-events: none; }
-.ep-main .drop { min-height: 0; aspect-ratio: 600 / 424; border-radius: 22px; background: #e2e2e2; border-color: transparent; padding: 0; overflow: hidden; }
+.ep-hint { margin: 0 0 24px; max-width: 640px; }
+.ep-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 32px 80px; align-items: start; }
+.ep-main .drop { min-height: 0; aspect-ratio: 1336 / 728; padding: 0; overflow: hidden; }
 .ep-main .drop.has-image img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: cover; }
-.ep-main .drop.has-image ~ .ep-main-lbl, .ep-main:has(.has-image) .ep-main-lbl { display: none; }
-.ep-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 9%; margin-top: 64px; }
-.ep-col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
-.ep-word { height: 82px; border-radius: 18px; padding: 0 26px; font-size: 30px; }
-.ep-text { min-height: 338px; border-radius: 18px; padding: 22px 16px; font-size: 15px; line-height: 1.3; resize: vertical; }
+.ep-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 64px; }
+.ep-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ep-col .lbl-main { margin: 0; }
+.ep-col .hint { margin: 6px 0 0; }
 .ep-texts { margin-top: 64px; max-width: 880px; }
-.ep-more { margin-top: 72px; display: flex; flex-direction: column; gap: 16px; }
-.ep-add { display: flex; align-items: center; gap: 72px; width: 408px; max-width: 100%; height: 73px; padding: 0 26px; border: 0; background: #e2e2e2; color: var(--ink); font: inherit; font-size: 21px; cursor: pointer; text-align: left; }
-.ep-add:hover { background: #d6d6d6; }
-.ep-more .hint { margin: 0; }
-.ep-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 880px; }
-.ep-photos:empty { display: none; }
+.ep-more { margin-top: 64px; display: flex; flex-direction: column; gap: 12px; }
+.ep-more .lbl-main, .ep-more .hint { margin: 0; }
+.ep-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 880px; }
 .ep-ph { min-width: 0; }
 .ep-ph.wide { grid-column: 1 / -1; }
 .ep-ph .drop { min-height: 0; aspect-ratio: 880 / 480; padding: 0; overflow: hidden; }
 .ep-ph.tall .drop { aspect-ratio: 424 / 636; }
 .ep-ph .drop.has-image img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: cover; }
+.ep-ph .drop .small, .ep-ph .drop .big { display: none; }
 .ep-ph .pic { cursor: grab; }
 .ep-ph.dragging { opacity: 0.35; }
+.ep-add { grid-column: 1 / -1; aspect-ratio: auto; height: 96px; flex-direction: row; gap: 8px; }
 @media (max-width: 860px) {
-  .ep-crumb, .ep-sep { display: none; }
   .ep-grid, .ep-cols { grid-template-columns: minmax(0, 1fr); }
-  .ep-grid > .fields { max-width: none; }
-  .ep-top .btn { padding: 0 12px; font-size: 13px; }
 }

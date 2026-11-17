@@ -17,18 +17,16 @@
 <script src="exhibition.js" defer></script>
 </head>
 <body>
-<header class="topbar ep-top"><div class="topbar-in">
-  <!-- alona's design (2026-11-17): back arrow, Exhibitions | page name, Preview page, Save & Publish. -->
+<header class="topbar"><div class="topbar-in">
   <div class="topbar-left">
-    <a class="ep-back" href="exhibitions.html" aria-label="Back to exhibitions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
-    <a class="ep-crumb" href="exhibitions.html">Exhibitions</a>
-    <span class="ep-sep" aria-hidden="true">|</span>
-    <h1 class="ep-name" id="item-name">&nbsp;</h1>
+    <a class="back" href="exhibitions.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>Exhibited</a>
+    <span class="divider"></span>
+    <h1 class="item-name" id="item-name">&nbsp;</h1>
     <span id="status" class="status" hidden></span>
   </div>
   <div class="topbar-right">
     <span id="save-state" class="save-state" aria-live="polite"></span>
-    <button class="btn" id="preview" type="button">Preview page</button>
+    <button class="btn view-page" id="preview" type="button" aria-label="Preview page"><span class="label">Preview page</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
     <button class="btn dark" id="save" type="button" disabled>Save &amp; Publish</button>
   </div>
 </div></header>
@@ -40,14 +38,14 @@
       <div><label class="lbl" for="title">Title</label><input class="field" id="title" type="text" placeholder="e.g. New exhibition" autocomplete="off"><p class="hint">The „quotes“ are added on the site.</p></div>
       <div><label class="lbl" for="place">Place and year</label><input class="field" id="place" type="text" placeholder="e.g. St. Elisabeth, Berlin 2026" autocomplete="off"></div>
     </div>
-    <div class="ep-main"><span class="ep-main-lbl">Main image</span><div class="drop" id="drop"></div><div class="image-meta" id="drop-meta"></div></div>
+    <div class="ep-main"><span class="lbl-main">Main image</span><div class="drop" id="drop"></div><div class="image-meta" id="drop-meta"></div></div>
   </div>
   <div class="ep-cols" id="cols"></div>
   <div class="fields ep-texts" id="texts" hidden></div>
   <section class="ep-more">
-    <button class="ep-add" type="button" id="add-images"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 4v16M4 12h16"></path></svg><span>Add images</span></button>
+    <span class="lbl-main">Images</span>
+    <div class="ep-photos" id="photos"><button class="new-card ep-add" type="button" id="add-images"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add images</button></div>
     <p class="hint" id="photos-hint"></p>
-    <div class="ep-photos" id="photos"></div>
   </section>
 </main>
 <footer class="admin-foot"><span>Each save goes live on the site about a minute later.</span><a href="#" data-logout>Log out</a></footer>
