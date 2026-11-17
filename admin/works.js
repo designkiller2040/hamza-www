@@ -346,42 +346,6 @@ A.start(function () {
     saveOrder(flat().map(function (w) { return w.slug; }), 'Reorder works on the Works page', 'Order saved. The site updates in about a minute.');
   });
 
-  // TEMPORARY (alona 2026-11-16): "Return how it was" puts the Works page back
-  // exactly as it was on 2026-11-16 (originalRows in home2.json) and saves.
-  // To remove: delete this block, the #restore-order button in works.html and
-  // "originalRows" in content/home2.json.
-  var restoreBtn = A.$('#restore-order');
-  if (restoreBtn) restoreBtn.addEventListener('click', function () {
-    if (!home2.originalRows) { A.toast('No saved original order.', true); return; }
-    function slugsOf(rs) { return rs.reduce(function (a, r) { return a.concat(slotsOf(r).map(function (p) { return p.slug; })); }, []); }
-    if (JSON.stringify(home2.rows) === JSON.stringify(home2.originalRows)) {
-      if (!saveBtn.hidden) { group(); render(); if (query) search(query); saveBtn.hidden = true; }
-      A.toast('The works are already in their original order.');
-      return;
-    }
-    function restore(data) {
-      var orig = data.originalRows;
-      if (!orig) throw new Error('no saved original order');
-      var a = slugsOf(orig).slice().sort().join(','), b = slugsOf(data.rows).slice().sort().join(',');
-      if (a === b) { data.rows = JSON.parse(JSON.stringify(orig)); return; }
-      // Works were added or removed since: original order first, new ones after.
-      var cur = slugsOf(data.rows);
-      var order = slugsOf(orig).filter(function (s) { return cur.indexOf(s) >= 0; })
-        .concat(cur.filter(function (s) { return slugsOf(orig).indexOf(s) < 0; }));
-      fill(data, order);
-    }
-    saveBtn.disabled = true;
-    A.commit('Works page: return the original order', [A.H2.update(restore)]).then(function () {
-      restore(home2);
-      group(); before = orderKey(); render(); if (query) search(query);
-      saveBtn.hidden = true;
-      forget();
-      A.toast('Original order is back. The site updates in about a minute.');
-    }).catch(function (e) {
-      A.toast('Couldn’t restore the order: ' + e.message, true);
-    }).then(function () { saveBtn.disabled = false; });
-  });
-
   window.addEventListener('beforeunload', function (e) {
     if (!saveBtn.hidden) { e.preventDefault(); e.returnValue = ''; }
   });
