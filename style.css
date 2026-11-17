@@ -2406,10 +2406,14 @@ body.home-page:not(.works-page) > .h2-credits {
   .h2-header .h2-nav { justify-content: flex-start; }
 }
 
-/* Legal: the text column keeps the width it had under the old centred menu
-   (HOME to ABOUT = 435 design px of gaps + the four words) */
-.lg {
-  width: calc(100vw * 435 / 1512 + 221px);
+/* Legal (alona 2026-11-17): the text column is as wide as the top menu,
+   from the left edge of HAMZA SHAH MIAN to the right edge of ABOUT
+   880 design px centred, like the menu's own padding below.
+   Phones: see the .lg rules above. */
+@media (min-width: 992px) {
+  .lg {
+    width: calc(100vw * 880 / 1512);
+  }
 }
 
 /* Home on phones (alona 2026-11-16): the bottom texts sit under the photo,
