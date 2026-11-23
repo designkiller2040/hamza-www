@@ -2,20 +2,32 @@
   "_about": "Home #2 works layout, copied from alona's Design canvas (1512 px wide page) on 2026-11-09. Each row has a height (its works plus the 160 px gap to the next row); each work has its left edge (x), top within the row (y), photo width (w) and photo height (h) in design pixels. Left works start at x 80, right works end at 1432, middle works are centred (756). caption: \"below\" or \"above\" the photo.",
   "rows": [
     {
-      "height": 586,
-      "align": "top",
+      "height": 706,
       "works": [
         {
-          "slug": "the-moons-red-tide",
+          "slug": "freedom-2054",
           "x": 66,
+          "y": 0,
+          "w": 626,
+          "h": 438,
+          "caption": "below"
+        },
+        {
+          "slug": "the-moons-red-tide",
+          "x": 1128,
           "y": 0,
           "w": 318,
           "h": 319,
           "caption": "below"
-        },
+        }
+      ]
+    },
+    {
+      "height": 585,
+      "works": [
         {
           "slug": "jungle-2026",
-          "x": 597,
+          "x": 66,
           "y": 0,
           "w": 318,
           "h": 317,
