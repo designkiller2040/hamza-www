@@ -5,24 +5,19 @@
       "height": 587,
       "works": [
         {
-          "slug": "the-moons-red-tide",
-          "x": 66,
-          "y": 0,
-          "w": 318,
-          "h": 319,
-          "caption": "below"
-        }
-      ]
-    },
-    {
-      "height": 585,
-      "works": [
-        {
           "slug": "jungle-2026",
           "x": 66,
           "y": 0,
           "w": 318,
           "h": 317,
+          "caption": "below"
+        },
+        {
+          "slug": "the-moons-red-tide",
+          "x": 597,
+          "y": 0,
+          "w": 318,
+          "h": 319,
           "caption": "below"
         },
         {
